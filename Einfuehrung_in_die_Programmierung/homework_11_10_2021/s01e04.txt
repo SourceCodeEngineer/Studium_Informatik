@@ -1,0 +1,23 @@
+1. Was ist gcc? Wozu wird es gebraucht? Gibt es Alternativen?
+A: GCC steht für Gnu Compiler Collection und wird von einer Reihe von Systemen als standard Compiler genutzt. Clang ist eine Alternative zu gcc.
+
+2. Welche gcc Version ist auf Ihrem System installiert? Wie haben Sie diese Information ermittelt?
+A:gcc version 9.3.0. --> Commandline öffnen und folgendes eingeben: gcc --version
+
+3. Welches ist die neueste gcc Version?Welches ist die neueste gcc Version? (11.10.2021 20:37)
+A: gcc 11.2 ist die neueste gcc version
+
+4. Erklären Sie die einzelnen Befehle Ihres Hello World-Programmcodes mithilfe von Kommentaren im Quellcode.
+A. Siehe s01e04.c
+
+5. Was ist der Unterschied zwischen C-Quellcode und einem Executable? Ist s01e04.c ein Executable oder Quellcode?
+A: Quellcode ist das vom Menschen geschriebene Source-Code-File. Ein Execuable ist bereits ein in Maschinencode konvertiertes File.
+
+6. Was passiert beim Kompilieren und warum ist dieser Schritt vor dem Ausführen notwendig?
+A: Ein Computerprogramm muss kompiliert werden, da der Quellcode einer bestimmten Programmiersprache in eine Form übersetzt wird, die von einem Computer (direkter) ausgeführt werden kann. 
+
+7. Was bewirken die Flags (-Wall, -Wextra, -Werror, -Wpedantic, -std=c11, -o s01e04) beim gcc-Aufruf gcc -Wall -Wextra -Werror -Wpedantic -std=c11 s01e04.c -o s01e04?
+A:-Wall enables all compiler warning messages, -Wextra controls warnings when an attribute is ignored, -Werror Inhibit all warning messages, -Wpedantic tells the compiler to be adhere strictly to the ANSI standard, -std=c11 uses the c compiler standard of the version c 2011, -o preprocessing, compilation, assembly and linking, s01e04 is the name of the output File.
+
+8. Wie führt man das beim Kompilieren generierte Executable s01e04 aus? (ich arbeite auf Linux)
+A: cd in den richtigen Ordner, chmod +x DATEINAME, ./DATEINAME
