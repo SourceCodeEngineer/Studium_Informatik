@@ -7,17 +7,26 @@ myAssn = Assign "x" 1 (Assign "x" 2 (Assign "y" 3 EmptyA))
 
 -- Exercise 1
 
+--1 Student "Jane Doe" 243781 True (Teaching Math Physics) --> i
+--2 Student "Max Meyer" 221341 False (Teaching CS Math) --> nothing
+--3 Student "Mary Smith" 234145 False (Master CS) --> ii
+
+-- Exercise 2
 -- disj
 disj :: Bool -> Bool -> Bool
-disj = undefined
+disj True = not
+disj False = id
 
 -- sumList
 sumList :: List -> Integer
-sumList = undefined
+sumList Empty = 0
+sumList (Cons x xs) = x + sumList xs
+
 
 -- double2nd
 double2nd :: List -> List
-double2nd = undefined
+double2nd = undefined 
+
 
 
 -- Exercise 3
@@ -27,19 +36,19 @@ data Expr = Number Integer
   | Plus Expr Expr
   | Negate Expr
   deriving Show
-  
+
 data Assignment = EmptyA | Assign String Integer Assignment
   deriving Show
 
 ite :: Bool -> Integer -> Integer -> Integer
-ite b x y = undefined
+ite b x y = if b then x else y
 
 lookupA :: Assignment -> String -> Integer
 lookupA assn s = undefined
 
 eval :: Assignment -> Expr -> Integer
 eval assn e = undefined
-  
+
 
 -- Exercise 3.4
 
@@ -49,7 +58,7 @@ data Expr' = Number' Integer
   | Plus' Expr' Expr'
   | Negate' Expr'
   deriving Show
-  
+
 eval' :: Assignment -> Expr' -> Integer
 eval' assn e = undefined
 
