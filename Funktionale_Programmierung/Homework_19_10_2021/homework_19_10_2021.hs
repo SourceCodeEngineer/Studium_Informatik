@@ -14,8 +14,8 @@ myAssn = Assign "x" 1 (Assign "x" 2 (Assign "y" 3 EmptyA))
 -- Exercise 2
 -- disj
 disj :: Bool -> Bool -> Bool
-disj True = not
-disj False = id
+disj True True = True
+disj _ _ = False
 
 -- sumList
 sumList :: List -> Integer
