@@ -22,12 +22,11 @@ sumList :: List -> Integer
 sumList Empty = 0
 sumList (Cons x xs) = x + sumList xs
 
-
 -- double2nd
 double2nd :: List -> List
-double2nd = undefined 
-
-
+double2nd Empty = Empty -- check if list is completexly empty
+double2nd (Cons i Empty) = Cons i Empty -- check if list is only containing one element
+double2nd (Cons i (Cons i2 l))= Cons i (Cons (i2 * 2) (double2nd l)) -- recusion step
 
 -- Exercise 3
 
@@ -37,7 +36,9 @@ data Expr = Number Integer
   | Negate Expr
   deriving Show
 
-data Assignment = EmptyA | Assign String Integer Assignment
+data Assignment = 
+  EmptyA 
+  | Assign String Integer Assignment
   deriving Show
 
 ite :: Bool -> Integer -> Integer -> Integer
@@ -69,4 +70,3 @@ testSum = putStrLn ("expected: 20\ncomputed: " ++ show (sumList list))
 testDouble = putStrLn ("expected: Cons 1 (Cons 14 (Cons 9 (Cons 6 Empty)))\ncomputed: " ++ show (double2nd list))
 testLookupA = putStrLn ("expected: 1 3 0\ncomputed: " ++ show (lookupA myAssn "x") ++ " " ++ show (lookupA myAssn "y") ++ " " ++ show (lookupA myAssn "z"))
 testEval = putStrLn ("expected: 42\ncomputed: " ++ show (eval myAssn (Plus (Negate (Var "y")) (Number 45))))
-
