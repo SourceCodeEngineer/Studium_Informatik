@@ -45,11 +45,16 @@ ite :: Bool -> Integer -> Integer -> Integer
 ite b x y = if b then x else y
 
 lookupA :: Assignment -> String -> Integer
-lookupA assn s = undefined
+lookupA (Assign s i recursion) k = ite (s == k) i (lookupA recursion k) --s defined as string, i defined as integer, recursion selfexplaining...
+lookupA _ _ = 0 --Emty List
 
 eval :: Assignment -> Expr -> Integer
-eval assn e = undefined
+eval (Assign s i recursion) e = undefined
 
+
+{- 
+
+-}
 
 -- Exercise 3.4
 
