@@ -50,7 +50,7 @@ lookupA _ _ = 0 --Emty List
 
 eval :: Assignment -> Expr -> Integer
 eval EmptyA _ = 0
-eval assn (Var ss) = lookupA assn ss 
+eval assn (Var str) = lookupA assn str
 eval _ (Number n) = n 
 eval assn (Plus x y) = eval assn x + eval assn y
 eval assn (Negate a) = - eval assn a
