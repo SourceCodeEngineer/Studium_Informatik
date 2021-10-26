@@ -36,8 +36,8 @@ data Expr = Number Integer
   | Negate Expr
   deriving Show
 
-data Assignment = 
-  EmptyA 
+data Assignment =
+  EmptyA
   | Assign String Integer Assignment
   deriving Show
 
@@ -49,12 +49,13 @@ lookupA (Assign s i recursion) k = ite (s == k) i (lookupA recursion k) --s defi
 lookupA _ _ = 0 --Emty List
 
 eval :: Assignment -> Expr -> Integer
-eval (Assign s i recursion) e = undefined
+eval assign expr = 0
 
-
-{- 
-
--}
+helperFun :: Expr -> Integer
+helperFun = lookupA
+-- search element from expression with lookupA
+-- make expr recursive
+-- combine those 2
 
 -- Exercise 3.4
 
