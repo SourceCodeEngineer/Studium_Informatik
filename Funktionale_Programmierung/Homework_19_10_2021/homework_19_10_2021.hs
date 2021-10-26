@@ -49,15 +49,11 @@ lookupA (Assign s i recursion) k = ite (s == k) i (lookupA recursion k) --s defi
 lookupA _ _ = 0 --Emty List
 
 eval :: Assignment -> Expr -> Integer
-eval assign expr = 0
-
-helperFun :: Expr -> Integer
-helperFun = lookupA
--- search element from expression with lookupA
--- make expr recursive
--- combine those 2
-
--- Exercise 3.4
+eval EmptyA _ = 0
+eval assn (Var ss) = lookupA assn ss 
+eval _ (Number n) = n 
+eval assn (Plus x y) = eval assn x + eval assn y
+eval assn (Negate a) = - eval assn a
 
 {- You may (and will have to) extend this datatype in order to incorporate the "let" construct. -}
 data Expr' = Number' Integer
@@ -68,7 +64,6 @@ data Expr' = Number' Integer
 
 eval' :: Assignment -> Expr' -> Integer
 eval' assn e = undefined
-
 
 -- the following tests can be used by you, once you have implemented your functions,
 -- for testing, just invoke testX in ghci
