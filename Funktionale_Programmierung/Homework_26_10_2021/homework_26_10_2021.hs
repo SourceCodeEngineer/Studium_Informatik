@@ -1,17 +1,25 @@
+import Text.Read.Lex (Number)
 -- Exercise 1
 
-suffixes :: a        -- change the type
-suffixes = undefined -- and the definition
+suffixes :: [a] -> [[a]]
+suffixes [] = [[]]
+suffixes l@(_:t) = l : suffixes t
 
-prefixes :: a        -- change the type
-prefixes = undefined -- and the definition
+prefixes :: [a] -> [[a]]
+prefixes [] = [[]]
+prefixes l@x = l : prefixes (init x)
 
-menu :: a        -- change the type
-menu = undefined -- and the definition
+menu :: Char -> [a] -> Either String [[a]]
+menu 'p' l = Right (prefixes l)
+menu 's' l = Right (suffixes l)
+menu x _ = Left ("(" ++ show x ++ ")" ++ "is not supported, use (p)refix or (s)uffix")
 
 
 -- Exercise 2
-data Expr change these variables = AND | THE | CONSTRUCTORS 
+data Expr change these variables = 
+  Number Integer
+  | Addition Expr Expr
+  | Times Expr Expr
   deriving Show
 
 -- replace dummy expressions by real expressions in comments below as soon as datatype Expr has been defined
