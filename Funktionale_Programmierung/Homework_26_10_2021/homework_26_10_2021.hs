@@ -34,8 +34,10 @@ eval (Plus x y) = eval x + eval y
 eval (Times x y) = eval x * eval y
 
 exprToString :: Show a => Expr a -> String
+exprToString (Times (Plus x y) z) = "(" ++ (exprToString x ++ " + " ++ exprToString y) ++ ") * " ++ exprToString z
+exprToString (Times x (Plus y z)) = exprToString x ++ " * (" ++ (exprToString y ++ " + " ++ exprToString z) ++ ")"
 exprToString (Number x) = show x
-exprToString (Plus x y) = "(" ++ exprToString x ++ " + " ++ exprToString y ++ ")"
+exprToString (Plus x y) = exprToString x ++ " + " ++ exprToString y
 exprToString (Times x y) = exprToString x ++ " * " ++exprToString y
 
 -- Tests: Un-comment the desired test (and :reload) after you provided a corresponding solution.
