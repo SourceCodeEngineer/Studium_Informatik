@@ -1,6 +1,4 @@
-import Text.Read.Lex (Number)
 -- Exercise 1
-
 suffixes :: [a] -> [[a]]
 suffixes [] = [[]]
 suffixes l@(_:t) = l : suffixes t
