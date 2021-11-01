@@ -14,17 +14,13 @@ menu 'p' l = Right (prefixes l)
 menu 's' l = Right (suffixes l)
 menu x _ = Left ("(" ++ [x] ++ ")" ++ "is not supported, use (p)refix or (s)uffix")
 
-
 -- Exercise 2
-
-
 data Expr a =
   Number a
   | Plus (Expr a) (Expr a)
   | Times (Expr a) (Expr a)
   deriving Show
 
--- replace dummy expressions by real expressions in comments below as soon as datatype Expr has been defined
 expr1 = Times (Plus (Number (5.2 :: Double)) (Number 4)) (Number 2)
 expr2 = Plus (Number (2 :: Int)) (Times (Number 3) (Number 4))
 expr3 = Times (Number "hello") (Number "world")
@@ -34,8 +30,7 @@ numbers (Number x) = [x]
 numbers (Plus x y) = numbers x ++ numbers y
 numbers (Times x y) = numbers x ++ numbers y
 
-
-eval :: Num a => Expr a -> a        -- change the type
+eval :: Num a => Expr a -> a
 eval (Number x) = x
 eval (Plus x y) = eval x + eval y
 eval (Times x y) = eval x * eval y
@@ -44,8 +39,6 @@ exprToString :: Show a => Expr a -> String
 exprToString (Number x) = show x
 exprToString (Plus x y) = "(" ++ exprToString x ++ " + " ++ exprToString y ++ ")"
 exprToString (Times x y) = exprToString x ++ " * " ++exprToString y
-
-
 
 -- Tests: Un-comment the desired test (and :reload) after you provided a corresponding solution.
 testSuffixes = "Expected [[1,2,3],[2,3],[3],[]]; suffixes [1,2,3] returned " ++ show (suffixes [1,2,3] :: [[Int]])
