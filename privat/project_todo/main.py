@@ -12,33 +12,49 @@ mylistbox.grid(row=0,column = 0, columnspan=5)
 entrybox_task = Entry(root, width=32)
 entrybox_date = Entry(root, width=15)
 
-# Funktion
+# Funktions
 def add():
-    x = entrybox_task.insert(0, END)
+    result = entrybox_task.get()
+    fileappender(result)
+    load()
     entrybox_task.delete(0, END)
 
 def clear():
     entrybox_task.delete(0, END)
     entrybox_date.delete(0, END)
 
-def stf(x):
+def safetofile(x):
 	x #still to do!
 
+def filereader():
+	f = open("todolist.txt", "r")
+	return f
+
+def fileappender(var):
+	if var > "":
+		f = open("todolist.txt", "a")
+		f.write("\n")
+		f.write(var)
+	else:
+		NONE
+
 def load():
+	mylistbox.delete(0, END)
 	#creating array and then adding the todos to the array
 	todo_array = []
-	f = open("todolist.txt", "r")
+	f = filereader()
 	todo_array = f.read().split("\n")
 
 	for item in todo_array:
 		mylistbox.insert(END, item)
+	return todo_array
 
 # Button
 button_add = Button(root, text="ADD", padx=40, pady=10, command=add)
 button_del = Button(root, text="DELETE", padx=40, pady=10, state=DISABLED)
-button_save = Button(root, text="SAVE", padx=40, pady=10, state=DISABLED)
+button_save = Button(root, text="SAVE", padx=40, pady=10)
 button_load = Button(root, text="LOAD", padx=40, pady=10, command=load)
-button_submit = Button(root, text="SUBMIT", padx=7, state=DISABLED)
+button_submit = Button(root, text="SUBMIT", padx=7, command=add)
 button_clear = Button(root, text="CLEAR", padx=7, command=clear)
 
 # Put the Buttons on the screen
