@@ -7,13 +7,19 @@ mergeLists = undefined
 
 -- Exercise 1.2
 calculateAge :: (Int, Int, Int) -> Int
-calculateAge = undefined
+calculateAge (d2, m2, y2)
+   | 11 > m2 = 2021 - y2
+   | 11 == m2 && 10 >= d2 = 2021 - y2
+   | otherwise = 2021 - y2 - 1
+
 
 -- Exercise 1.3
 convertDatesToAges :: [(String, (Int, Int, Int))] ->  [(String, Int)]
-convertDatesToAges = undefined
+convertDatesToAges [(s, (i1, i2, i3))] = [(s, calculateAge(i1, i2, i3))]
+convertDatesToAges [] = []
 
 -- Exercise 1.4
+getOtherPairValue :: a
 getOtherPairValue = undefined
 
 -- Exercise 2.3
