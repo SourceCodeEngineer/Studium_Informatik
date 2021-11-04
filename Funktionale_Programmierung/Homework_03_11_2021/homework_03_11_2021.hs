@@ -3,7 +3,9 @@ ite True x y = x
 ite False x y = y
 
 -- Exercise 1.1
-mergeLists = undefined
+mergeLists :: [a] -> [b] -> [(a, b)]
+mergeLists l1 l2 = mergeLists (tail l1) (tail l2) 
+mergeLists l1 l2 = [(head l1, head l2)]
 
 -- Exercise 1.2
 calculateAge :: (Int, Int, Int) -> Int
@@ -15,12 +17,13 @@ calculateAge (d2, m2, y2)
 
 -- Exercise 1.3
 convertDatesToAges :: [(String, (Int, Int, Int))] ->  [(String, Int)]
-convertDatesToAges [(s, (i1, i2, i3))] = [(s, calculateAge(i1, i2, i3))]
+convertDatesToAges [(s, i)] = [(s, calculateAge i)]
+convertDatesToAges ((s, i1):i2:i3) = [(s, calculateAge i1)]
 convertDatesToAges [] = []
 
 -- Exercise 1.4
-getOtherPairValue :: a
-getOtherPairValue = undefined
+getOtherPairValue :: Num a => (String, Int) -> a -> Either (String, Integer) a
+getOtherPairValue (s, i) e = Right 0
 
 -- Exercise 2.3
 fstList :: [(a, b)] -> [a]
