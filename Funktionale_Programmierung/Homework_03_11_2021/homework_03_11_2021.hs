@@ -1,11 +1,14 @@
+import Distribution.Parsec.Newtypes (List)
 ite :: Bool -> a -> a -> a
 ite True x y = x
 ite False x y = y
 
 -- Exercise 1.1
 mergeLists :: [a] -> [b] -> [(a, b)]
-mergeLists l1 l2 = mergeLists (tail l1) (tail l2) 
-mergeLists l1 l2 = [(head l1, head l2)]
+mergeLists [] _ = []
+mergeLists x [] = []
+mergeLists (x:xs) (y:ys) = (x, y) : mergeLists xs ys
+
 
 -- Exercise 1.2
 calculateAge :: (Int, Int, Int) -> Int
@@ -14,7 +17,6 @@ calculateAge (d2, m2, y2)
    | 11 == m2 && 10 >= d2 = 2021 - y2
    | otherwise = 2021 - y2 - 1
 
-
 -- Exercise 1.3
 convertDatesToAges :: [(String, (Int, Int, Int))] ->  [(String, Int)]
 convertDatesToAges [(s, i)] = [(s, calculateAge i)]
@@ -22,16 +24,20 @@ convertDatesToAges ((s, i1):i2:i3) = [(s, calculateAge i1)]
 convertDatesToAges [] = []
 
 -- Exercise 1.4
-getOtherPairValue :: Num a => (String, Int) -> a -> Either (String, Integer) a
-getOtherPairValue (s, i) e = Right 0
+getOtherPairValue :: (String, Integer) -> Either String Integer -> Either String Integer
+getOtherPairValue (s, i) (Left  e) | e == s = Right i
+getOtherPairValue (s, i) (Right e) | e == i = Left s
+getOtherPairValue p      _                  = Left ""
 
 -- Exercise 2.3
 fstList :: [(a, b)] -> [a]
-fstList = undefined
+fstList [] = []
+fstList ((x, elem):rest) = x : fstList rest
 
 -- Exercise 2.4
-lengthSumMax :: Num a => [a] -> (Int, a, a)
-lengthSumMax = undefined
+lengthSumMax :: (Num a, Ord a) => [a] -> (Int, a, a)
+lengthSumMax [] = (0, 0, 0)
+lengthSumMax x = (length x, sum x, maximum x)
 
 -- Tests
 testMergeLists = do
