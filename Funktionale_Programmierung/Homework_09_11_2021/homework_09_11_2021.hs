@@ -54,7 +54,7 @@ sqrtInt n = aux n
 heron :: Double -> [Double]
 heron 0 = [0.0]
 heron 1 = [1.0]
-heron l = (1/2 * (heron (l-1) + (l / heron (l-1))))
+--heron l = (1/2 * (heron (l-1) + (l / heron (l-1))))
 
 
 -- Exercise 3
@@ -70,10 +70,22 @@ fib' 2 = 1
 fib' n = if even n then 2 * fib'  (div n 2 +1) - fib' (div n 2) * fib' (div n 2) else fib' (2 * div n 2)^2 + fib' (div n 2 +1)^2
 
 fibFast :: Integer -> Integer
-fibFast n = undefined
+fibFast n 
+  | n == 0 = 0
+  | n == 1 = 1
+  | otherwise = x 
+  where 
+    (x , lst) = fibFastAux n [(2,1)]
 
 fibFastAux :: Integer -> [(Integer, Integer)] -> (Integer, [(Integer, Integer)])
-fibFastAux = undefined
+fibFastAux n [] = (-1, [])
+fibFastAux n lst@((i, ai) : xs) = case lookup n lst of 
+  Just x -> (x, lst)
+  Nothing -> (cmp n, (cmp n, n) : lst)
+  where 
+    cmp k 
+      | odd k = fibFast (div k 2) ^ 2 + fibFast (div k 2 + 1) ^ 2 
+      | otherwise = (2 * fibFast (div k 2 + 1) - fibFast (div k 2)) * fibFast (div k 2)
 
 
 -- Tests
