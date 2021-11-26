@@ -1,6 +1,14 @@
---import Data.List {- required to use groupBy -}
+import Data.List {- required to use groupBy -}
 
 -- Exercise 1
+
+--div1 :: Fractional a => a -> a -> a
+--div2 :: Fractional a => a -> a
+--div3 :: Fractional a => a -> a
+--eqTuple :: Eq a => (t -> a) -> (t, t) -> Bool
+--eqTuple' :: Eq a => (t -> a) -> (t, t) -> Bool
+
+--
 
 -- Exercise 2
 fan :: (a -> Bool) -> [a] -> [[a]]
