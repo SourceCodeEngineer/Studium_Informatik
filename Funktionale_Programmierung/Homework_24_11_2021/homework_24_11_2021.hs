@@ -13,7 +13,8 @@ import Data.List {- required to use groupBy -}
 -- Exercise 2
 fan :: (a -> Bool) -> [a] -> [[a]]
 -- fan p = groupBy (\x y -> p x == p y)
-fan = undefined
+fan b [] = [[]]
+fan (b) (x : xs) = if b then x : (fan b xs) else [[]]
 
 splitOnNumbers :: String -> [String]
 splitOnNumbers = fan undefined
