@@ -5,7 +5,8 @@ import Data.List -- for the tests
 {- Caesar cipher-}
 
 shift :: Int -> Char -> Char
-shift = undefined
+shift i c 
+  | i > 26 = c + (i % 26) 
 
 encode :: Int -> String -> String
 encode = undefined
