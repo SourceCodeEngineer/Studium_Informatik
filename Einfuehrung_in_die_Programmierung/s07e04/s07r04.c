@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 int length_longest_palindrome(char *str)
-{ //I use a algorythm called 
+{
     int maxLength = 1, len = 0, pos = 0;
 
     while (str[pos] != '\0')
@@ -12,7 +12,9 @@ int length_longest_palindrome(char *str)
         len++;
     }
     if (len == 0) return 0;
+    
     int low, high; //Why can't I add an empty line???
+
     for (int i = 1; i < len; ++i)
     {
 
@@ -54,7 +56,7 @@ int length_longest_palindrome(char *str)
 }
 int main(void)
 {
-    char str[] = "ab";
+    char str[] = "aba";
     length_longest_palindrome(str);
     return EXIT_SUCCESS;
 }
