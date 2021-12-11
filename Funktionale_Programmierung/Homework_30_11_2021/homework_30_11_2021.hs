@@ -24,19 +24,39 @@ percent x y =   100 * ( a / b )
         b = fromIntegral y :: Float
 
 freqs :: String -> [Float]
-freqs = undefined
+--reusing count for number of occurences (char -> string -> int)
+freqs s = helperf (helperc s ['a'..'z']) (length s)
+
+--using last char of the alphabet and match it to the string, then returns it to a list
+helperc :: String -> [Char] -> [Int]
+helperc s = map (`count` s)
+
+--takes the return list from helperc and the len of the string
+helperf :: [Int] -> Int -> [Float]
+helperf is i3 = map (`percent` i3) is
 
 chisqr :: [Float] -> [Float] -> Float
-chisqr = undefined
+chisqr [] _ = 0
+chisqr _ [] = 0
+chisqr (x:xs) (y:ys) = (((x-y) * (x-y)) / y) + chisqr xs ys
 
 rotate :: Int -> [a] -> [a]
-rotate = undefined
+rotate i [] = []
+rotate i p@(x:xs) = taker p i ++ dropper p i
+
+dropper :: [a] -> Int -> [a]
+dropper [] _ = []
+dropper p i = if length p == i then p else dropper (init p) i
+
+taker :: [a] -> Int -> [a]
+taker p i = if length p < i then p else taker (tail p) i
 
 positions :: Eq a => a -> [a] -> [Int]
-positions = undefined
+positions _ [] = []
+positions x p@(y:ys) = undefined 
 
 crack :: String -> String
-crack = undefined
+crack s = undefined
 
 encString = "rkcuovv sc pex"
 
@@ -88,4 +108,3 @@ test name e c = do
   putStr ("*** " ++ name ++ ": ")
   if show c == e then putStrLn "OK"
   else putStrLn ("ERROR; expected '" ++ e ++ "', but found '" ++ show c ++ "'")
-
