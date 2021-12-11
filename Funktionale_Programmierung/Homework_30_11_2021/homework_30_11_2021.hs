@@ -2,23 +2,26 @@ import Data.Char -- useful for Caesar exercise
 import Data.Ratio -- for Bernoulli exercise
 import Data.List -- for the tests
 
-{- Caesar cipher-}
 
+{- Caesar cipher-}
 shift :: Int -> Char -> Char
-shift i c 
-  | i > 26 = c + (i % 26) 
+shift n c
+  | isLower c = chr $ ((ord c - ord 'a' + n) `mod` 26) + ord 'a'
+  | otherwise = c
 
 encode :: Int -> String -> String
-encode = undefined
+encode n = map (shift n)
 
 freqList = [8.2, 1.5, 2.8, 4.3, 13, 2.2, 2, 6.1, 7, 0.15, 0.77, 4, 2.4, 6.7,
             7.5, 1.9, 0.095, 6, 6.3, 9.1, 2.8, 0.98, 2.4, 0.15, 2, 0.074]
 
 count :: Char -> String -> Int
-count = undefined
+count c str = length $ filter (== c) str
 
 percent :: Int -> Int -> Float
-percent = undefined
+percent x y =   100 * ( a / b )
+  where a = fromIntegral x :: Float
+        b = fromIntegral y :: Float
 
 freqs :: String -> [Float]
 freqs = undefined
