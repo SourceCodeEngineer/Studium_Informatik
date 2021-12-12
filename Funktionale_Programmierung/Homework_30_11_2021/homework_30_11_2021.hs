@@ -1,6 +1,8 @@
 import Data.Char -- useful for Caesar exercise
 import Data.Ratio -- for Bernoulli exercise
 import Data.List -- for the tests
+import Data.Ord
+import System.Environment
 
 
 {- Caesar cipher-}
@@ -10,7 +12,7 @@ shift n c
   | otherwise = c
 
 encode :: Int -> String -> String
-encode n = map (shift n)
+encode n cs = [ shift n c | c <- cs ]
 
 freqList = [8.2, 1.5, 2.8, 4.3, 13, 2.2, 2, 6.1, 7, 0.15, 0.77, 4, 2.4, 6.7,
             7.5, 1.9, 0.095, 6, 6.3, 9.1, 2.8, 0.98, 2.4, 0.15, 2, 0.074]
@@ -36,43 +38,41 @@ helperf :: [Int] -> Int -> [Float]
 helperf is i3 = map (`percent` i3) is
 
 chisqr :: [Float] -> [Float] -> Float
-chisqr [] _ = 0
-chisqr _ [] = 0
-chisqr (x:xs) (y:ys) = (((x-y) * (x-y)) / y) + chisqr xs ys
+chisqr os es = sum [((o-e)^2)/e | (o,e) <- zip os es]
 
 rotate :: Int -> [a] -> [a]
-rotate i [] = []
-rotate i p@(x:xs) = taker p i ++ dropper p i
-
-dropper :: [a] -> Int -> [a]
-dropper [] _ = []
-dropper p i = if length p == i then p else dropper (init p) i
-
-taker :: [a] -> Int -> [a]
-taker p i = if length p < i then p else taker (tail p) i
+rotate n xs = drop n xs ++ take n xs
 
 positions :: Eq a => a -> [a] -> [Int]
-positions _ [] = []
-positions x p@(y:ys) = undefined 
+positions x xs = [ i' | (x', i') <- zip xs [0..n], x==x' ]
+                 where n = length xs - 1
 
 crack :: String -> String
-crack s = undefined
+crack cs = encode (factor*(-1)) cs
+           where factor = head (positions (minimum chitab) chitab)
+                 chitab = [ chisqr (rotate n freqlist') freqList | n <- [0..25] ]
+                 freqlist' = freqs cs
+
 
 encString = "rkcuovv sc pex"
 
 {--Bernoulli numbers--}
 
 fact :: Integer -> Integer
-fact = undefined
+fact i = product [1..i]
 
 binom :: Integer -> Integer -> Integer
-binom = undefined
+binom n k = fact n `div` (fact k * fact (n-k))
 
 bernoulli :: Integer -> Rational
-bernoulli = undefined
+bernoulli 0 = 1
+bernoulli n = sum [
+    toRational(binom n k) * bernoulli k / toRational(k - n - 1)
+    | k <- [0..(n-1)]
+  ]
 
 bernoullis :: Integer -> [Rational]
-bernoullis = undefined
+bernoullis n = map bernoulli [0..n]
 
 check1 :: Integer -> Bool
 check1 = undefined
