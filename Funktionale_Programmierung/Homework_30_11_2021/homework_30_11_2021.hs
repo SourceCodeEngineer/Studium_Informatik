@@ -74,15 +74,34 @@ bernoulli n = sum [
 bernoullis :: Integer -> [Rational]
 bernoullis n = map bernoulli [0..n]
 
-check1 :: Integer -> Bool
-check1 = undefined
+check1 :: Integer -> Bool--refac to Bool!
+check1 i = helperc1' (helperc1 [1 .. i]) == (0 % 1)
 
-check2 :: Integer -> Bool
-check2 = undefined
+helperc1 :: [Integer] -> [Integer] --only odd integers!
+helperc1 [] = []
+helperc1 (x:xs) = if odd x && x >= 3 then x : helperc1 xs else helperc1 xs
+
+helperc1' :: [Integer] -> Rational
+helperc1' = foldr ((+) . bernoulli) 0
+
+check2 :: Integer -> Bool --reverse to bool 
+check2 i = (summod4 (helperposmod4 [2 .. i]) < 0) && summod4 (helperposmod2 [2 .. i]) > 0
+
+helperposmod4 :: [Integer] -> [Integer] --only even numbers mod 4
+helperposmod4 [] = []
+helperposmod4 (x:xs) = if even x && ((x `mod` 4) == 0) then x : helperposmod4 xs else helperposmod4 xs
+
+summod4 :: [Integer] -> Rational
+summod4 = foldr ((+) . bernoulli) 0
+
+helperposmod2 :: [Integer] -> [Integer] --even numbers not mod 4
+helperposmod2 [] = []
+helperposmod2 (x:xs) = if even x && (x `mod` 4) /= 0then x : helperposmod4 xs else helperposmod4 xs
 
 {-- Tests  --}
 
 -- The following should print the first eight rows of Pascal's triangle - try it out!
+pascalTriangle :: IO ()
 pascalTriangle = putStrLn $ unlines $ map (\n -> spaces ((m - n) * 2) ++ (intercalate " " $ map (pad 3 . show . binom n) [0..n])) [0..m]
   where m = 8
         spaces n = replicate (fromIntegral n) ' '
