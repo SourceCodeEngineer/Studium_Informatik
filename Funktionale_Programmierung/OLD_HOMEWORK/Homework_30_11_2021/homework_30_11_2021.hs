@@ -54,7 +54,7 @@ crack cs = encode (factor*(-1)) cs
                  freqlist' = freqs cs
 
 
-encString = "rkcuovv sc pex"
+encString = "rkcuovv sc pex" --actually it is a very clean language so yes I agree.
 
 {--Bernoulli numbers--}
 
@@ -74,7 +74,7 @@ bernoulli n = sum [
 bernoullis :: Integer -> [Rational]
 bernoullis n = map bernoulli [0..n]
 
-check1 :: Integer -> Bool--refac to Bool!
+check1 :: Integer -> Bool
 check1 i = helperc1' (helperc1 [1 .. i]) == (0 % 1)
 
 helperc1 :: [Integer] -> [Integer] --only odd integers!
