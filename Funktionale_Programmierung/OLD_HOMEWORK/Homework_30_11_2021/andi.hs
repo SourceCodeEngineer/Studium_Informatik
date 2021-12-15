@@ -5,22 +5,47 @@ import Data.List -- for the tests
 {- Caesar cipher-}
 
 shift :: Int -> Char -> Char
-shift = undefined
+--shifting a character modulo 26 to ensure we stay lowercase
+--if we go over the alphabet (char 'z') we will start at the beginning again.
+shift n c
+  --checking if the given char is lower, if so we can now do the modulo operation and if we should write outside of our parameter, we start again at the beginning
+  | isLower c = chr $ ((ord c - ord 'a' + n) `mod` 26) + ord 'a'
+  --if the given char is NOT lowercase, we do nothing to it and we just return the char as it is.
+  | otherwise = c
 
 encode :: Int -> String -> String
-encode = undefined
+--now we want to encode a string. we know a string is nothing else then a list of chars. so we can do recursion over a list of chars
+encode n cs = [ shift n c | c <- cs ]
 
 freqList = [8.2, 1.5, 2.8, 4.3, 13, 2.2, 2, 6.1, 7, 0.15, 0.77, 4, 2.4, 6.7,
             7.5, 1.9, 0.095, 6, 6.3, 9.1, 2.8, 0.98, 2.4, 0.15, 2, 0.074]
 
 count :: Char -> String -> Int
-count = undefined
+-- returning the number of occurrences of a particular character in a string 
+count c str = length $ filter (== c) str 
+{- we take our character and filter a list 
+of chars (string) to find the given char. 
+lastly we use the prelude function lenghth 
+to give back the int of the given list. -}
 
 percent :: Int -> Int -> Float
-percent = undefined
+--percent is just an easy division as in the school maths with the exception that we recast the type of int to float.
+percent x y =   100 * ( a / b )
+  --recasting type from Int to Float
+  where a = fromIntegral x :: Float
+        b = fromIntegral y :: Float
 
 freqs :: String -> [Float]
-freqs = undefined
+--reusing count for number of occurences (char -> string -> int)
+freqs s = helperf (helperc s ['a'..'z']) (length s)
+
+--using last char of the alphabet and match it to the string, then returns it to a list
+helperc :: String -> [Char] -> [Int]
+helperc s = map (`count` s)
+
+--takes the return list from helperc and the len of the string
+helperf :: [Int] -> Int -> [Float]
+helperf is i3 = map (`percent` i3) is
 
 chisqr :: [Float] -> [Float] -> Float
 chisqr = undefined
