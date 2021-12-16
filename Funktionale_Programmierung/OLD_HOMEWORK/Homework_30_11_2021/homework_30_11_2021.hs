@@ -72,7 +72,10 @@ bernoulli n = sum [
   ]
 
 bernoullis :: Integer -> [Rational]
-bernoullis n = map bernoulli [0..n]
+bernoullis 0 = [1]
+bernoullis n = bs ++ [b]
+  where bs = bernoullis (n-1)
+        b  = sum [bk * (binom n k % (k - n - 1)) | (k, bk) <- zip [0..n] bs]
 
 check1 :: Integer -> Bool
 check1 i = helperc1' (helperc1 [1 .. i]) == (0 % 1)

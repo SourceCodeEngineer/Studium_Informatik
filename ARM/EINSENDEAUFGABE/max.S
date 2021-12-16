@@ -31,5 +31,5 @@ myloop:
 endoffile:
 
     MOV r0, r4             // move MAX in den rückgabewert
-    LDMFD sp!, {r2-r5, pc} // "Sicherung" der Register r2-r5
+    LDMFD sp!, {r2-r5, pc} // "sicherung" der register
     MOV pc, lr             // Rücksprung ("return")
