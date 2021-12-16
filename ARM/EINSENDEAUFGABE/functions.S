@@ -7,15 +7,16 @@ max:
   // Rückgabewert:
   //   r0: Wert des groessten Array-Elements
   // Registerbelegung:
-  //   r2: Adresse des Arrays
-  //   r3: Länge des Arrays
-  //   r4: Momentan Größtes
-  //   r5: derzeitiges Element
+  //   r2: adresse des arrays
+  //   r3: länge des arrays
+  //   r4: momentan größtes element
+  //   r5: derzeitiges element
 
 STMFD sp!, {r2-r5, lr}     // register werden geladen
 MOV r2, r0                 // kopiert die adresse vom array in das register r2
 MOV r3, r1                 // kopieren die länge des arrays in das register r5
 LDR r4, [r2]               // wähle das erste element als startpunkt für den "max" wert
+
 CMP r3, #0                 // vergleicht die länge des arrays mit 0 und setzt die flags automatisch
 BEQ endoffilemax           // wenn eine zero flag gesetzt wurde, wird das file zu endoffilemax springen
 
@@ -43,15 +44,15 @@ min:
   // Rückgabewert:
   //   r0: Wert des kleinsten Array-Elements
   // Registerbelegung:
-  //   r6: Adresse des Arrays
-  //   r7: Länge des Arrays
-  //   r8: Momentan Kleinstes
+  //   r7: länge des arrays
+  //   r8: momentan kleinstes element
   //   r9: derzeitiges Element
 
 STMFD sp!, {r2-r5, lr}     // register werden geladen
 MOV r6, r0                 // move array adresse in register 6
 MOV r7, r1                 // move array länge in register 7
 LDR r8, [r6]               // wähle das erste element als startpunkt für den "min" wert
+
 CMP r7, #0                 // vergleiche r7 mit 0 und die flags werden gesetzt
 BEQ endoffilemin           // wenn zero flag gesetzt, sprung zu endoffilemin
 
@@ -88,6 +89,7 @@ STMFD sp!, {r2-r5, lr}    // register werden geladen
 MOV r2, r0                // move array adresse in register 2
 MOV r3, r1                // move array länge in register 1
 LDR r4, [r2]              // wähle das erste element als startpunkt für den "sum" wert
+
 CMP r3, #0			          // hier wird verglichen ob das register r3 0 ist und flags werden gesetzt
 BEQ endoffilesum
 
@@ -102,5 +104,5 @@ myloopsum:
 endoffilesum:
 
 MOV r0, r4                // move register r4 (unsere sume) in den Rückgabewert
-LDMFD sp!, {r2-r5,pc}     // "Sicherung" der Register r2-r5
+LDMFD sp!, {r2-r5,pc}     // "sicherung" der register
 MOV pc, lr                // Rücksprung ("return")
