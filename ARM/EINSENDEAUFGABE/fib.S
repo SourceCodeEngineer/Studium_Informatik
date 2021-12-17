@@ -1,8 +1,16 @@
 .global fib
 
+// alle kommentare sind in deutsch und in englisch neben den zeilen kommentiert worden für die bessere lesbarkeit des kontrolleurs (und auch damit plagiatsvorwürfe abgelehnt werden können).
+// bitte beachten, dass der einfachkeit halber, alle kommentare in kleinschreibung sind. rechtschreibfehler sind vorbehalten!
+// deutsche version hinzugefügt am 16.12.2021 - englische version hinzugefügt am 18.12.2021
+
+// all comments are in german and then after that in english as well for more readability of the controller of the given tasks.
+// please note that for the sake of simplicity, all comments are in lower case. Spelling mistakes are reserved!
+// german version added on the 16th of dezember 2021 - englisch version added on the 18th of dezember 2021
+
 fib:
   // Rückgabewert:
-  //   r0: wert der fib zahl
+  //   r0: fib zahl zu berechnen
   // Registerbelegung:
   //   r0: rückgabewert
   //   r1: fibonacci zahl von 0

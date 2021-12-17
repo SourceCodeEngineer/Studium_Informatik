@@ -1,5 +1,13 @@
 .global max
 
+// alle kommentare sind in deutsch und in englisch neben den zeilen kommentiert worden für die bessere lesbarkeit des kontrolleurs (und auch damit plagiatsvorwürfe abgelehnt werden können).
+// bitte beachten, dass der einfachkeit halber, alle kommentare in kleinschreibung sind. rechtschreibfehler sind vorbehalten!
+// deutsche version hinzugefügt am 16.12.2021 - englische version hinzugefügt am 18.12.2021
+
+// all comments are in german and then after that in english as well for more readability of the controller of the given tasks.
+// please note that for the sake of simplicity, all comments are in lower case. Spelling mistakes are reserved!
+// german version added on the 16th of dezember 2021 - englisch version added on the 18th of dezember 2021
+
 max:
   // Argumente:
   //   r0: Array Adresse
@@ -22,10 +30,10 @@ BEQ endoffile              // wenn zero flag gesetzt wurde, wird das file zu end
 myloop:
                            // in der schleife wird das aktuelle element mit dem darauf folgenden element verglichen und somit das maximum ermittelt.
     LDR r5, [r2]           // lade das element das jetzt dran ist
-    CMP r4, r5             // schaue ob das nächste Element größer ist als der Vorgänger
+    CMP r4, r5             // schaue ob das nächste element größer ist als der vorgänger
     MOVLT r4, r5           // wenn es größer ist dann wird das element getauscht.
-    ADD r2, r2, #4         // gehe zum nächstem Element des arrays
-    SUBS r3, r3, #1        // subtrahiere 1 von der Länge da wir beim nächsten element sind und setzt die flags
+    ADD r2, r2, #4         // gehe zum nächstem element des arrays
+    SUBS r3, r3, #1        // subtrahiere 1 von der länge da wir beim nächsten element sind und setzt die flags
     BNE myloop
 
 endoffile:
