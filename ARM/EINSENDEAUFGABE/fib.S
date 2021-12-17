@@ -1,10 +1,8 @@
 .global fib
 
 fib:
-  // die idee: wir starten mit der belegung der register, fibonacci von 0 ist 0; fibonacci von 1 = 1;
-
   // Rückgabewert:
-  //   r0: Wert des groessten Array-Elements
+  //   r0: wert der fib zahl
   // Registerbelegung:
   //   r0: rückgabewert
   //   r1: fibonacci zahl von 0
@@ -15,7 +13,7 @@ fib:
   //   r6: unbenützt
   //   r7: unbenützt
 
-STMFD sp!, {r1-r8, lr}     // register werden geladen
+STMFD sp!, {r1-r4, lr}     // register werden geladen
 MOV r1, #0                 // move zahl 0 in das register r1
 MOV r2, #1                 // move zahl 1 in das register r2
 MOV r4, r0                 // kopiere die eingegebene fib zahl von register r0 in register r4
@@ -39,5 +37,5 @@ myfunction:
 endoffile:
 
     MOV   r0, r2           // r0 wird zu r2, da r0 der rückgabewert ist und r2 das Ergebnis der fibonacci folge
-    LDMFD sp!, {r1-r8,pc}  // "sicherung" der register
+    LDMFD sp!, {r1-r4,pc}  // "Sicherung" der Register
     MOV pc, lr
