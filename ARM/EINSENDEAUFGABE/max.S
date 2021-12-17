@@ -1,6 +1,6 @@
 .global max
 
-// alle kommentare sind in deutsch und in englisch neben den zeilen kommentiert worden für die bessere lesbarkeit des kontrolleurs (und auch damit plagiatsvorwürfe abgelehnt werden können).
+// alle kommentare sind in deutsch und in englisch neben den zeilen kommentiert worden für die bessere lesbarkeit des kontrolleurs (und auch damit plagiatsvorwürfe abgewehrt werden können).
 // bitte beachten, dass der einfachkeit halber, alle kommentare in kleinschreibung sind. rechtschreibfehler sind vorbehalten!
 // deutsche version hinzugefügt am 16.12.2021 - englische version hinzugefügt am 18.12.2021
 
