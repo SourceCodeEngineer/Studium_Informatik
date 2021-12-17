@@ -20,7 +20,7 @@ max:
   //   r4: momentan größtes element              //   r4: current greatest element in terms of value
   //   r5: derzeitiges element                   //   r5: current element
 
-STMFD sp!, {r2-r5, lr}     // register werden gesichert                                                 // registers are being saved
+STMFD sp!, {r2 - r5, lr}   // register werden gesichert                                                 // registers are being saved
 MOV r2, r0                 // kopiert die adresse vom array in das register r2                          // copy the address of the array to register r2
 MOV r3, r1                 // kopieren die länge des arrays in das register r5                          // copy the length of the array to register r5
 LDR r4, [r2]               // wähle das erste element als startpunkt für den "max" wert                 // set the first element of the array as my starting point for the max value
@@ -39,6 +39,6 @@ myloopmax:
 
 endoffilemax:
 
-    MOV r0, r4             // move MAX in den rückgabewert           // move MAX in the return value
-    LDMFD sp!, {r2-r5,pc}  // "wiederherstellung" der register r2-r5 // "restore" the registers r2-r5
-    MOV pc, lr             // Rücksprung ("return")                  // return
+    MOV r0, r4               // move MAX in den rückgabewert           // move MAX in the return value
+    LDMFD sp!, {r2 - r5, pc} // "wiederherstellung" der register r2-r5 // "restore" the registers r2-r5
+    MOV pc, lr               // Rücksprung ("return")                  // return

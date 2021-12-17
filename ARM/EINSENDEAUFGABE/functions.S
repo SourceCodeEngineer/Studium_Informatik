@@ -20,7 +20,7 @@ max:
   //   r4: momentan größtes element              //   r4: current greatest element in terms of value
   //   r5: derzeitiges element                   //   r5: current element
 
-STMFD sp!, {r2-r5, lr}     // register werden gesichert                                                 // registers are being saved
+STMFD sp!, {r2 - r5, lr}   // register werden gesichert                                                 // registers are being saved
 MOV r2, r0                 // kopiert die adresse vom array in das register r2                          // copy the address of the array to register r2
 MOV r3, r1                 // kopieren die länge des arrays in das register r5                          // copy the length of the array to register r5
 LDR r4, [r2]               // wähle das erste element als startpunkt für den "max" wert                 // set the first element of the array as my starting point for the max value
@@ -31,17 +31,17 @@ BEQ endoffilemax           // wenn eine zero flag gesetzt wurde, wird das file z
 myloopmax:
                            // in der schleife wird das aktuelle element mit dem darauf folgenden element verglichen und somit das maximum ermittelt. // the current element will be compared to the next element and so we will define the max value in this loop
     LDR r5, [r2]           // lade das element das jetzt dran ist                                                                                    // load the element that will be compared now
-    CMP r4, r5             // schaue ob das nächste element größer ist als der vorgänger                                                             // look if the current element is greater than the element before
-    MOVLT r4, r5           // wenn es größer ist dann wird das element getauscht.                                                                    // if the element is greater, then iw will be swapped
+    CMP r5, r4             // schaue ob das nächste element größer ist als der vorgänger                                                             // look if the current element is greater than the element before
+    MOVGT r4, r5           // wenn es größer ist dann wird das element getauscht.                                                                    // if the element is greater, then iw will be swapped
     ADD r2, r2, #4         // gehe zum nächstem element des arrays                                                                                   // go to the next element of the array
     SUBS r3, r3, #1        // subtrahiere 1 von der länge, da wir beim nächsten element sind und setzt die flags                                     // subtract 1 from the length because we are at the next element and set the flags
     BNE myloopmax
 
 endoffilemax:
 
-    MOV r0, r4             // move MAX in den rückgabewert           // move MAX in the return value
-    LDMFD sp!, {r2-r5,pc}  // "wiederherstellung" der register r2-r5 // "restore" the registers r2-r5
-    MOV pc, lr             // Rücksprung ("return")                  // return
+    MOV r0, r4               // move MAX in den rückgabewert           // move MAX in the return value
+    LDMFD sp!, {r2 - r5, pc} // "wiederherstellung" der register r2-r5 // "restore" the registers r2-r5
+    MOV pc, lr               // Rücksprung ("return")                  // return
 
 .global min
 
@@ -52,32 +52,33 @@ min:
   // Rückgabewert:                           // return value:
   //   r0: Wert des kleinsten Array-Elements //   r0: value of the smallest array element
   // Registerbelegung:                       // register allocation:
-  //   r7: länge des arrays                  //   r7: length of the array
-  //   r8: momentan kleinstes element        //   r8: currently smallest element
-  //   r9: derzeitiges Element               //   r9: current element
+  //   r2: array adresse                     //   r2: address of the array
+  //   r3: länge des arrays                  //   r3: length of the array
+  //   r4: momentan kleinstes element        //   r4: currently smallest element
+  //   r5: derzeitiges Element               //   r5: current element
 
-STMFD sp!, {r2-r5, lr}     // register werden geladen                                   // registers are being loaded
-MOV r6, r0                 // move array adresse in register 6                          // move array address to register r6
-MOV r7, r1                 // move array länge in register 7                            // move array length to register r7
-LDR r8, [r6]               // wähle das erste element als startpunkt für den "min" wert // set the first element of the array as my starting point for the min value
+STMFD sp!, {r2 - r5, lr}   // register werden geladen                                   // registers are being loaded
+MOV r2, r0                 // move array adresse in register 2                          // move array address to register r2
+MOV r3, r1                 // move array länge in register 3                            // move array length to register r3
+LDR r4, [r2]               // wähle das erste element als startpunkt für den "min" wert // set the first element of the array as my starting point for the min value
 
-CMP r7, #0                 // vergleiche register r7 mit 0 und die flags werden gesetzt // compare if register r7 is 0 and set the flags
+CMP r3, #0                 // vergleiche register r3 mit 0 und die flags werden gesetzt // compare if register r3 is 0 and set the flags
 BEQ endoffilemin           // wenn zero flag gesetzt, sprung zu endoffilemin            // if the zero flag is set, jump to endoffilemin
 
 myloopmin:
                            // in der schleife wird das aktuelle element mit dem darauf folgenden element verglichen und somit das minimum ermittelt. // in the loop, the current element is compared with the following element and the minimum is thus determined
-    LDR r9, [r6]           // lade das element das jetzt dran ist                                                                                    // load the element that will be compared now
-    CMP r8, r9             // schaue ob das nächste element kleiner ist als der vorgänger                                                            // see if the next element is smaller than the previous one
-    MOVGT r8, r9           // wenn es kleiner ist dann wird das element getauscht.                                                                   // if it is smaller then the element is exchanged
-    ADD r6, r6, #4         // gehe zum nächstem element des arrays                                                                                   // go to the next element of the array
-    SUBS r7, r7, #1        // subtrahiere 1 von der Länge da wir beim nächsten element sind  und flags setzen                                        // subtract 1 from the length since we are on the next element and set the flags
+    LDR r5, [r2]           // lade das element das jetzt dran ist                                                                                    // load the element that will be compared now
+    CMP r4, r5             // schaue ob das nächste element kleiner ist als der vorgänger                                                            // see if the next element is smaller than the previous one
+    MOVGT r4, r5           // wenn es kleiner ist dann wird das element getauscht.                                                                   // if it is smaller then the element is exchanged
+    ADD r2, r2, #4         // gehe zum nächstem element des arrays                                                                                   // go to the next element of the array
+    SUBS r3, r3, #1        // subtrahiere 1 von der Länge da wir beim nächsten element sind  und flags setzen                                        // subtract 1 from the length since we are on the next element and set the flags
     BNE myloopmin
 
 endoffilemin:
 
-    MOV r0, r8             // move MIN in den rückgabewert           // m ove MIN to the return value register r0
-    LDMFD sp!, {r6-r9,pc}  // "wiederherstellung" der register r6-r9 // restore the registers r6-r9
-    MOV pc, lr             // Rücksprung ("return")                  // return
+    MOV r0, r4               // move MIN in den rückgabewert           // m ove MIN to the return value register r0
+    LDMFD sp!, {r2 - r5, pc} // "wiederherstellung" der register r2-r5 // restore the registers r2-r5
+    MOV pc, lr               // Rücksprung ("return")                  // return
 
 .global sum
 
@@ -93,7 +94,7 @@ sum:
   //   r4: momentane summe bis zum jetzigen element //   r4: current sum up to the current element
   //   r5: derzeitiges element                      //   r5: current element
 
-STMFD sp!, {r2-r5, lr}    // register werden gesichert                                              // registers are saved
+STMFD sp!, {r2 - r5, lr}  // register werden gesichert                                              // registers are saved
 MOV r2, r0                // move array adresse in register r2                                      // move array address to register r2
 MOV r3, r1                // move array länge in register r1                                        // move array length to register r1
 LDR r4, [r2]              // wähle das erste element als startpunkt für den "sum" wert              // set the first element as the starting point for the sum value
@@ -112,5 +113,5 @@ myloopsum:
 endoffilesum:
 
 MOV r0, r4                // move register r4 (unsere sume) in den Rückgabewert // move register r4 (our sum) to the return value
-LDMFD sp!, {r2-r5,pc}     // "wiederherstellung" der register r2-r5             // "restore" the registers r2-r5
+LDMFD sp!, {r2 - r5, pc}  // "wiederherstellung" der register r2-r5             // "restore" the registers r2-r5
 MOV pc, lr                // Rücksprung ("return")                              // return
