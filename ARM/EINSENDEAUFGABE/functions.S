@@ -20,7 +20,7 @@ max:
   //   r4: momentan größtes element              //   r4: current greatest element in terms of value
   //   r5: derzeitiges element                   //   r5: current element
 
-STMFD sp!, {r2-r5, lr}     // register werden geladen                                                   // registers are being loaded
+STMFD sp!, {r2-r5, lr}     // register werden gesichert                                                 // registers are being saved
 MOV r2, r0                 // kopiert die adresse vom array in das register r2                          // copy the address of the array to register r2
 MOV r3, r1                 // kopieren die länge des arrays in das register r5                          // copy the length of the array to register r5
 LDR r4, [r2]               // wähle das erste element als startpunkt für den "max" wert                 // set the first element of the array as my starting point for the max value
@@ -39,9 +39,9 @@ myloopmax:
 
 endoffilemax:
 
-    MOV r0, r4             // move MAX in den rückgabewert   // move MAX in the return value
-    LDMFD sp!, {r2-r5,pc}  // "sicherung" der register r2-r5 // "save" the registers r2-r5
-    MOV pc, lr             // Rücksprung ("return")          // return
+    MOV r0, r4             // move MAX in den rückgabewert           // move MAX in the return value
+    LDMFD sp!, {r2-r5,pc}  // "wiederherstellung" der register r2-r5 // "restore" the registers r2-r5
+    MOV pc, lr             // Rücksprung ("return")                  // return
 
 .global min
 
@@ -75,9 +75,9 @@ myloopmin:
 
 endoffilemin:
 
-    MOV r0, r8             // move MIN in den rückgabewert   // m ove MIN to the return value register r0
-    LDMFD sp!, {r6-r9,pc}  // "sicherung" der register r6-r9 // save the registers r6-r9
-    MOV pc, lr             // Rücksprung ("return")          // return
+    MOV r0, r8             // move MIN in den rückgabewert           // m ove MIN to the return value register r0
+    LDMFD sp!, {r6-r9,pc}  // "wiederherstellung" der register r6-r9 // restore the registers r6-r9
+    MOV pc, lr             // Rücksprung ("return")                  // return
 
 .global sum
 
@@ -93,7 +93,7 @@ sum:
   //   r4: momentane summe bis zum jetzigen element //   r4: current sum up to the current element
   //   r5: derzeitiges element                      //   r5: current element
 
-STMFD sp!, {r2-r5, lr}    // register werden geladen                                                // registers are loaded
+STMFD sp!, {r2-r5, lr}    // register werden gesichert                                              // registers are saved
 MOV r2, r0                // move array adresse in register r2                                      // move array address to register r2
 MOV r3, r1                // move array länge in register r1                                        // move array length to register r1
 LDR r4, [r2]              // wähle das erste element als startpunkt für den "sum" wert              // set the first element as the starting point for the sum value
@@ -112,5 +112,5 @@ myloopsum:
 endoffilesum:
 
 MOV r0, r4                // move register r4 (unsere sume) in den Rückgabewert // move register r4 (our sum) to the return value
-LDMFD sp!, {r2-r5,pc}     // "sicherung" der register r2-r5                     // "save" the registers r2-r5
+LDMFD sp!, {r2-r5,pc}     // "wiederherstellung" der register r2-r5             // "restore" the registers r2-r5
 MOV pc, lr                // Rücksprung ("return")                              // return
