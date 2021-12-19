@@ -22,7 +22,7 @@ max:
 
 STMFD sp!, {r2 - r5, lr}   // register werden gesichert                                                 // registers are being saved
 MOV r2, r0                 // kopiert die adresse vom array in das register r2                          // copy the address of the array to register r2
-MOV r3, r1                 // kopieren die länge des arrays in das register r5                          // copy the length of the array to register r5
+MOV r3, r1                 // kopieren die länge des arrays in das register r3                          // copy the length of the array to register r3
 LDR r4, [r2]               // wähle das erste element als startpunkt für den "max" wert                 // set the first element of the array as my starting point for the max value
 
 CMP r3, #0                 // vergleicht die länge des arrays mit 0 und setzt die flags automatisch     // compares the length of the array with 0 and sets the flags automatically
