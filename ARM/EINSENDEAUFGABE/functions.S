@@ -22,7 +22,7 @@ max:
 
 STMFD sp!, {r2 - r5, lr}   // register werden gesichert                                                 // registers are being saved
 MOV r2, r0                 // kopiert die adresse vom array in das register r2                          // copy the address of the array to register r2
-MOV r3, r1                 // kopieren die länge des arrays in das register r5                          // copy the length of the array to register r5
+MOV r3, r1                 // kopieren die länge des arrays in das register r3                          // copy the length of the array to register r3
 LDR r4, [r2]               // wähle das erste element als startpunkt für den "max" wert                 // set the first element of the array as my starting point for the max value
 
 CMP r3, #0                 // vergleicht die länge des arrays mit 0 und setzt die flags automatisch     // compares the length of the array with 0 and sets the flags automatically
@@ -58,8 +58,8 @@ min:
   //   r5: derzeitiges Element               //   r5: current element
 
 STMFD sp!, {r2 - r5, lr}   // register werden geladen                                   // registers are being loaded
-MOV r2, r0                 // move array adresse in register 2                          // move array address to register r2
-MOV r3, r1                 // move array länge in register 3                            // move array length to register r3
+MOV r2, r0                 // move array adresse in register r2                         // move array address to register r2
+MOV r3, r1                 // move array länge in register r3                           // move array length to register r3
 LDR r4, [r2]               // wähle das erste element als startpunkt für den "min" wert // set the first element of the array as my starting point for the min value
 
 CMP r3, #0                 // vergleiche register r3 mit 0 und die flags werden gesetzt // compare if register r3 is 0 and set the flags
@@ -105,13 +105,13 @@ BEQ endoffilesum
 myloopsum:
                           // die schleife ermittelt den wert von 2 zahlen                                                                  // the loop will return the value of 2 numbers
     ADD r2, r2, #4        // wir haben bereits die summe des 1. elements und können nun zum 2. element gehen                               // we do already have the sum of the 1st element and now we can go to the 2nd element
-    LDR r5, [r2]          // das register r5 wird zum alten element was unsere summe ist                                                   // the register r5 is going to be our placeholder for the current sum
-    ADD r4, r4, r5        // nun addieren wir die alte summe in register r5 und die neue zahl zusammen und speichern das in register r4 ab // now we add register r5 to register r4 as well as the value that is already in register r4
+    LDR r5, [r2]          // das register r5 wird auf das neue elöement gesetzt                                                            // the register r5 is set to the next element
+    ADD r4, r4, r5        // nun addieren wir die alte summe in register r4 und die neue zahl zusammen und speichern das in register r4 ab // now we add register r4 to register r4 as well as the value that is already in register r4
     SUBS r3, r3, #1       // länge des arrays wird um 1 verringert und die flags werden gesetzt                                            // length of the array will be reduced by 1 and the flags will be set
     BNE myloopsum         // wenn die länge 0 ist dann wurden alle elemente aus dem array zusammengezählt.                                 // if the length is 0, then all elements of the array are summed up.
 
 endoffilesum:
 
-MOV r0, r4                // move register r4 (unsere sume) in den Rückgabewert // move register r4 (our sum) to the return value
-LDMFD sp!, {r2 - r5, pc}  // "wiederherstellung" der register r2-r5             // "restore" the registers r2-r5
-MOV pc, lr                // Rücksprung ("return")                              // return
+MOV r0, r4                // move register r4 (unsere summe) in den Rückgabewert // move register r4 (our sum) to the return value
+LDMFD sp!, {r2 - r5, pc}  // "wiederherstellung" der register r2-r5              // "restore" the registers r2-r5
+MOV pc, lr                // Rücksprung ("return")                               // return
