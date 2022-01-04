@@ -10,42 +10,47 @@ typedef struct person {
     unsigned char age;
 } person_t;
 
-void print_person(struct person p){
-    printf("%s %s %d", p.first_name, p.last_name, p.age);
+void print_person(person_t *p){
+    printf("%s %s %d", p->first_name, p->last_name, p->age);
 }
 
-void age_comparator(const void *pa, const void *pb){
-    const int *p1 = pa;
-    const int *p2 = pb;
-    return *p2 - *p1;
-}
-/*
-void first_name_comparator(const void *pa, const void *pb){
-    
+int age_comparator(const void *value1, const void *value2){
+    const person_t *ph1 = value1;
+    const person_t *ph2 = value2;
+    return ph1->age - ph2->age;
 }
 
-void last_name_comparator(const void *pa, const void *pb){
-    
+int first_name_comparator(const void *value1, const void *value2){
+    const person_t *ph1 = value1;
+    const person_t *ph2 = value2;
+    return strcmp(ph1->first_name, ph2->first_name);
 }
 
-void name_comparator(person_t *pa){
-    
+int last_name_comparator(const void *value1, const void *value2){
+    const person_t *ph1 = value1;
+    const person_t *ph2 = value2;
+    return strlen(ph1->last_name) - strlen(ph2->last_name);    
 }
 
-void person_comparator(person_t *pa){
-    
+int name_comparator(const void *value1, const void *value2){
+    const person_t *ph1 = value1;
+    const person_t *ph2 = value2;
+    int cmp = strcmp(ph1->last_name, ph2->last_name);
+
+    if(cmp < 0) return -1;
+    if(cmp > 0) return 1;
+    return first_name_comparator(value1,value2);
 }
-*/
-int main (void){
 
-    int nums[] = {0,7,6,5,8,15};
-    int n = sizeof(nums)/sizeof(int);
-
-    qsort(nums, n, sizeof(int), age_comparator);
-
-    for (int i = 0; i<n; i++){
-        printf(" %d", nums[i]);
-    }
-
-    return EXIT_SUCCESS;
+int person_comparator(const void *value1, const void *value2){
+    int cmp = name_comparator(value1, value2);
+    if (cmp == 0) return age_comparator(value1, value2);
+    return name_comparator(value1, value2);
 }
+
+void sort_persons(person_t *persons, const int num_persons, 
+    int (*comparator)(const void *, const void *)){
+    qsort(persons, num_persons, sizeof(person_t), comparator);
+}
+
+int main (void){return EXIT_SUCCESS;}

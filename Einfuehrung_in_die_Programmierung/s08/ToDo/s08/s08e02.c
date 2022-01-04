@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-void printBinary(int n, int i)
+void printinbinary(int value1, int value2)
 {
-	int k;
-	for (k = i - 1; k >= 0; k--)
+	int i;
+	for (i = value2 - 1; i >= 0; i--)
 	{
 
-		if ((n >> k) & 1)
+		if ((value1 >> i) & 1)
 			printf("1");
 		else
 			printf("0");
@@ -25,14 +25,14 @@ typedef union
 		unsigned int sign : 1;
 
 	} raw;
-} myfloat;
+} myfloatofmyfile;
 
-void printIEEE(myfloat var)
+void printingfunctionforieee(myfloatofmyfile var)
 {
 	printf("   %d  ", var.raw.sign);
-	printBinary(var.raw.exponent, 8);
+	printinbinary(var.raw.exponent, 8);
 	printf("  ");
-	printBinary(var.raw.mantissa, 23);
+	printinbinary(var.raw.mantissa, 23);
 	printf("\n");
 }
 
@@ -54,27 +54,21 @@ int main(int argc, char *argv[])
 	{
 		fprintf(stderr, "ERROR: %s is not a valid float!\n", argv[1]);
 		fprintf(stderr, "Extracted float component: %f\nRemaining: ", v);
-
 		int lr = cp - *(argv + 1), lt = strlen(argv[1]);
-
-		for (int i = 0; i < (lt - lr); i++)
+		for (int l = 0; l < (lt - lr); l++)
 		{
-			putc(*(cp + i), stderr);
+			putc(*(cp + l), stderr);
 		}
 		putc('\n', stderr);
 		return EXIT_FAILURE;
 	}
-
-	myfloat var;
+	myfloatofmyfile var;
 	var.f = d;
 
 	// Get the IEEE floating point representation
 	printf("Number: %f\n", v);
 	printf("Binary representation:\n");
-
-	printIEEE(var);
-
+	printingfunctionforieee(var);
 	printf("sign  exponent                 mantissa");
-
 	return EXIT_SUCCESS;
 }
