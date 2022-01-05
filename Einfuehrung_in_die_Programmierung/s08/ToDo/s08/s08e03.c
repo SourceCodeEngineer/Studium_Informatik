@@ -35,16 +35,16 @@ int last_name_comparator(const void *value1, const void *value2){
 int name_comparator(const void *value1, const void *value2){
     const person_t *ph1 = value1;
     const person_t *ph2 = value2;
-    int cmp = strcmp(ph1->last_name, ph2->last_name);
+    int compare = strcmp(ph1->last_name, ph2->last_name);
 
-    if(cmp < 0) return -1;
-    if(cmp > 0) return 1;
+    if(compare < 0) return -1;
+    if(compare > 0) return 1;
     return first_name_comparator(value1,value2);
 }
 
 int person_comparator(const void *value1, const void *value2){
-    int cmp = name_comparator(value1, value2);
-    if (cmp == 0) return age_comparator(value1, value2);
+    int compare = name_comparator(value1, value2);
+    if (compare == 0) return age_comparator(value1, value2);
     return name_comparator(value1, value2);
 }
 
