@@ -59,6 +59,13 @@ winningRow player [] = False
 winningRow player row = take 4 row == replicate 4 player
   || winningRow player (tail row)
 
+-- 1.3 
+winningDiagonals :: Player -> [[Tile]] -> Bool
+winningDiagonals player field = checkRow 0
+  where 
+    checkRow row = (row <= numRows - 4) && (checkCol row 0 || checkRow (row + 1))
+    checkCol row col = (col <= numCols - 4) && ((checkAux row col (col+) || checkAux row col (numCols - 1 - col - )) || checkCol row (col+1))
+    checkAux row col colPred = [(field !! nr) !! j | x <- [0..3], let nr = numRows - 1 - row - x, let j = colPred x] == replicate 4 player
 transpose ([] : _) = []
 transpose xs = map head xs : transpose (map tail xs)
 
@@ -66,8 +73,6 @@ winningPlayer :: State -> Maybe Player
 winningPlayer (State player rows) =
   let prevPlayer = otherPlayer player
       longRows = rows ++ transpose rows -- ++ diags rows
-    in if any (winningRow prevPlayer) longRows
+    in if any (winningRow prevPlayer) longRows || winningDiagonals prevPlayer rows
       then Just prevPlayer
       else Nothing
-
-
