@@ -33,7 +33,7 @@ narrow n (Node root children) = Node root (help n children) where
   help n children = take n (map (narrow n) children)
 
 mults :: Tree Integer
-mults = undefined
+mults = let multnumber x = Node x (map (\n -> multnumber (x*n)) [2..]) in multnumber 1
 
 -- Tests
 firsts :: Tree a -> [a]
