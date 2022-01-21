@@ -1,12 +1,29 @@
+import Data.List
+
 -- Exercise 1
 merge :: Ord a => [a] -> [a] -> [a]
-merge = undefined
+merge x y = sort (combine x y)
+
+combine :: Ord a => [a] -> [a] -> [a]
+combine x y
+  | null x && not (null y) = y
+  | null y && not (null x) = x
+  | null x && null y = []
+  | elem (head x) (tail x) || elem (head x) (tail y) = combine (tail x) y
+  | elem (head y) (tail x) || elem (head y) (tail y) = combine x (tail y)
+  | head x == head y = head x : combine (tail x) (tail y)
+  | otherwise = head x : head y : combine (tail x) (tail y)
+
+isMember n [] = False
+isMember n (x:xs)
+    | n == x = True
+    | otherwise = isMember n xs
 
 sNumbers :: [Integer]
-sNumbers = undefined 
-        
+sNumbers = undefined
+
 sNum :: Int -> Integer
-sNum = undefined 
+sNum = undefined
 
 
 -- Tests
