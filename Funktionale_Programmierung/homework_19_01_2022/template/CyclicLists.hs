@@ -14,11 +14,6 @@ combine x y
   | head x == head y = head x : combine (tail x) (tail y)
   | otherwise = head x : head y : combine (tail x) (tail y)
 
-isMember n [] = False
-isMember n (x:xs)
-    | n == x = True
-    | otherwise = isMember n xs
-
 sNumbers :: [Integer]
 sNumbers = undefined
 
