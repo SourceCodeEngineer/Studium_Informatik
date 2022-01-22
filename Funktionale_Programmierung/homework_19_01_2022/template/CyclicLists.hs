@@ -2,23 +2,23 @@ import Data.List
 
 -- Exercise 1
 merge :: Ord a => [a] -> [a] -> [a]
-merge x y = sort (combine x y)
-
-combine :: Ord a => [a] -> [a] -> [a]
-combine x y
-  | null x && not (null y) = y
-  | null y && not (null x) = x
-  | null x && null y = []
-  | elem (head x) (tail x) || elem (head x) (tail y) = combine (tail x) y
-  | elem (head y) (tail x) || elem (head y) (tail y) = combine x (tail y)
-  | head x == head y = head x : combine (tail x) (tail y)
-  | otherwise = head x : head y : combine (tail x) (tail y)
+merge [] [] = []
+merge [] y = y
+merge x [] = x
+merge g1@(x:xs) g2@(y:ys)
+  | x > y = y : merge g1 ys
+  | x < y = x : merge g2 xs
+  | x == y = x : merge xs ys
+  | otherwise = error "ERROR"
 
 sNumbers :: [Integer]
-sNumbers = undefined
+sNumbers = 1 : merge t (merge s e) where
+  t = map (3*) sNumbers
+  s = map (7*) sNumbers
+  e = map (11*) sNumbers
 
 sNum :: Int -> Integer
-sNum = undefined
+sNum x = undefined 
 
 
 -- Tests
