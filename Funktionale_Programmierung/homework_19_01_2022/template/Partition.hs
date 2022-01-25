@@ -7,16 +7,16 @@ import Control.Monad (mapM)
 newtype Partition a = Partition [[a]] --The datatype doesn't prevent duplicates, only show does
 
 instance Ord a => Eq (Partition a) where
- a == b = (concat . sort) (toLists a) == (concat . sort) (toLists b)
+  a == b = (concat . sort) (toLists a) == (concat . sort) (toLists b)
 
 --nonDup to erase duplicates of an unsorted list
 nonDup :: Ord a => [a] -> [a]
 nonDup [] = []
 nonDup (x:xs) = x:nonDup(aux x xs) where
- aux _ [] = []
- aux c (d:ds)
-  | c == d = aux c ds
-  | otherwise = d:aux c ds
+  aux _ [] = []
+  aux c (d:ds)
+    | c == d = aux c ds
+    | otherwise = d:aux c ds
 
 -- returns a list of the groups of a partition
 toLists :: Ord a => Partition a -> [[a]]
@@ -30,42 +30,40 @@ pretty = braces . intercalate ", " . map (braces . intercalate ", " . map show) 
 
 discrete :: Ord a => [a] -> Partition a
 discrete a = Partition (aux a) where
- aux [] = []
- aux (x:xs) = [x]:aux xs
+  aux [] = []
+  aux (x:xs) = [x]:aux xs
 
 -- Returns the canonical representative for the given element's group.
 representative :: Ord a => a -> Partition a -> a
 representative a (Partition [])=error "no representative found"
-representative a (Partition (b:bs))
- | a `elem` b = head b
- | otherwise = representative a (Partition bs)
+representative a (Partition (x:xs))
+  | a `elem` x = head x
+  | otherwise = representative a (Partition xs)
 
 -- Determines whether two elements are related
 related :: Ord a => a -> a -> Partition a -> Bool
 related a b (Partition []) = False
-related a b (Partition (c:cs))
- | all (`elem` c) [a,b] = True
- | otherwise = related a b (Partition cs)
+related a b (Partition (x:xs))
+  | all (`elem` x) [a,b] = True
+  | otherwise = related a b (Partition xs)
 
 -- makes two elements related, i.e. joins their groupes
 join :: Ord a => a -> a -> Partition a -> Partition a
-join a b (Partition c)
- | -1==epa || -1==epb = Partition c
- | otherwise = Partition (merge c 0) where
-  merge (x:xs) id
-   | id==epa || id==epb = merge xs (id+1)
-   | otherwise = x:merge xs (id+1)
-  merge [] _ = [(c!!epa) ++ (c!!epb)]
-  epa = elemPos a c
-  epb = elemPos b c
-
-elemPos :: Eq a => a -> [[a]] -> Int
-elemPos a ls = ep a ls 0 where
- ep _ [] _ = -1
- ep a (c:cs) ct
-  | a `elem` c = ct
-  | otherwise = ep a cs (ct+1)
-
+join a b (Partition x)
+  | -1==epa || -1==epb = Partition x
+  | otherwise = Partition (merge x 0) where
+    merge (x:xs) id
+      | id==epa || id==epb = merge xs (id+1)
+      | otherwise = x:merge xs (id+1)
+    merge [] _ = [(x!!epa) ++ (x!!epb)]
+    epa = elemPos a x
+    epb = elemPos b x
+    elemPos :: Eq a => a -> [[a]] -> Int
+    elemPos a ls = ep a ls 0 where
+      ep _ [] _ = -1
+      ep a (x:xs) ct 
+        | a `elem` x = ct
+        | otherwise = ep a xs (ct+1)
 
 -- Testing functions
 -- auxiliary function, ignore this
