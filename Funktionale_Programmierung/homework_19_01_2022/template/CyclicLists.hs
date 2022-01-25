@@ -25,9 +25,9 @@ sNum i = let
     | mod x 7 == 0 = isS (div x 7)
     | mod x 11 == 0 = isS (div x 11)
     | otherwise = False 
-  nextNum x = if isS x then x else nextNum (x+1)
+  nextNum x = if isS x then x else nextNum (x+2)
   numRec 0 x = x
-  numRec n x = numRec (n-1) (nextNum (x+1))
+  numRec n x = numRec (n-1) (nextNum (x+2))
   in numRec i 1
 
 

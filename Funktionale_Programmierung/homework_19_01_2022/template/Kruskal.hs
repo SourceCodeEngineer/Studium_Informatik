@@ -42,13 +42,12 @@ testResult3 :: [Edge]
 testResult3 = [Edge 1 10 6,Edge 4 12 3,Edge 2 14 7,Edge 2 16 3,Edge 5 22 4,Edge 5 25 6]
 
 
-runTests = 
+runTests =
   do putStrLn "Testing Kruskal on graphs..."
      if null zs then
        putStrLn "No mistakes found."
      else do
-       mapM (\(i, g, corr, res) -> putStrLn $ "Graph " ++ show i ++ " results in edge list \n  " ++ show res ++ "\nbut should be \n  " ++ show corr ++ "\n") zs
-       return ()
+       mapM_ (\(i, g, corr, res) -> putStrLn $ "Graph " ++ show i ++ " results in edge list \n  " ++ show res ++ "\nbut should be \n  " ++ show corr ++ "\n") zs
   where ys = [(testGraph1, testResult1), (testGraph2, testResult2), (testGraph3, testResult3)]
         zs = [(i, g, corr, res) | (i, (g, corr)) <- zip [1..] ys, let res = kruskal g, corr /= res]
 
