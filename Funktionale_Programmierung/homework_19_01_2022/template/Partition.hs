@@ -4,15 +4,15 @@ import Prelude hiding (lookup)
 import Data.List (sort, intercalate)
 import Control.Monad (mapM)
 
-newtype Partition a = Partition [[a]] --The datatype doesn't prevent duplicates, only show does
+newtype Partition a = Partition [[a]] --The datatype doesn't prevent duplicates
 
 instance Ord a => Eq (Partition a) where
   a == b = (concat . sort) (toLists a) == (concat . sort) (toLists b)
 
 --nonDup to erase duplicates of an unsorted list
-nonDup :: Ord a => [a] -> [a]
-nonDup [] = []
-nonDup (x:xs) = x:nonDup(aux x xs) where
+nonDuplicate :: Ord a => [a] -> [a]
+nonDuplicate [] = []
+nonDuplicate (x:xs) = x:nonDuplicate(aux x xs) where
   aux _ [] = []
   aux c (d:ds)
     | c == d = aux c ds
@@ -20,7 +20,7 @@ nonDup (x:xs) = x:nonDup(aux x xs) where
 
 -- returns a list of the groups of a partition
 toLists :: Ord a => Partition a -> [[a]]
-toLists (Partition a) = nonDup $ map (nonDup . sort) a
+toLists (Partition a) = nonDuplicate $ map (nonDuplicate . sort) a
 
 pretty :: (Show a, Ord a) => Partition a -> String
 pretty = braces . intercalate ", " . map (braces . intercalate ", " . map show) . sort . map sort . toLists
@@ -47,7 +47,7 @@ related a b (Partition (x:xs))
   | all (`elem` x) [a,b] = True
   | otherwise = related a b (Partition xs)
 
--- makes two elements related, i.e. joins their groupes
+-- makes two elements related -> joins their groupes
 join :: Ord a => a -> a -> Partition a -> Partition a
 join a b (Partition x)
   | -1==epa || -1==epb = Partition x
@@ -58,7 +58,7 @@ join a b (Partition x)
     merge [] _ = [(x!!epa) ++ (x!!epb)]
     epa = elemPos a x
     epb = elemPos b x
-    elemPos :: Eq a => a -> [[a]] -> Int
+    elemPos :: Eq a => a -> [[a]] -> Int --in function because of the where block in line 54
     elemPos a ls = ep a ls 0 where
       ep _ [] _ = -1
       ep a (x:xs) ct 
