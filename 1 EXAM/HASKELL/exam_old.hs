@@ -87,3 +87,5 @@ isIsogram str = isCaseSensitiveIsogram (map tL str)
 
 tL :: Char -> Char
 tL x = if (x >= 'A') && (x <= 'Z') then toEnum(fromEnum x+32) else x
+
+--x = foldr (a -> b -> b) b (t a)

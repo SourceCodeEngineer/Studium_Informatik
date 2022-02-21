@@ -3,9 +3,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 int foo(char *x, char *y){
     return (x[0] == y[1]) ? -10 : 20;
+}
+
+bool isPalindrome(int n){
+    int r,temp = n;  
+    unsigned long long sum=0;
+    while(n>0)    
+    {    
+        r=n%10;    
+        sum=(sum*10)+r;    
+        n=n/10;    
+    }   
+    if(temp==sum){return true;}
+    return false;
 }
 
 int main (void){
@@ -27,7 +41,8 @@ int main (void){
     char ***pppb = &ppb;
 
     int result = foo(**pppa, **pppb);
-
+    bool x = isPalindrome(-112211);
+    printf("%d", x);
 
     printf("Adresse vom Pointer pa: %p\n", &pa);
     printf("Pointer ppa zeigt auf: %p\n", pa);
