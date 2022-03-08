@@ -41,6 +41,9 @@ applyNtimes :: (Num n, Ord n) => n -> (a -> a) -> a -> a
 applyNtimes 1 f x = f x
 applyNtimes n f x = f (applyNtimes (n-1) f x)
 
+mul :: Num a => a -> a
+mul x = x * 2
+
 -- Quicksort Sortier Algorythmus
 quicksort1 :: (Ord a) => [a] -> [a]
 quicksort1 [] = []

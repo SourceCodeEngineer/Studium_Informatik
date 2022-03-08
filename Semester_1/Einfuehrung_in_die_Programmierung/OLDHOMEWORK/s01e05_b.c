@@ -2,6 +2,8 @@
 #include <stdlib.h>
 
 int main(void) {
-    printf("Hello World\n");
+    while(!0){
+        printf("1");
+    }
     return EXIT_SUCCESS;
 }
