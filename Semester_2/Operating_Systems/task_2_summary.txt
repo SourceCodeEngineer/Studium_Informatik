@@ -1,0 +1,43 @@
+connection to the zid gpl is easy. open a terminal and type in ssh with your c number and if it 
+askes you for a fingerprint type "yes". After that you just need to enter your password and then 
+you landed in your home directory.
+
+pwd is a linux comand that stands for print working directory and, as the name already states, 
+it prints the path that you are currently in onto the terminal window.
+
+ls lists all objects in that directory excluding hidden objects (-a)
+
+cd stands for change directory and lets you change to another directory 
+
+creating files is made with the touch command and for creating a directory, yo can use the command mkdir
+
+type into your termina nano and an editor I'm currently writing this summary in will pop up.
+
+For getting help you do have a variety of choices:
+
+man stands for manual and if you don't know where to start, start by reading the man page of the function / command
+
+help is for shell build ins
+
+info is used when you want more information then the man page provides
+
+apropos is a quick search for man pages
+
+or if yu know the command and just want specific parameters, you can write the command and append --help to it
+
+then in the man intro page is a quick overview of all the most used commands 
+
+the overview of the man man-page sections is as follows:
+1 User commands
+2 System Calls
+3 Library Calls
+4 Special files (devices)
+5 File formats and configuration files
+6 Games
+7 Overview, conventions, and miscellaneous
+8 System management commands
+
+the difference between man printf and man 3 printf is, that the man 3 printf is much more detailed
+
+
+
