@@ -6,6 +6,95 @@ void printUsage(const char* programName) {
 	printf("usage: %s <width> <height> <density> <steps>\n", programName);
 }
 
+int countLiveNeighborCells(short array[], short width, short height, int position){
+        int i = position;
+        int count = 0;
+        if (i == 0) {
+            //logic for upper left corner
+            //3 neighbors
+            count += array[i+1];
+            count += array[i+width];
+            count += array[i+width+1];
+            return count;
+        }
+        else if(i == width-1){
+            //logic for upper right corner
+            //3 neighbors
+            count += array[i-1];
+            count += array[i+height];
+            count += array[i+height-1];
+            return count;
+        }
+        else if(i == width * height){
+            //logic for lower right corner
+            //3 neighbors
+            count += array[i-1];
+            count += array[i-height];
+            count += array[i-height-1];
+            return count;
+        }
+        else if(i == (width * height) - (width-1)){
+            //logic for lower left corner
+            //3 neighbors
+            count += array[i+1];
+            count += array[i-height];
+            count += array[i-height+1];
+            return count;
+        }
+        else if(i < width-1 && i > 0){
+            //logic for the first row
+            //5 neighbors
+            count += array[i+1];
+            count += array[i-1];
+            count += array[i+width];
+            count += array[i+width+1];
+            count += array[i+width-1];
+            return count;
+        }
+        else if(i < height * width-1 && i > (height * width)-(width-1)){
+            //logic for lower row
+            //5 neighbors
+            count += array[i+1];
+            count += array[i-1];
+            count += array[i-width];
+            count += array[i-width+1];
+            count += array[i-width-1];
+            return count;
+        }
+        else if (i > 0 && (i % (height+1)) == 0 && i < (height * width)-(width-1)){
+            //logic for the left column
+            //5 neighbors
+            count += array[i+1];
+            count += array[i-width];
+            count += array[i-width+1];
+            count += array[i+width];
+            count += array[i+width+1];
+            return count;
+        }
+        else if (i > width + 1 && i < height * width-2 && (i + 1) % width == 0){
+            //logic for right column
+            //5 neighbors
+            count += array[i-1];
+            count += array[i-width];
+            count += array[i-width-1];
+            count += array[i+width];
+            count += array[i+width-1];
+            return count;
+        }
+        else {
+            //otherwise it has 8 neighbors, yay
+            count += array[i+1];
+            count += array[i-1];
+            count += array[i-width];
+            count += array[i+width];
+            count += array[i-width-1];
+            count += array[i+width+1];
+            count += array[i-width+1];
+            count += array[i+width-1];
+            return count;
+        }
+    }
+
 void printPBM(short arr[], int height, int width){
     // todo -> implement output function for ǘariable name that changes over time
     FILE* pgmimg;
@@ -23,7 +112,7 @@ void printPBM(short arr[], int height, int width){
 
         // i + 1 beacsue of indexing
         if (((i+1) % width) == 0){
-            fprintf(pgmimg, " \n");
+            fprintf(pgmimg, "\n");
         }
     }
 
@@ -36,8 +125,8 @@ void nextGeneration(int counter, short arr1[],short arr2[], int height, int widt
     if (counter % 2 == 1){
         for (int i = 0; i < height * width; ++i){
             // update cell status
-            int neighborcell = countLiveNeighborCells(arr1, width, height);
-            if (arr1[i] == 1 && neighborcell < 2 || neighborcell > 3) {
+            int neighborcell = countLiveNeighborCells(arr1, width, height, i);
+            if (((arr1[i] == 1) && (neighborcell < 2)) || (neighborcell > 3)) {
                 arr2[i] = 0;
             }
             else {
@@ -55,8 +144,8 @@ void nextGeneration(int counter, short arr1[],short arr2[], int height, int widt
     if (counter % 2 == 0){
         for (int i = 0; i < height * width; ++i){
             // update cell status
-            int neighborcell = countLiveNeighborCells(arr2, width, height);
-            if (arr2[i] == 1 && neighborcell < 2 || neighborcell > 3) {
+            int neighborcell = countLiveNeighborCells(arr2, width, height, i);
+            if (((arr2[i] == 1) && (neighborcell < 2)) || (neighborcell > 3)) {
                 arr1[i] = 0;
             }
             else {
@@ -72,13 +161,6 @@ void nextGeneration(int counter, short arr1[],short arr2[], int height, int widt
     }
 }
 
-int countLiveNeighborCells(short array[], short row, short col){
-
-    // todo -> implement excception cases for all cells in 1d array
-
-    // returns the live neighbors
-    return -1;
-}
 
 int main(int argc, char* argv[]) {
 	if(argc != 5) {
@@ -115,8 +197,12 @@ int main(int argc, char* argv[]) {
     int counter = 1;
 
     for (int i = 0; i < steps; ++i){
-        if(counter % 2 == 1) printPBM(arr1 ,height, width);
-        if(counter % 2 == 0) printPBM(arr2 ,height, width);
+        if(counter % 2 == 1) {
+            printPBM(arr1 ,height, width);
+            }
+        else {
+            printPBM(arr2 ,height, width);
+        }
         
         nextGeneration(counter, arr1, arr2, height, width);
         ++counter;
