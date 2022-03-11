@@ -7,6 +7,7 @@ void printUsage(const char* programName) {
 }
 
 void printPBM(short arr[], int height, int width){
+    // todo -> implement output function for ǘariable name that changes over time
     FILE* pgmimg;
     pgmimg = fopen("gol_.pbm", "wb");
   
@@ -30,15 +31,50 @@ void printPBM(short arr[], int height, int width){
     fclose(pgmimg);
 }
 
-void nextGeneration(counter, arr1, arr2, height, width){
+void nextGeneration(int counter, short arr1[],short arr2[], int height, int width){
     // if counter uneven, then copy arr1 to arr2 and update cell status
-
+    if (counter % 2 == 1){
+        for (int i = 0; i < height * width; ++i){
+            // update cell status
+            int neighborcell = countLiveNeighborCells(arr1, width, height);
+            if (arr1[i] == 1 && neighborcell < 2 || neighborcell > 3) {
+                arr2[i] = 0;
+            }
+            else {
+                arr2[i]=1;
+            }
+            if (arr1[i] == 0 && neighborcell > 3){
+                arr2[i] = 1;
+            }
+            else{
+                arr2[i] = 0;
+            }
+        }
+    }
     // if counter even, then copy arr2 to arr1 and update cell status
+    if (counter % 2 == 0){
+        for (int i = 0; i < height * width; ++i){
+            // update cell status
+            int neighborcell = countLiveNeighborCells(arr2, width, height);
+            if (arr2[i] == 1 && neighborcell < 2 || neighborcell > 3) {
+                arr1[i] = 0;
+            }
+            else {
+                arr1[i]=1;
+            }
+            if (arr2[i] == 0 && neighborcell > 3){
+                arr1[i] = 1;
+            }
+            else{
+                arr1[i] = 0;
+            }
+        }
+    }
 }
 
-int count_live_neighbour_cell(short array[], short row, short col){
+int countLiveNeighborCells(short array[], short row, short col){
 
-    
+    // todo -> implement excception cases for all cells in 1d array
 
     // returns the live neighbors
     return -1;
@@ -69,7 +105,7 @@ int main(int argc, char* argv[]) {
 
     // dynamically allocate array
     short* arr1 = malloc(height * width * sizeof(short));
-    short* arr2 = malloc(sizeof(short));
+    short* arr2 = malloc(height * width * sizeof(short));
 
     // filling the array for the first time
     for(int i = 0; i < width * height; ++i){
