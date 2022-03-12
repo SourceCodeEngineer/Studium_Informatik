@@ -22,91 +22,61 @@ int countLiveNeighborCells(short array[], short width, short height, int positio
     {
         // logic for upper right corner
         // 3 neighbors
-        count += array[i - 1];
-        count += array[i + height];
-        count += array[i + height - 1];
+        count = array[i - 1] + array[i + height] + array[i + height - 1];
         return count;
     }
     else if (i == ((width * height) - 1))
     {
         // logic for lower right corner
         // 3 neighbors
-        count += array[i - 1];
-        count += array[i - height];
-        count += array[i - height - 1];
+        count = array[i - 1] + array[i - height] + array[i - height - 1];
         return count;
     }
     else if (i == ((width * height) - (width)))
     {
         // logic for lower left corner
         // 3 neighbors
-        count += array[i + 1];
-        count += array[i - height];
-        count += array[i - height + 1];
+        count = array[i + 1] + array[i - height] + array[i - height + 1];
         return count;
     }
     else if (i < width - 1 && i > 0)
     {
         // logic for the first row
         // 5 neighbors
-        count += array[i + 1];
-        count += array[i - 1];
-        count += array[i + width];
-        count += array[i + width + 1];
-        count += array[i + width - 1];
+        count = array[i + 1] + array[i - 1] + array[i + width] + array[i + width + 1] + array[i + width - 1];
         return count;
     }
     else if (i < ((height * width) - 1) && i > ((height * width) - (width)))
     {
         // logic for lower row
         // 5 neighbors
-        count += array[i + 1];
-        count += array[i - 1];
-        count += array[i - width];
-        count += array[i - width + 1];
-        count += array[i - width - 1];
+        count = array[i + 1] + array[i - 1] + array[i - width] + array[i - width + 1] + array[i - width - 1];
         return count;
     }
     else if ((i > 0) && ((i % (width)) == 0) && i < ((height * width) - (width - 1)))
     {
         // logic for the left column
         // 5 neighbors
-        count += array[i + 1];
-        count += array[i - width];
-        count += array[i - width + 1];
-        count += array[i + width];
-        count += array[i + width + 1];
+        count = array[i + 1] + array[i - width] + array[i - width + 1] + array[i + width] + array[i + width + 1];
         return count;
     }
     else if (i > width + 1 && i < height * width - 2 && (i + 1) % width == 0)
     {
         // logic for right column
         // 5 neighbors
-        count += array[i - 1];
-        count += array[i - width];
-        count += array[i - width - 1];
-        count += array[i + width];
-        count += array[i + width - 1];
+        count = array[i - 1] + array[i - width] + array[i - width - 1] + array[i + width] + array[i + width - 1];
         return count;
     }
     else
     {
         // otherwise it has 8 neighbors, yay
-        count += array[i + 1];
-        count += array[i - 1];
-        count += array[i - width];
-        count += array[i + width];
-        count += array[i - width - 1];
-        count += array[i + width + 1];
-        count += array[i - width + 1];
-        count += array[i + width - 1];
+        count = array[i + 1] + array[i - 1] + array[i - width] + array[i + width] + array[i - width - 1] + array[i + width + 1] + array[i - width + 1] + array[i + width - 1];
         return count;
     }
 }
 
 void printPBM(short arr[], int height, int width, int variable)
 {
-    // todo -> implement output function for ǘariable name that changes over time
     FILE *pgmimg;
     char filename[15];
     snprintf(filename, 14, "gol_%05d.pbm", variable);
@@ -129,7 +99,7 @@ void printPBM(short arr[], int height, int width, int variable)
             fprintf(pgmimg, "\n");
         }
     }
-
+    
     // closing the file
     fclose(pgmimg);
 }
