@@ -6,6 +6,20 @@ void printUsage(const char *programName)
 {
     printf("usage: %s <width> <height> <density> <steps>\n", programName);
 }
+void reverseArray(short array[], int width, int height)
+{
+    for (int i = 0; i < (width * height); i++)
+    {
+        if (array[i] == 1)
+        {
+            array[i] = 0;
+        }
+        else
+        {
+            array[i] = 1;
+        }
+    }
+}
 
 int countLiveNeighborCells(short array[], short width, short height, int position)
 {
@@ -99,7 +113,7 @@ void printPBM(short arr[], int height, int width, int variable)
             fprintf(pgmimg, "\n");
         }
     }
-    
+
     // closing the file
     fclose(pgmimg);
 }
@@ -204,11 +218,15 @@ int main(int argc, char *argv[])
 
         if (counter % 2 == 1)
         {
+            reverseArray(arr1, width, height);
             printPBM(arr1, height, width, i);
+            reverseArray(arr1, width, height);
         }
         else
         {
+            reverseArray(arr2, width, height);
             printPBM(arr2, height, width, i);
+            reverseArray(arr2, width, height);
         }
         nextGeneration(counter, arr1, arr2, height, width);
         ++counter;
