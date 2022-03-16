@@ -1,0 +1,82 @@
+a)
+Expression: 5 * 7 / 3
+Result: 11
+Type: int
+Reason: abgerundet
+
+
+b)
+Expression: 1 << 8 % 3
+Result:
+Type:
+Reason:
+
+
+c)
+Expression: (short) Integer.MAX_VALUE
+Result:
+Type:
+Reason:
+
+
+d)
+Expression: 23 / (double) 11
+Result:
+Type:
+Reason:
+
+
+e)
+Expression: (double) (23/11)
+Result:
+Type:
+Reason:
+
+
+f)
+Expression: 42f
+Result:
+Type:
+Reason:
+
+
+g)
+Expression: 4e3D
+Result:
+Type:
+Reason:
+
+
+h)
+Expression: 0.1f == 0.1
+Result:
+Type:
+Reason:
+
+
+i)
+Expression: "Peter=Coffee+" + 'chocolate' + 2.0
+Result:
+Type:
+Reason:
+
+
+j)
+Expression: "Peter=Coffee+" + "chocolate" + 2.0
+Result:
+Type:
+Reason:
+
+
+k)
+Expression: 1 == 24 % 3 && 4 > 7 || true
+Result:
+Type:
+Reason:
+
+
+l)
+Expression: 1 == 24 % 3 ? 4 : 7
+Result:
+Type:
+Reason:

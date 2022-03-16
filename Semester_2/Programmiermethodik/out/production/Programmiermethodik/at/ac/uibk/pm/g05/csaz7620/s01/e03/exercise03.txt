@@ -1,0 +1,5 @@
+c:
+
+i) It is possible, because we give different arguments
+ii) No it is not possible
+iii) in the first times two the values don't change because we don't pass in the array "pointer", in the second method we give it the array "pointer" and then we overwrite the array.
