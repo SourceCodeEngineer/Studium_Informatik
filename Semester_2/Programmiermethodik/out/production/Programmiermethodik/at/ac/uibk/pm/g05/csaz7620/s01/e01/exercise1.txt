@@ -2,77 +2,77 @@ a)
 Expression: 5 * 7 / 3
 Result: 11
 Type: int
-Reason: abgerundet
+Reason: first we multiply then we divide, and then we round down
 
 
 b)
 Expression: 1 << 8 % 3
-Result:
-Type:
-Reason:
+Result: 4
+Type: int
+Reason: Modulo is higher precedence
 
 
 c)
 Expression: (short) Integer.MAX_VALUE
-Result:
-Type:
-Reason:
+Result: -1
+Type: short
+Reason: overflow
 
 
 d)
 Expression: 23 / (double) 11
-Result:
-Type:
-Reason:
+Result: 2.090909090909091
+Type: double
+Reason: cast of double
 
 
 e)
 Expression: (double) (23/11)
-Result:
-Type:
-Reason:
+Result: 2.0
+Type: double
+Reason: cast to double
 
 
 f)
 Expression: 42f
-Result:
-Type:
-Reason:
+Result: 42.0
+Type: float
+Reason: cast to float with "f" at the end of the number
 
 
 g)
 Expression: 4e3D
-Result:
-Type:
-Reason:
+Result: 4000
+Type: double
+Reason: cast to double with "D" at the end of the number
 
 
 h)
 Expression: 0.1f == 0.1
-Result:
-Type:
-Reason:
+Result: false
+Type: boolean
+Reason: == is an operator that returns a bool, in that case it is false because of double != float comparison
 
 
 i)
 Expression: "Peter=Coffee+" + 'chocolate' + 2.0
-Result:
-Type:
-Reason:
+Result: error
+Type: none
+Reason: '' is used for a single char not a String!
 
 
 j)
 Expression: "Peter=Coffee+" + "chocolate" + 2.0
-Result:
-Type:
-Reason:
+Result: Peter=Coffee+chocolate2.0
+Type: String
+Reason: 2.0 is cast to a String and appended at the end
 
 
 k)
 Expression: 1 == 24 % 3 && 4 > 7 || true
-Result:
-Type:
-Reason:
+Result: true
+Type: boolean
+Reason: because of the || operator
 
 
 l)
