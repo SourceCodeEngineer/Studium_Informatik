@@ -1,0 +1,3 @@
+Difference between ; && || in the shell
+
+executable true in usr/bin run via shell:
