@@ -8,7 +8,7 @@ void printUsage(const char *programName)
 }
 void reverseArray(short array[], int width, int height)
 {
-    for (int i = 0; i < (width * height); i++)
+    for (int i = 0; i < (width * height); ++i)
     {
         if (array[i] == 1)
         {
