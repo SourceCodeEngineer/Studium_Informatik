@@ -1,0 +1,5 @@
+What difference do you notice between SIGTERM and SIGKILL?
+    The SIGTERM signal is a generic signal used to cause program termination. Unlike SIGKILL , this signal can be blocked, handled, and ignored
+
+What happens when you press CTRL + c while the program is running?
+    The program won't stop!
