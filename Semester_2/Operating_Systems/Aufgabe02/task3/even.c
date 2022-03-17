@@ -15,11 +15,16 @@ int checkForMinus(char argv[])
     return 0;
 }
 
-int checkForChar(char array[], int length){
-    for (int i = 0; i < length; ++i){
-        if((array[i] > 47 && array[i] < 58)){
+int checkForChar(char array[], int length)
+{
+    for (int i = 0; i < length; ++i)
+    {
+        if ((array[i] > 47 && array[i] < 58))
+        {
             continue;
-        }else{
+        }
+        else
+        {
             return 1;
         }
     }
@@ -47,7 +52,8 @@ int main(int argc, char *argv[])
 
             int checkedForChar = checkForChar(array, stringLen);
 
-            if (checkedForChar == 1){
+            if (checkedForChar == 1)
+            {
                 return 3;
             }
 
@@ -64,14 +70,15 @@ int main(int argc, char *argv[])
         }
         else
         {
-            // check if a char is in the string 
+            // check if a char is in the string
             int stringLen = strlen(argv[1]);
             char array[stringLen];
             strcpy(array, argv[1]);
 
             int checkedForChar = checkForChar(array, stringLen);
 
-            if (checkedForChar == 1){
+            if (checkedForChar == 1)
+            {
                 return 3;
             }
 
