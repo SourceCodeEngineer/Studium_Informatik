@@ -1,0 +1,2 @@
+you can set env variables by typing export VAR="Linus Torvalds" into the shell as an example
+

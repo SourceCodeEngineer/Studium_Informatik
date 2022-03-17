@@ -1,5 +1,7 @@
 CFLAGS = -Wall -Wextra
 
+all: even
+
 even: even.o
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
