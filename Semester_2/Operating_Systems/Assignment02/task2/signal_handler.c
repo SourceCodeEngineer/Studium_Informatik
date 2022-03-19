@@ -26,10 +26,22 @@ int main(){
     sa.sa_handler = &handlerSIGINT;
     sa.sa_flags = SA_RESTART;
 
+    struct sigaction sb;
+    sb.sa_handler = &handlerSIGUSR1;
+    sb.sa_flags = SA_RESTART;
+
+    struct sigaction sc;
+    sc.sa_handler = &handlerSIGTERM;
+    sc.sa_flags = SA_RESTART;
+
+    struct sigaction sd;
+    sd.sa_handler = &handlerSIGKILL;
+    sd.sa_flags = SA_RESTART;
+
     sigaction(SIGINT, &sa, NULL);
-    sigaction(SIGUSR1, &sa, NULL);
-    sigaction(SIGTERM, &sa, NULL);
-    sigaction(SIGKILL, &sa, NULL);
+    sigaction(SIGUSR1, &sb, NULL);
+    sigaction(SIGTERM, &sc, NULL);
+    sigaction(SIGKILL, &sd, NULL);
 
     while(1){
         usleep(1000000);
