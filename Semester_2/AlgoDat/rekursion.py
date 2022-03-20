@@ -1,6 +1,3 @@
-import re
-
-
 def pow(a, b):
     if (b == 0):
         return a
