@@ -1,0 +1,12 @@
+Experiment with different values for N and S. Analyze the obtained output. 
+Is the order of the messages consistent? Can the order of these messages 
+be predicted? What does it depend on?
+
+    No it can't because the sceduler decides what comes next.
+
+seed the random number generator using srand(getpid()). 
+Does it matter whether you do this before or after the call 
+to fork()? Explain your answer.
+    Yes it does matter, because otherwise you will get the same seed. 
+    PPID is the same until the process is finished and child PID changes for every child.
+
