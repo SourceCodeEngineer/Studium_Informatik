@@ -1,0 +1,20 @@
+#!/bin/bash
+even=0;
+odd=0;
+for number in "$@" 
+do
+    ./even $number;
+    i=$?;
+    if [[ i -eq 0 ]]
+    then
+        even=$(($even + $number))
+    elif [[ i -eq 1 ]]
+    then
+        odd=$(($odd + $number))
+    else
+        break;
+    fi
+done
+
+echo "sum of even numbers: " $even
+echo "sum of odd numbers:  " $odd
