@@ -1,6 +1,8 @@
 #!/bin/bash
+
 even=0;
 odd=0;
+
 for number in "$@" 
 do
     ./even $number;
@@ -12,9 +14,15 @@ do
     then
         odd=$(($odd + $number))
     else
+        j=1;
         break;
     fi
 done
 
+if [[ j -eq 1 ]]
+then
+    echo "Atleast 1 argument was not a number!"
+else    
 echo "sum of even numbers: " $even
 echo "sum of odd numbers:  " $odd
+fi
