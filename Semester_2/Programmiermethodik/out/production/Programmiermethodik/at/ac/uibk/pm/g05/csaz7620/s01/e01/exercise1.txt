@@ -9,7 +9,7 @@ b)
 Expression: 1 << 8 % 3
 Result: 4
 Type: int
-Reason: Modulo is higher precedence
+Reason: modulo is higher precedence
 
 
 c)
@@ -77,6 +77,6 @@ Reason: because of the || operator
 
 l)
 Expression: 1 == 24 % 3 ? 4 : 7
-Result:
-Type:
-Reason:
+Result: 7
+Type: int
+Reason: it is evaluated to false and therefore 7 is selected
