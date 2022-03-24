@@ -1,1 +1,9 @@
 SUCCESS! The secret you've unlocked is: 264680f1. Please provide it in your solution.txt.
+
+Summary:
+    read a lot about strace!
+    first, make the file executable!
+    second, make sure you see all the syscalls! (use strace -c and make sure you had the ./ before the file)
+    third, investigate the behaviour of the program. You can't change it because normally you don't have acces to the source code!
+    fourth, retrace calls that give errors! strace -c is a good option to first get an overview and then use the -e trace=YOURCHOICE
+    fifth, look into the paths!

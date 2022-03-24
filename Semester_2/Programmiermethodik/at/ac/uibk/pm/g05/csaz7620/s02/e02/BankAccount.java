@@ -12,11 +12,22 @@ public class BankAccount {
     }
 
     public void deposit(int money, BankAccount bankaccount){
-        //todo implement function deposit
+        bankaccount.setBalance(bankaccount.getBalance() + money);
     }
 
     public void withdraw(int money, BankAccount bankaccount){
-        //todo implement function withdraw
+        bankaccount.setBalance(bankaccount.getBalance() - money);
+    }
+
+
+    public static boolean withdrawAllowed(int money, BankAccount bankaccount, CreditRating creditrating){
+        if(creditrating == CreditRating.low){
+            return (bankaccount.getBalance()-money)>(-100);
+        }
+        if(creditrating == CreditRating.medium){
+            return (bankaccount.getBalance()-money)>(-500);
+        }
+        return (bankaccount.getBalance()-money)>(-1000);
     }
 
     public String getIban() {

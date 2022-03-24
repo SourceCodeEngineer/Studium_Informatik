@@ -3,9 +3,9 @@ package at.ac.uibk.pm.g05.csaz7620.s02.e02;
 public class Customer {
     private String name;
     private String surname;
-    private Creditrating creditrating;
+    private CreditRating creditrating;
 
-    public Customer(String name, String surname, Creditrating creditrating) {
+    public Customer(String name, String surname, CreditRating creditrating) {
         setName(name);
         setSurname(surname);
         setCreditrating(creditrating);
@@ -27,11 +27,11 @@ public class Customer {
         this.surname = surname;
     }
 
-    public Creditrating getCreditrating() {
+    public CreditRating getCreditrating() {
         return creditrating;
     }
 
-    public void setCreditrating(Creditrating creditrating) {
+    public void setCreditrating(CreditRating creditrating) {
         this.creditrating = creditrating;
     }
 }
