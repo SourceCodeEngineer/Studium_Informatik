@@ -2,7 +2,6 @@ package at.ac.uibk.pm.g05.csaz7620.s01.e02;
 
 public class PrintArray {
 
-     /*TODO: declare and implement the method printArray!*/
     public static void printArray(int array[][], String seperator){
         for (int[] num : array) {
             for (int elem : num) {
