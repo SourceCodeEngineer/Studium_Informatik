@@ -109,7 +109,7 @@ public class Computer {
         System.out.println("GPU price in cent: " + gpu.getPrice());
     }
 
-    public double estimateDataTransferDuration(int dataToTransferInGB){
-        return dataToTransferInGB/(hardDisk.getDataWriteRate());
+    public double estimateDataTransferDuration(int dataToTransferInGB) {
+        return dataToTransferInGB / (hardDisk.getDataWriteRate());
     }
 }
