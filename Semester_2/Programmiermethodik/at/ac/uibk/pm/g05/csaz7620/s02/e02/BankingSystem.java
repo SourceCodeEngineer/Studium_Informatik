@@ -1,19 +1,20 @@
 package at.ac.uibk.pm.g05.csaz7620.s02.e02;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class BankingSystem {
-    private List<BankAccount> managedBankAccounts;
+    private ArrayList<BankAccount> managedBankAccountsArrayList = new ArrayList<>();
+    private ArrayList<Transaction> transactionsArrayList = new ArrayList<>();
 
-    public List<BankAccount> getManagedBankAccounts() {
-        return managedBankAccounts;
+    public ArrayList<BankAccount> getManagedBankAccounts() {
+        return managedBankAccountsArrayList;
     }
 
-    public void setManagedBankAccounts(List<BankAccount> managedBankAccounts) {
-        this.managedBankAccounts = managedBankAccounts;
+    public void setManagedBankAccounts(ArrayList<BankAccount> managedBankAccounts) {
+        this.managedBankAccountsArrayList = managedBankAccounts;
     }
 
     public void addBankAccountToManagedOnes(BankAccount bankaccount){
-        this.managedBankAccounts.add(bankaccount);
+        this.managedBankAccountsArrayList.add(bankaccount);
     }
 }
