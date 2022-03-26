@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class BankingSystem {
     private ArrayList<BankAccount> managedBankAccountsArrayList = new ArrayList<>();
-    private ArrayList<Transaction> transactionsArrayList = new ArrayList<>();
+    private static ArrayList<Transaction> transactionsArrayList = new ArrayList<>();
 
     public ArrayList<BankAccount> getManagedBankAccounts() {
         return managedBankAccountsArrayList;
@@ -23,7 +23,7 @@ public class BankingSystem {
         addBankAccountToManagedOnes(bankaccount);
     }
 
-    public void transferFromTo(BankAccount bankAccountSource, BankAccount bankAccountDest, long amount){
+    public static void transferFromTo(BankAccount bankAccountSource, BankAccount bankAccountDest, long amount){
         TransactionStatus status;
         if(BankAccount.withdrawAllowed(amount, bankAccountSource, bankAccountSource.getCustomer().getCreditRating())){
             status = TransactionStatus.success;

@@ -16,8 +16,12 @@ public class BankAccount {
     }
 
     public void withdraw(long money, BankAccount bankaccount){
-        // todo if then else withdraw allowed
-        bankaccount.setBalance(bankaccount.getBalance() - money);
+        if(withdrawAllowed(money, bankaccount, bankaccount.customer.getCreditRating())){
+            bankaccount.setBalance(bankaccount.getBalance() - money);
+        }
+        else{
+            System.err.println("Not allowed!");
+        }
     }
 
 
