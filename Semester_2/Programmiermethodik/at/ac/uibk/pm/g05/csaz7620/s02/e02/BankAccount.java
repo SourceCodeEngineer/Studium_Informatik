@@ -11,16 +11,17 @@ public class BankAccount {
         setBalance(balance);
     }
 
-    public void deposit(int money, BankAccount bankaccount){
+    public void deposit(long money, BankAccount bankaccount){
         bankaccount.setBalance(bankaccount.getBalance() + money);
     }
 
-    public void withdraw(int money, BankAccount bankaccount){
+    public void withdraw(long money, BankAccount bankaccount){
+        // todo if then else withdraw allowed
         bankaccount.setBalance(bankaccount.getBalance() - money);
     }
 
 
-    public static boolean withdrawAllowed(int money, BankAccount bankaccount, CreditRating creditrating){
+    public static boolean withdrawAllowed(long money, BankAccount bankaccount, CreditRating creditrating){
         if(creditrating == CreditRating.low){
             return (bankaccount.getBalance()-money)>(-100);
         }

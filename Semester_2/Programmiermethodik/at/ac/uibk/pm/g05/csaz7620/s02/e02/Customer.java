@@ -8,7 +8,7 @@ public class Customer {
     public Customer(String name, String surname, CreditRating creditrating) {
         setName(name);
         setSurname(surname);
-        setCreditrating(creditrating);
+        setCreditRating(creditrating);
     }
 
     public String getName() {
@@ -27,11 +27,11 @@ public class Customer {
         this.surname = surname;
     }
 
-    public CreditRating getCreditrating() {
+    public CreditRating getCreditRating() {
         return creditrating;
     }
 
-    public void setCreditrating(CreditRating creditrating) {
+    public void setCreditRating(CreditRating creditrating) {
         this.creditrating = creditrating;
     }
 }
