@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class BankingSystem {
     private ArrayList<BankAccount> managedBankAccountsArrayList = new ArrayList<>();
-    private static ArrayList<Transaction> transactionsArrayList = new ArrayList<>();
+    private ArrayList<Transaction> transactionsArrayList = new ArrayList<>();
 
     public ArrayList<BankAccount> getManagedBankAccounts() {
         return managedBankAccountsArrayList;
@@ -23,7 +23,7 @@ public class BankingSystem {
         addBankAccountToManagedOnes(bankaccount);
     }
 
-    public static void transferFromTo(BankAccount bankAccountSource, BankAccount bankAccountDest, long amount){
+    public void transferFromTo(BankAccount bankAccountSource, BankAccount bankAccountDest, long amount){
         TransactionStatus status;
         if(BankAccount.withdrawAllowed(amount, bankAccountSource, bankAccountSource.getCustomer().getCreditRating())){
             status = TransactionStatus.success;
@@ -37,6 +37,19 @@ public class BankingSystem {
         if(status == TransactionStatus.success){
             bankAccountSource.withdraw(amount, bankAccountSource);
             bankAccountDest.deposit(amount, bankAccountDest);
+        }
+    }
+
+    public ArrayList<Transaction> getTransactionsArrayList() {
+        return transactionsArrayList;
+    }
+
+    public void printTransfers() {
+        for (int i = 0; i < transactionsArrayList.size(); ++i){
+            System.out.println(transactionsArrayList.get(i).getSource().getIban());
+            System.out.println(transactionsArrayList.get(i).getDest().getIban());
+            System.out.println(transactionsArrayList.get(i).getAmount());
+            System.out.println(transactionsArrayList.get(i).getStatus());
         }
     }
 }

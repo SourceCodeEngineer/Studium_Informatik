@@ -7,8 +7,7 @@ public class Computer {
     private Date manufactoringDate;
     private Processor processor;
     private HardDisk hardDisk;
-    private RamSlot ramSlot1;
-    private RamSlot ramSlot2;
+    private RamSlot ramSlot1, ramSlot2;
     private GPU gpu;
 
     public Computer(String identifier, Date manufactoringDate, Processor processor, HardDisk hardDisk, RamSlot ramSlot1, RamSlot ramSlot2, GPU gpu) {
