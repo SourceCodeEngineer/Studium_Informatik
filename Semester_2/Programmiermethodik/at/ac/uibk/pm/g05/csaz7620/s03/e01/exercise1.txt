@@ -1,0 +1,5 @@
+Exercise 1 (Visibility)
+Describe in your own words what the difference between private and public variables and methods is
+and what they are used for. In this context, also describe the usage of this.
+    public means that you can access it anywhere while private means that you can only access it inside its own class!
+    this is referred to the local private variable and not the parameter of the function! (Usefully for setter)
