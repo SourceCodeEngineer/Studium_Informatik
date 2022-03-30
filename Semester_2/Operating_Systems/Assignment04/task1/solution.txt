@@ -1,0 +1,42 @@
+Explain each of the permissions read, write, and execute for both files and directories
+    File:
+        read = reading allowed 
+        write = writing to the file is allowed 
+        execute = you can run / execute the file
+    Directory 
+        read = allows the affected user to list the files within the directory
+        write = create new files and directories in the directory
+        execute = allows the affected user to enter the directory, and access files and directories inside
+
+Explain what role the owning user and owning group plays
+    user — the actual owner of the file
+    group — users in the file’s group
+
+Explain how to read these permission strings (e.g. rw-rw-r--)
+    first 3 parts "rw-" are for the user (owner) of the file 
+    next 3 parts are for the group that has access to the file/folder 
+    last 3 parts are for others that have access to the file/folder 
+    You can also just add them up to get the permission string:
+        r (4) + w (2) + -(0) = 7
+        r (4) + w (2) + -(0) = 7
+        r (4) + - (0) + -(0) = 4
+
+How do these permission strings relate to octal permissions (e.g. 0644)?
+    we transform it to binary: 110 100 100
+    now we can simply transform it into the given format: rw-r--r--
+
+How can you change the permissions of a file?
+    we can use the chmod command and ad a parameter like +x and then the file to make it an executable
+
+How can you change the permissions of all files within a directory?
+    find PATH_TO_FOLDER -type d -exec chmod PERMISSIONS {} \;
+
+What is the Bash builtin umask about?
+    umask is a user file creation mask. umask sets an environment variable which automatically sets file permissions on newly created files.
+    you can set umask in /etc/bashrc or /etc/profile for all users (depends on the system)
+
+The same permission mechanism is also used for other Unix operating system components (e.g. see the second parameter of mkfifo(3)). 
+Assuming a big multi-user system, like ZID-GPL, which permissions should you use for an IPC mechanism, like a named pipe, to prevent 
+other users from interfering with your task? Looking at named pipes specifically, what else can you do, apart from setting permissions, 
+to prevent conflicts with other users?
+

@@ -1,0 +1,5 @@
+There are even more helpful operators built into your shell. Explain what the following operators do: <, >, 2>, 2>&1
+    command < textfile.txt - Gives input to a command.
+    ls > text.txt - Directs the output of a command into a file.
+    command 2> file - write stderr to file.
+    2>&1 - redirect STDERR (2) to STDOUT (1)
