@@ -13,17 +13,15 @@ assert_installed()
 assert_installed zipinfo
 assert_installed diff
 
-diff --side-by-side --left-column - <(zipinfo -1 "$1" | sort) <<-EOF && true
-	task1/
-	task1/Makefile
+diff --side-by-side --left-column - <(zipinfo -1 "$1" | sed '/\/$/d' | sort -f) <<-EOF && true
 	task1/solution.txt
-	task1/task1.c
-	task2/
+	task2/ls_grep_wc.c
+	task2/ls_wc.c
+	task2/Makefile
 	task2/solution.txt
-	task3/
-	task3/even.c
-	task3/even_odd_sum
 	task3/Makefile
+	task3/task3_client.c
+	task3/task3_server.c
 EOF
 
 if [[ $? -eq 0 ]]; then
