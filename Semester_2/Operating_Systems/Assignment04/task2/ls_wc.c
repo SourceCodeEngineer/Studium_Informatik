@@ -1,72 +1,69 @@
+/* Execute ls | wc -l */
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include <unistd.h>
+#include <err.h>
+#include <sys/wait.h>
+
+static void xpipe(int *fd)
+{
+   if (pipe(fd) == -1)
+   {
+      err(1, "pipe");
+   }
+}
+static void xdup2(int a, int b)
+{
+   if (dup2(a, b) == -1)
+   {
+      err(1, "dup2");
+   }
+}
+static void xclose(int fd)
+{
+   if (close(fd) == -1)
+   {
+      err(1, "close");
+   }
+}
+
+static void
+execute(int *fd, char **cmd, int w)
+{
+   switch (fork())
+   {
+   case -1:
+      err(EXIT_FAILURE, "fork");
+   case 0:
+      xdup2(fd[w], w);
+      xclose(fd[0]);
+      xclose(fd[1]);
+      execvp(cmd[0], cmd);
+      perror("execvp");
+      exit(EXIT_FAILURE);
+   }
+}
 
 int main(void)
 {
-
-   int fd1[2]; // Used to store two ends of first pipe
-   int fd2[2]; // Used to store two ends of second pipe
-
-   pid_t p;
-
-   if (pipe(fd1) == -1) // check if pipe failed
+   int rv = EXIT_SUCCESS;
+   char *ls[] = {"ls", NULL};
+   char *sort[] = {"wc", "-l", NULL};
+   int fd[2];
+   xpipe(fd);
+   execute(fd, ls, 1);
+   execute(fd, sort, 0);
+   xclose(fd[0]);
+   xclose(fd[1]);
+   for (int i = 0; i < 2; i++)
    {
-      fprintf(stderr, "Pipe Failed");
-      return 1;
+      int status;
+      wait(&status);
+      if (!WIFEXITED(status) || WEXITSTATUS(status))
+      {
+         rv = EXIT_FAILURE;
+      }
    }
-   if (pipe(fd2) == -1) // check if pipe failed
-   {
-      fprintf(stderr, "Pipe Failed");
-      return 1;
-   }
-
-   p = fork(); // Now forking to create a child
-
-   if (p < 0) // Check if fork failed
-   {
-      fprintf(stderr, "fork Failed");
-      return 1;
-   }
-   // Parent process
-   else if (p > 0)
-   {
-      char concat_str[100];
-
-      close(fd1[0]); // Close reading end of first pipe
-
-      // Wait for child to send a string
-      wait(NULL);
-
-      close(fd2[1]); // Close writing end of second pipe
-
-      // Read string from child, print it and close
-      // reading end.
-      read(fd2[0], concat_str, 100);
-      close(fd2[0]);
-   }
-   // Child process
-   else
-   {
-      close(fd1[1]); // Close writing end of first pipe
-
-      // Read a string using first pipe
-      
-      read(fd1[0], "", 100);
-      
-      // Close both reading ends
-      close(fd1[0]);
-      close(fd2[0]);
-
-      // Write concatenated string and close writing end
-      write(fd2[1], "", strlen("") + 1);
-      close(fd2[1]);
-
-      exit(0);
-   }
-
-   return EXIT_SUCCESS;
+   return rv;
 }
