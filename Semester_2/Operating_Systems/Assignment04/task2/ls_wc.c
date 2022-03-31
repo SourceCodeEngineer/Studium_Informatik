@@ -49,11 +49,11 @@ int main(void)
 {
    int rv = EXIT_SUCCESS;
    char *ls[] = {"ls", NULL};
-   char *sort[] = {"wc", "-l", NULL};
+   char *wordcount[] = {"wc", "-l", NULL};
    int fd[2];
    xpipe(fd);
    execute(fd, ls, 1);
-   execute(fd, sort, 0);
+   execute(fd, wordcount, 0);
    xclose(fd[0]);
    xclose(fd[1]);
    for (int i = 0; i < 2; i++)
