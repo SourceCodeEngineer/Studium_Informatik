@@ -56,7 +56,7 @@ int main(void)
    execute(fd, wordcount, 0);
    xclose(fd[0]);
    xclose(fd[1]);
-   for (int i = 0; i < 2; i++)
+   for (int i = 0; i < 2; ++i)
    {
       int status;
       wait(&status);

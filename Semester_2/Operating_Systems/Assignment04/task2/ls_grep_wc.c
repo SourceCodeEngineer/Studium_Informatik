@@ -103,7 +103,7 @@ int main(void)
    close(fd2[0]);
    close(fd2[1]);
 
-   // waiting for childs
+   // waiting for children
    while ((pid = wait(NULL)) != -1);
 
    return EXIT_SUCCESS;
