@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include <poll.h>
 
 #define DO_OR_DIE(x, s) \
    do                   \
@@ -23,27 +24,22 @@ int main(int argc, char **argv)
    }
 
    int client_to_server;
-   char *myfifo = "/tmp/client_to_server_fifo";
+   char *fifo_location_CtS = "/tmp/client_to_server_fifo";
 
    int server_to_client;
-   char *myfifo2 = "/tmp/server_to_client_fifo";
+   char *fifo_location_StC = "/tmp/server_to_client_fifo";
 
    char buf[BUFSIZ];
 
    /* create the FIFO (named pipe) */
-   mkfifo(myfifo, 0666);
-   mkfifo(myfifo2, 0666);
+   mkfifo(fifo_location_CtS, 0777);
+   mkfifo(fifo_location_StC, 0777);
 
    /* open, read, and display the message from the FIFO */
-   client_to_server = open(myfifo, O_RDONLY);
-   server_to_client = open(myfifo2, O_WRONLY);
+   client_to_server = open(fifo_location_CtS, O_RDONLY);
+   server_to_client = open(fifo_location_StC, O_WRONLY);
 
-   printf("Server ON.\n");
-
-   // execute client file with parameter argv[i]
-   // write out message that client x has connected.
-
-   
+   printf("Server ON for test results.\n"); // can delete afterwards!
 
    while (1)
    {
@@ -58,8 +54,6 @@ int main(int argc, char **argv)
       else if (strcmp("",buf)!=0)
       {
          printf("Received: %s\n", buf);
-         printf("Sending back...\n");
-         write(server_to_client,buf,BUFSIZ);
       }
 
       /* clean buf from any data */
@@ -69,7 +63,7 @@ int main(int argc, char **argv)
    close(client_to_server);
    close(server_to_client);
 
-   unlink(myfifo);
-   unlink(myfifo2);
+   unlink(fifo_location_CtS);
+   unlink(fifo_location_StC);
    return 0;
 }

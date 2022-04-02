@@ -19,6 +19,11 @@
 int main(int argc, char **argv)
 {
 
+   if (argc != 2){
+      printf("Usage: ./task3_client NAME");
+      return EXIT_FAILURE;
+   }
+
    int client_to_server;
    char *myfifo = "/tmp/client_to_server_fifo";
 
@@ -26,26 +31,31 @@ int main(int argc, char **argv)
    char *myfifo2 = "/tmp/server_to_client_fifo";
 
    char str[BUFSIZ];
-   printf("Input message to server: ");
-   scanf("%s", str);
 
-
-   /* write str to the FIFO */
    client_to_server = open(myfifo, O_WRONLY);
    server_to_client = open(myfifo2, O_RDONLY);
-   write(client_to_server, str, sizeof(str));
 
-   perror("Write:"); //Very crude error check
+   write(client_to_server, argv[1], sizeof(argv[1]));
 
-   read(server_to_client,str,sizeof(str));
+   while(1){
 
-   perror("Read:"); // Very crude error check
+      printf("Expression:\n");
+      scanf("%s", str);
 
-   printf("...received from the server: %s\n",str);
-   close(client_to_server);
-   close(server_to_client);
+      if (strlen(str) == 0){
+         write(client_to_server, argv[1], sizeof(argv[1]));
+         write(client_to_server, "disconnect", sizeof("disconnect"));
+         break;
+      }
+
+      /* write str to the FIFO */
+      write(client_to_server, argv[1], sizeof(argv[1]));
+      write(client_to_server, str, sizeof(str));
+   }
 
    /* remove the FIFO */
+   close(client_to_server);
+   close(server_to_client);
 
    return EXIT_SUCCESS;
 }
