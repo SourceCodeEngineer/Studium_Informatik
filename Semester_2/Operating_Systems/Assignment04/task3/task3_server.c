@@ -23,6 +23,11 @@ int main(int argc, char **argv)
       return EXIT_FAILURE;
    }
 
+   int counter = argc-1; // counter for DC's
+
+   struct pollfd fds[1];
+   int timeout;
+
    int client_to_server;
    char *fifo_location_CtS = "/tmp/client_to_server_fifo";
 
@@ -43,6 +48,10 @@ int main(int argc, char **argv)
 
    while (1)
    {
+
+      //fds[0].fd = fd;
+
+
       read(client_to_server, buf, BUFSIZ);
 
       if (strcmp("exit",buf)==0)

@@ -6,16 +6,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define DO_OR_DIE(x, s) \
-   do                   \
-   {                    \
-      if ((x) < 0)      \
-      {                 \
-         perror(s);     \
-         exit(1);       \
-      }                 \
-   } while (0)
-
 int main(int argc, char **argv)
 {
 
@@ -40,11 +30,11 @@ int main(int argc, char **argv)
    while(1){
 
       printf("Expression:\n");
-      scanf("%s", str);
+      fgets (str, 100, stdin);
 
-      if (strlen(str) == 0){
+      if (str[0] == '\n'){
          write(client_to_server, argv[1], sizeof(argv[1]));
-         write(client_to_server, "disconnect", sizeof("disconnect"));
+         write(client_to_server, "disconnected.", sizeof("disconnected"));
          break;
       }
 
