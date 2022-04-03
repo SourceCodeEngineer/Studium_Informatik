@@ -1,0 +1,1 @@
+The answer would be 4246 because of the extends declaration in the bottom and middle function
