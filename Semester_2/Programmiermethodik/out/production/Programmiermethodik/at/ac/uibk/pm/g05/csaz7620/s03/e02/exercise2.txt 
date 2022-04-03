@@ -1,0 +1,7 @@
+Execute the program defined by ThermometerApplication OLAT and analyze its code and output. Record and
+explain any problems you notice! Also analyze the hierarchy Thermometer OLAT, CelsiusThermometer OLAT,
+and KelvinThermometer OLAT , write down any questionable design choices and explain why you regard them as questionable.
+
+    printTemperature is implemented in both Celsius and Kelvin files with the same name.
+    Thermometer line 4, degree could be private
+    getDegreeFahrenheit and setDegreeFahrenheit is never used!
