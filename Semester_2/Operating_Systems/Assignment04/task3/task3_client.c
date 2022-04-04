@@ -6,46 +6,45 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define DO_OR_DIE(x, s) \
+   do                   \
+   {                    \
+      if ((x) < 0)      \
+      {                 \
+         perror(s);     \
+         exit(1);       \
+      }                 \
+   } while (0)
+
 int main(int argc, char **argv)
 {
 
    if (argc != 2){
-      printf("Usage: ./task3_client NAME");
+      printf("Usage: ./task3_client NAME\n");
       return EXIT_FAILURE;
    }
 
-   int client_to_server;
-   char *myfifo = "/tmp/client_to_server_fifo";
+   // opening fd in read only mode
+   const int fd = open(argv[1], O_WRONLY);
 
-   int server_to_client;
-   char *myfifo2 = "/tmp/server_to_client_fifo";
+   DO_OR_DIE(fd, "failed to create file descriptor");
 
-   char str[BUFSIZ];
+   // creating buffer with BUFSIZE
+   char buff[BUFSIZ] = {0};
 
-   client_to_server = open(myfifo, O_WRONLY);
-   server_to_client = open(myfifo2, O_RDONLY);
+   // creating endless loop
 
-   write(client_to_server, argv[1], sizeof(argv[1]));
+   while (1)
+   {
+      fgets(buff, BUFSIZ, stdin);
 
-   while(1){
-
-      printf("Expression:\n");
-      fgets (str, 100, stdin);
-
-      if (str[0] == '\n'){
-         write(client_to_server, argv[1], sizeof(argv[1]));
-         write(client_to_server, "disconnected.", sizeof("disconnected"));
+      // if the input is emty then break the loop and return success
+      if (buff[0] == '\n')
          break;
-      }
 
-      /* write str to the FIFO */
-      write(client_to_server, argv[1], sizeof(argv[1]));
-      write(client_to_server, str, sizeof(str));
+      // else input must be not empty so we write in the file descriptor
+      write(fd, buff, strlen(buff));
    }
-
-   /* remove the FIFO */
-   close(client_to_server);
-   close(server_to_client);
 
    return EXIT_SUCCESS;
 }
