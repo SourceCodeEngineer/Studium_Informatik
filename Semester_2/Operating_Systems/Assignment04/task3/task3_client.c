@@ -19,7 +19,9 @@
 int main(int argc, char **argv)
 {
 
-   if (argc != 2){
+   // checking if user did correct input
+   if (argc != 2)
+   {
       printf("Usage: ./task3_client NAME\n");
       return EXIT_FAILURE;
    }
@@ -27,24 +29,26 @@ int main(int argc, char **argv)
    // opening fd in read only mode
    const int fd = open(argv[1], O_WRONLY);
 
+   // error handling
    DO_OR_DIE(fd, "failed to create file descriptor");
 
-   // creating buffer with BUFSIZE
-   char buff[BUFSIZ] = {0};
+   // creating bufferer with BUFSIZE
+   char buffer[BUFSIZ] = {0};
 
    // creating endless loop
-
    while (1)
    {
-      fgets(buff, BUFSIZ, stdin);
+      // reading from stdin to buffer
+      fgets(buffer, BUFSIZ, stdin);
 
       // if the input is emty then break the loop and return success
-      if (buff[0] == '\n')
+      if (buffer[0] == '\n')
          break;
 
       // else input must be not empty so we write in the file descriptor
-      write(fd, buff, strlen(buff));
+      write(fd, buffer, strlen(buffer));
    }
 
+   // if everything got done correctly, SUCCESS
    return EXIT_SUCCESS;
 }
