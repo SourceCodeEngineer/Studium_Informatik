@@ -39,4 +39,4 @@ The same permission mechanism is also used for other Unix operating system compo
 Assuming a big multi-user system, like ZID-GPL, which permissions should you use for an IPC mechanism, like a named pipe, to prevent 
 other users from interfering with your task? Looking at named pipes specifically, what else can you do, apart from setting permissions, 
 to prevent conflicts with other users?
-
+    You can give it only the permission rwx on the group owner and don't give it other permissions 

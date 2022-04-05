@@ -1,9 +1,12 @@
+// ecxecute ls | grep -v lab | wc -l
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/wait.h>
 
+// very nice do or die macro :D
 #define DO_OR_DIE(x, s) \
    do                   \
    {                    \
@@ -35,8 +38,10 @@ int main(void)
 
       //closing fd
       close(fd1[0]);
+
       // duping fd1 to 1
       dup2(fd1[1], 1);
+
       //closing fd1
       close(fd1[1]);
 
@@ -54,15 +59,19 @@ int main(void)
 
       // closing pipe
       close(fd1[1]);
+
       // duping pipe
       dup2(fd1[0], 0);
+
       // closing pipe
       close(fd1[0]);
 
       //closing second pipe
       close(fd2[0]);
+
       // duping second pipe
       dup2(fd2[1], 1);
+
       // closing second pipe
       close(fd2[1]);
 
@@ -85,8 +94,10 @@ int main(void)
       close(fd1[0]);
       close(fd1[1]);
       close(fd2[1]);
+
       // duping pipe 2 
       dup2(fd2[0], 0);
+
       // closing pipe 2
       close(fd2[0]);
 
