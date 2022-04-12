@@ -37,8 +37,7 @@ int main(int argc, char *argv[])
     long producer = strtol(argv[1], &p, 10);
 
     if (errno != 0 || *p != '\0' || producer > INT_MAX || producer < INT_MIN) {
-        // Put here the handling of the error, like exiting the program with
-        // an error message
+        // error handling
         printf("producer fail\n");
         printf("Usage: ./task1 producer(number) consumer(number)\n");
         return EXIT_FAILURE;
@@ -47,10 +46,14 @@ int main(int argc, char *argv[])
     long consumer = strtol(argv[2], &p, 10);
 
     if (errno != 0 || *p != '\0' || consumer > INT_MAX || consumer < INT_MIN) {
-        // Put here the handling of the error, like exiting the program with
-        // an error message
+        // error handling
         printf("consumer fail\n");
         printf("Usage: ./task1 producer(number) consumer(number)\n");
+        return EXIT_FAILURE;
+    }
+
+    if (consumer < 1 || producer < 1) {
+        printf("number must be greater then 0!\n");
         return EXIT_FAILURE;
     }
 
@@ -65,33 +68,39 @@ int main(int argc, char *argv[])
         // child process 1
 
         // if Producer > Consumer then wrap around the ring buffer
-        for (int i = 1; i <= producer; ++i){
+        for (int i = 0; i < producer; ++i){
+
             // write to shared memory
-            if (producer > consumer){
+            if (i > consumer){
+
                 // wrap around in ring buffer (i % buffer)
+
             }
+
             // normal writing to shared memory at position i
         }
     }
+
+    while ((pid = wait(NULL)) != -1);
 
     pid = fork();
     DO_OR_DIE(pid, "fork2 failed!\n");
 
     if (pid == 0){
         // child process 2
-        long result;
+        long result = 0;
 
         for (int i = 0; i < producer; ++i){
             // read from shared memory
         }
 
-        // write result to shared memory at position 1
+        fprintf( stdout, "%ld\n", result);
     }
 
     // waiting for children
     while ((pid = wait(NULL)) != -1);
 
-    // read from shared memory position 1 and print the result
+    // cleanup
 
 
     return EXIT_SUCCESS;

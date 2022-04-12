@@ -1,0 +1,39 @@
+I.
+What is the difference between shared memory and e.g. a global variable after calling fork()?
+
+II. 
+What is a race condition?
+
+A race condition occurs when several threads can access a block of shared data and they try to change it simultaneously.
+
+III. 
+Why do race conditions occur?
+
+Because the scheduling algorithm can swap between threads at any time, 
+the programmer does not know the order in which the threads will try to access the data. 
+Therefore, the result of the change in data depends on the scheduling algorithm, i.e. the threads are "racing" to access/change the data. 
+
+IV. 
+Is the output of a program with a race condition always incorrect?
+
+No, sometimes it produces the desired Output even with the race condition, but the Programmer still has to dissolve the Race condition. 
+
+V. 
+If you run your program 100 times and always get the correct result, does that mean that there is no race condition?
+
+No, there could be a race condition there all along, but the result of it always leads to the desired output, so the programmer does not notice.
+
+VI.
+What is synchronization?
+
+Depending which synchronization, process Synchronization for example means sharing system resources by processes in a way that, 
+concurrent access to data is handled thereby minimizing the chance of inconsistent data. 
+
+VII.
+Why are semaphores well suited for synchronizing producer-consumer patterns?
+Because one can say which process is allowed to execute its code first.
+
+VIII.
+Could Task 2 also be implemented using a single semaphore?
+Yes, because one could write sem_post at the end of the producer process and sem_wait at the beginning of the consumer. 
+So the consumer will wait for the producer to finish before it starts its execution.

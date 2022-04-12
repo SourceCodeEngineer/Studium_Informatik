@@ -1,0 +1,55 @@
+1.When would you use a sorted binary tree over a linked list?
+    	In a linked list, the items are linked together through a single next pointer.
+    	In a binary tree, each node can have 0, 1 or 2 subnodes, where (in case of a binary search tree) the key of the left node is lesser than the key of the node and the key of the right node is more than the node. 
+    	As long as the tree is balanced, the searchpath to each item is a lot shorter than that in a linked list.
+
+2.What would you change if the tree had to support int values instead of floats? Can you use this approach to support any value type, or are there limitations?
+	In this case the requeirments to support int are to change typedef float into typedef int . And also in the row 27 is superfluous
+
+3.Why do we use multiple translation units instead of putting everything a single file? 
+	The code is more clear and easier to understand.The approch is also more efficient.
+
+4.Is the development cycle (i.e. changing a source file, recompiling and running tests) faster when using multiple translation units? Explain your answer.
+    Yes, because you have for each function or header a different file where you exatcly know where everything is and what u have to do change its also better for working as a team.
+
+5.What is a header guard and why is it needed?
+	Header guards are little pieces of code that protect the contents of a header file from being included more than once. 
+	Header guards are implemented through the use of preprocessor directives.
+	The C preprocessor directives all start with the # character.
+
+
+ 
+6.Why is struct bstree not defined in the header file? What are the implications?
+
+7.Explain the const in the parameter list of bstree_print, is it required?
+
+
+8.Explain memory leaks. Why are memory leaks bad?
+	Memory is a resource ( file descriptors, database handles, power assertions, network handles, files etc.) 
+	By leaking any of these resources you are lying to the system about what you are using. 
+        All resources have a finite limit. By not telling the OS that you don't need the resource anymore, you risk running out of that resource or causing other programs to fail. 
+        In terms of memory, usually your application will crash 
+
+
+9.What is the reason behind writing everything in English?
+	English is the programming language and helps also the cooperation between programmers with different nationalities and mother language that are not english.
+
+
+10.Why should you use static for non-exported functions?
+	static would inform compiler that function is only accessible from current translation unit which allows more optimizations
+	Static, when applied to a function, means that the function has local scope or file scope, 
+	which will disallow someone from declaring a prototype to that function in a header file and using it somewhere else than where it was declared.
+
+
+11.Why should we comment our source code? Is it always needed? What should the comment state? What is self-documenting code?
+	Comment our code is a good method to understand the function of the programm after a big time gap . so if we forgett something it will be much easier to recognized the originally function.
+	Another improvement with self documenting is to understand better ourselve implementation. so we can controll if we have understand our approach 
+	Also its help another person who looks at the code for somer reasons like (maintenance)
+
+12.Why should the module not output debug messages?
+13.Why and when should you use assert?
+    assert should only beeing used for situations, that might not happen. Basically it is used for debugging.
+14.What are the benefits of using a Makefile over calling the compiler by hand?
+It makes codes more concise and clear to read and debug. No need to compile entire program every time whenever you make a change to a functionality or a class.
+15.Imagine it was your job to design the interface for the bstree module (bstree.h). What, if anything, would you have done differently, and why?
+I would change the row 27, because i think it is useless to give a float this define and so u cant use it for int and other datatypes.

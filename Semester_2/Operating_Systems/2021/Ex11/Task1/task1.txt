@@ -1,0 +1,29 @@
+What is the difference between dynamic and static linking?
+
+The main difference between static and dynamic linking is that static linking copies all library modules 
+used in the program into the final executable file at the final step of the compilation while in dynamic linking, 
+the linking occurs at run time when both executable files and libraries are placed in the memory.
+
+When would you use dynamic linking?
+
+When u want to have a reduced size and dont have much space to store data and if the performance is not important.
+You can fix bugs or upgrade/change your code without to ship the new files.
+And if u want to use Plugins, because Plugins always call for dynamic linking.
+
+When would you use static linking?
+
+You should use static if you know where it should work because static is limited and will run not on every environment.
+If you want to easyly distribute the code, at the cost of size diffrence, because static is alot bigger than dynamic.
+And if you want a faster startup.
+
+What is position independent code, and why is it useful?
+
+It is a machine code that is placed in a primary memory and it executes regardles of the adress, it does not bind to a adress.
+Position-independent code is not tied to a specific address. 
+This independence allows the code to execute efficiently at a different address in each process that uses the code. 
+Position-independent code is recommended for the creation of shared objects.
+
+What is the purpose of the LD_LIBRARY_PATH environment variable?
+The LD_LIBRARY_PATH environment variable tells Linux applications, such as the JVM, 
+where to find shared libraries when they are located in a different directory from the directory, 
+that is specified in the header section of the program.
