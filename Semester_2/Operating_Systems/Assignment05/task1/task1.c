@@ -24,107 +24,6 @@
         }               \
     } while (0)
 
-#define SHM_ID "/mmap-test"
-#define BUFFER_SIZE 4096
-#define SLEEP_NANOS 1000   // 1 micro
-
-/*
- * pvtmMmapAlloc - creates a memory mapped file area.
- * The return value is a page-aligned memory value, or NULL if there is a failure.
- * Here's the list of arguments:
- * @mmapFileName - the name of the memory mapped file
- * @size - the size of the memory mapped file (should be a multiple of the system page for best performance)
- * @create - determines whether or not the area should be created.
- */
-/*
-void *pvtmMmapAlloc(char *mmapFileName, size_t size, char create)
-{
-    void *retv = NULL;
-    if (create)
-    {
-        mode_t origMask = umask(0);
-        int mmapFd = open(mmapFileName, O_CREAT | O_RDWR, 00666);
-        umask(origMask);
-        if (mmapFd < 0)
-        {
-            perror("open mmapFd failed");
-            return NULL;
-        }
-        if ((ftruncate(mmapFd, size) == 0))
-        {
-            int result = lseek(mmapFd, size - 1, SEEK_SET);
-            if (result == -1)
-            {
-                perror("lseek mmapFd failed");
-                close(mmapFd);
-                return NULL;
-            }
-
-             * Something needs to be written at the end of the file to
-             * have the file actually have the new size.
-             * Just writing an empty string at the current file position will do.
-             * Note:
-             *  - The current position in the file is at the end of the stretched
-             *    file due to the call to lseek().
-             *  - The current position in the file is at the end of the stretched
-             *    file due to the call to lseek().
-             *  - An empty string is actually a single '\0' character, so a zero-byte
-             *    will be written at the last byte of the file.
-             *
-            result = write(mmapFd, "", 1);
-            if (result != 1)
-            {
-                perror("write mmapFd failed");
-                close(mmapFd);
-                return NULL;
-            }
-            retv = mmap(NULL, size,
-                        PROT_READ | PROT_WRITE, MAP_SHARED, mmapFd, 0);
-
-            if (retv == MAP_FAILED || retv == NULL)
-            {
-                perror("mmap");
-                close(mmapFd);
-                return NULL;
-            }
-        }
-    }
-    else
-    {
-        int mmapFd = open(mmapFileName, O_RDWR, 00666);
-        if (mmapFd < 0)
-        {
-            return NULL;
-        }
-        int result = lseek(mmapFd, 0, SEEK_END);
-        if (result == -1)
-        {
-            perror("lseek mmapFd failed");
-            close(mmapFd);
-            return NULL;
-        }
-        if (result == 0)
-        {
-            perror("The file has 0 bytes");
-            close(mmapFd);
-            return NULL;
-        }
-        retv = mmap(NULL, size,
-                    PROT_READ | PROT_WRITE, MAP_SHARED, mmapFd, 0);
-
-        if (retv == MAP_FAILED || retv == NULL)
-        {
-            perror("mmap");
-            close(mmapFd);
-            return NULL;
-        }
-
-        close(mmapFd);
-    }
-    return retv;
-}
-*/
-
 int main(int argc, char *argv[])
 {
     if(argc != 3){
@@ -155,7 +54,45 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    // input is correct and we can continue with the shared memory we need!
+    // todo: input is correct and we can continue with the shared memory we need of size consumer!
+
+    // after creating shared memory fork 2 times
+
+    pid_t pid = fork();
+    DO_OR_DIE(pid, "fork1 failed!\n");
+
+    if (pid == 0){
+        // child process 1
+
+        // if Producer > Consumer then wrap around the ring buffer
+        for (int i = 1; i <= producer; ++i){
+            // write to shared memory
+            if (producer > consumer){
+                // wrap around in ring buffer (i % buffer)
+            }
+            // normal writing to shared memory at position i
+        }
+    }
+
+    pid = fork();
+    DO_OR_DIE(pid, "fork2 failed!\n");
+
+    if (pid == 0){
+        // child process 2
+        long result;
+
+        for (int i = 0; i < producer; ++i){
+            // read from shared memory
+        }
+
+        // write result to shared memory at position 1
+    }
+
+    // waiting for children
+    while ((pid = wait(NULL)) != -1);
+
+    // read from shared memory position 1 and print the result
+
 
     return EXIT_SUCCESS;
 }
