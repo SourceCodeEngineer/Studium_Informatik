@@ -62,9 +62,9 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    // todo: input is correct and we can continue with the shared memory we need of size consumer!
-    uint64_t *sharedmemory = mmap(NULL, (consumer + 1) * sizeof(uint64_t), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0); // share memory
-    uint64_t *array = sharedmemory;
+    // input is correct and we can continue with the shared memory we need of size consumer!
+    uint64_t *shm = mmap(NULL, (consumer + 1) * sizeof(uint64_t), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0); // share memory
+    uint64_t *array = shm;
 
     // after creating shared memory fork 2 times
     pid_t pid = fork();
@@ -74,15 +74,21 @@ int main(int argc, char *argv[])
     {
         // child process 1
 
-        // if Producer > Consumer then wrap around the ring buffer
         for (int i = 0; i < producer; ++i)
         {
-
             // wrap around in ring buffer (i % buffer)
             array[i % consumer] = i + 1;
         }
-        munmap(sharedmemory, (consumer + 1) * sizeof(uint64_t));
+
+        // cleanup
+        munmap(shm, (consumer + 1) * sizeof(uint64_t));
     }
+
+    // *********************************
+    // while ((pid = wait(NULL)) != -1); 
+    // if we would wait for the child 1 we would get the same result 
+    // every run but we dont because of the scheduling
+    // *********************************
 
     pid = fork();
     DO_OR_DIE(pid, "fork2 failed!\n");
@@ -97,30 +103,38 @@ int main(int argc, char *argv[])
             // read from shared memory
             result += array[i];
         }
+
+        // write result to last position in array
         array[consumer + 1] = result;
-        munmap(sharedmemory, (consumer + 1) * sizeof(uint64_t)); // sets the memory free (mmap)
+
+        // cleanup
+        munmap(shm, (consumer + 1) * sizeof(uint64_t));
     }
 
     // waiting for children
-    while ((pid = wait(NULL)) != -1)
-        ;
+    while ((pid = wait(NULL)) != -1);
 
     // printing the result
-    printf("%ld\n", array[consumer + 1]);
+    printf("Result: %ld\n", array[consumer + 1]);
 
     // cleanup
-    munmap(sharedmemory, (consumer + 1) * sizeof(uint64_t));
+    munmap(shm, (consumer + 1) * sizeof(uint64_t));
 
     return EXIT_SUCCESS;
 }
 
 /*
-    Analyze the obtained output. Is the computed result the expected value?
-    Does the computed value change across different runs? What happens when you
-    try different and larger values for N and B, for example 10,000 or 100,000?
+    Analyze the obtained output. 
+    
+    Is the computed result the expected value?
+        For low numbers yes and for higher numbers (on my mashine more than 3000) the result changes every run.
+
+    Does the computed value change across different runs? 
+        On low numbers, no. If the numbers are high enough, yes.
+
+    What happens when you try different and larger values for N and B, for example 10,000 or 100,000?
+        The number changes on every run.
+
     Try to explain the behavior.
-
-    The output can change if the input number is high enough!
-    If the
-
+        See comment in line 87.
 */
