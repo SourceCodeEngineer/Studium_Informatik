@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
         {
             for (int i = 0; i < RINGBUFFER; ++i)
             {
-                if (arrayCHECK[i] == 2 || arrayCHECK[i] == 0)
+                if (arrayCHECK[i] == 0)
                 {
                     sem_wait(&sema[i]);
                     array[i] = count;
@@ -143,6 +143,7 @@ int main(int argc, char *argv[])
                     arrayCHECK[i] = 1;
                     --temp;
                     sem_post(&sema[i]);
+                    if(temp == 0) break;
                 }
             }
         }
@@ -183,8 +184,11 @@ int main(int argc, char *argv[])
                     sem_wait(&sema[i]);
                     result += array[i];
                     --temp;
+                    array[i] = 0;
                     arrayCHECK[i] = 0;
                     sem_post(&sema[i]);
+
+                    if(temp == 0) break;
                 }
             }
         }
@@ -205,14 +209,14 @@ int main(int argc, char *argv[])
     while ((pid = wait(NULL)) != -1);
 
     // printing the result
-    printf("%ld\n", array[RINGBUFFER + 1]);
+    printf("Result: %ld\n", array[RINGBUFFER + 1]);
 
     // cleanup
     munmap(sharedmemory, (RINGBUFFER + 1) * sizeof(uint64_t));
 
     for (int i = 0; i < RINGBUFFER; ++i)
     {
-        // creating sem entry for every array element
+        // destroying semaphore
         sem_destroy(&sema[i]);
     }
 
