@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <semaphore.h> // for semathore obviously
 #include <string.h>
 #include <sys/types.h>
-#include <sys/ipc.h>
 #include <sys/shm.h>
 #include <errno.h>
 #include <sys/wait.h>
@@ -13,7 +13,9 @@
 #include <ctype.h>
 #include <limits.h> // for INT_MAX, INT_MIN
 #include <stdlib.h> // for strtol
-#include <stdint.h>
+#include <stdint.h> // for uint64_t
+
+#define MAP_ANONYMOUS 0x20
 
 #define DO_OR_DIE(x, s) \
     do                  \
@@ -64,15 +66,32 @@ int main(int argc, char *argv[])
 
     // input is correct and we can continue with the shared memory we need of size consumer!
     uint64_t *sharedmemory = mmap(NULL, (consumer + 1) * sizeof(uint64_t), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0); // share memory
+
+    if (sharedmemory == MAP_FAILED)
+    {
+        perror("mmap failed at sharedmemory array\n");
+        exit(EXIT_FAILURE);
+    }
+
     uint64_t *array = sharedmemory;
 
-    uint64_t *sharedmemory2 = mmap(NULL, (consumer + 1) * sizeof(uint64_t), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0); // share memory2
-    uint64_t *array2 = sharedmemory2;
+    // creating sem array with every element being a sem to check if it is used or not.
+    sem_t *sema = mmap(NULL, sizeof(sema) * consumer, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 
-    // filling the array with 0 that the array has not been written to yet
-    // if a 1 is present in array2 then we know that the producer has written to it and we can read frm it and write a 0 in it.
-    for (int i = 0; i < consumer; ++i){
-        array2[i] = 0;
+    if (sema == MAP_FAILED)
+    {
+        perror("mmap failed at sema array\n");
+        exit(EXIT_FAILURE);
+    }
+
+    for (int i = 0; i < consumer; ++i)
+    {
+        // creating sem entry for every array element
+        if (sem_init(&sema[i], 1, 0) < 0)
+        {
+            perror("sem_init failed\n");
+            exit(EXIT_FAILURE);
+        }
     }
 
     // after creating shared memory fork 2 times
@@ -86,9 +105,10 @@ int main(int argc, char *argv[])
         // if Producer > Consumer then wrap around the ring buffer
         for (int i = 0; i < producer; ++i)
         {
-
+            sem_wait(&sema[i]);
             // wrap around in ring buffer (i % buffer)
             array[i % consumer] = i + 1;
+            sem_post(&sema[i]);
         }
         munmap(sharedmemory, (consumer + 1) * sizeof(uint64_t));
     }
@@ -103,15 +123,18 @@ int main(int argc, char *argv[])
 
         for (int i = 0; i < producer; ++i)
         {
+            sem_wait(&sema[i]);
             // read from shared memory
             result += array[i];
+            sem_post(&sema[i]);
         }
         array[consumer + 1] = result;
         munmap(sharedmemory, (consumer + 1) * sizeof(uint64_t)); // sets the memory free (mmap)
     }
 
     // waiting for children
-    while ((pid = wait(NULL)) != -1);
+    while ((pid = wait(NULL)) != -1)
+        ;
 
     // printing the result
     printf("%ld\n", array[consumer + 1]);
@@ -119,16 +142,11 @@ int main(int argc, char *argv[])
     // cleanup
     munmap(sharedmemory, (consumer + 1) * sizeof(uint64_t));
 
+    for (int i = 0; i < consumer; ++i)
+    {
+        // creating sem entry for every array element
+        sem_destroy(&sema[i]);
+    }
+
     return EXIT_SUCCESS;
 }
-
-/*
-    Analyze the obtained output. Is the computed result the expected value?
-    Does the computed value change across different runs? What happens when you
-    try different and larger values for N and B, for example 10,000 or 100,000?
-    Try to explain the behavior.
-
-    The output can change if the input number is high enough!
-    If the
-
-*/
