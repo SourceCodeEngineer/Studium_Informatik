@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra
 all: task2 
 
 task2: task2.o
-	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@ -lpthread -lrt -lm
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@ -lpthread -lrt
 
 task2.o: task2.c 
 	$(CC) $(CFLAGS) -c -o $@ $^
