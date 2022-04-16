@@ -132,9 +132,20 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    // todo implement shared memory buffer and add context to pq
+    int filedescriptor;
 
-    while(1){
+    // setting the permissions
+    const mode_t permissions = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+
+    // creating fifo with permissions
+    int fifoCheck = mkfifo(argv[1], permissions);
+    DO_OR_DIE(fifoCheck, "fifo failed to create\n");
+
+    // reads input from fifo
+    filedescriptor = open(argv[1], O_RDONLY);
+
+    while (1)
+    {
         // do stuff with pq
 
         // if the file is closed we break the loop

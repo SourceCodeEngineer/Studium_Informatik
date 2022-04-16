@@ -1,0 +1,10 @@
+Usage of the Makefile:
+
+make time_task1_atomic
+make time_task1_mutex
+
+make time_task2_atomic
+make time_task2_mutex
+
+make time_task3
+
