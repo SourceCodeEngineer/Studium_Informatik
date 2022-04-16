@@ -1,156 +1,87 @@
+#include <fcntl.h>
+#include <poll.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <semaphore.h> // for semathore obviously
 #include <string.h>
-#include <sys/types.h>
-#include <sys/shm.h>
-#include <errno.h>
-#include <sys/wait.h>
-#include <unistd.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <ctype.h>
-#include <limits.h> // for INT_MAX, INT_MIN
-#include <stdlib.h> // for strtol
-#include <stdint.h> // for uint64_t
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <semaphore.h>
+#include <sys/wait.h>
+#include <mqueue.h>
 #include <errno.h>
 #include <time.h>
-#include <stdbool.h>
 
-// defines start
-#define DO_OR_DIE(x, s) \
-    do                  \
-    {                   \
-        if ((x) < 0)    \
-        {               \
-            perror(s);  \
-            exit(1);    \
-        }               \
-    } while (0)
-
-#define PRIORITYQUEUE_LENGTH 5
-
-#define SLEEPTIMER 200000 // 200 milliseconds sleep timer for usleep
-
-#define MESSAGESIZE 1024 // messagesize for files
-// defines end
-
-// checks if pq is empty
-int isempty()
-{
-    if (rear == -1)
-    {
-        return true;
-    }
-    return false;
-}
-
-// check if pq is full
-int isfull()
-{
-    // change the length of the pq up in the DEFINE!
-    if (rear == PRIORITYQUEUE_LENGTH - 1)
-    {
-        return true;
-    }
-    return false;
-}
-
-// inserts element to next position
-void insert(char *element, int p)
-{
-    rear += 1;
-    pq[rear].element = element;
-    pq[rear].priority = p;
-}
-
-// get highes prio
-int getHighestPriority()
-{
-    int i, p = -1;
-    if (!isempty())
-    {
-        for (i = 0; i <= rear; ++i)
-        {
-            if (pq[i].priority > p)
-            {
-                p = pq[i].priority;
-            }
-        }
-    }
-    return p;
-}
-
-// delete element with highest prio
-int delementteHighestPriority()
-{
-    int i, j, p, element;
-    p = getHighestPriority();
-    for (i = 0; i <= rear; ++i)
-    {
-        if (pq[i].priority == p)
-        {
-            element = *pq[i].element;
-            break;
-        }
-    }
-    if (i < rear)
-    {
-        for (j = i; j < rear; ++j)
-        {
-            pq[j].element = pq[j + 1].element;
-            pq[j].priority = pq[j + 1].priority;
-        }
-    }
-    rear = rear - 1;
-    return element;
-}
-
-// displays message of server with prio
-void display()
-{
-    int i = getHighestPriority;
-    printf("Server print job with priority %d:\n", pq[i].priority);
-}
-
-// global variable start
-struct priorityqueue
-{
-    char *element;
-    int priority;
-} pq[PRIORITYQUEUE_LENGTH];
-
-int rear = -1;
-// global variable end
+#define SLEEPER usleep(200000)
 
 int main(int argc, char **argv)
 {
-    if (argc != 2)
+    if (argc < 1)
     {
-        printf("Usage: ./task3_printer_server /YOUR_NAME!\n");
         return EXIT_FAILURE;
     }
 
-    int filedescriptor;
+    unlink(argv[1]);
+    struct mq_attr attr = {
+        .mq_maxmsg = 10,
+        .mq_msgsize = BUFSIZ,
+        .mq_curmsgs = 0,
+        .mq_flags = 0,
 
-    // setting the permissions
-    const mode_t permissions = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+    };
+    char buffer[BUFSIZ] = "\0";
+    char temp[BUFSIZ] = "0";
 
-    // creating fifo with permissions
-    int fifoCheck = mkfifo(argv[1], permissions);
-    DO_OR_DIE(fifoCheck, "fifo failed to create\n");
+    mqd_t fd = mq_open(argv[1], O_CREAT | O_RDONLY, 0660, &attr);
 
-    // reads input from fifo
-    filedescriptor = open(argv[1], O_RDONLY);
+    struct timespec tm;
+    int prio = 0;
 
-    while (1)
+    clock_gettime(CLOCK_REALTIME, &tm);
+    tm.tv_sec += 20; // Set for 20 seconds
+    if (fd == -1)
     {
-        // do stuff with pq
+        mq_close(fd);
+        unlink(argv[1]);
+        return errno;
+    }
+    ssize_t recieve;
+    while (0 < (recieve = mq_timedreceive(fd, buffer, sizeof(buffer) + 1, &prio, &tm)))
+    {
+        if (recieve == -1)
+        {
+            mq_close(fd);
+            unlink(argv[1]);
+            return errno;
+        }
+        pid_t pid = fork();
+        if (pid == 0)
+        {
+            if (buffer[0] != '\0')
+            {
+                printf("Serving print job with priority %d:\n", prio);
+                for (int i = 0; i < strlen(buffer); i++)
+                {
+                    temp[0] = buffer[i];
+                    temp[1] = ' ';
+                    write(STDOUT_FILENO, temp, 1);
+                    SLEEPER;
+                }
 
-        // if the file is closed we break the loop
-        // break;
+                exit(0);
+            }
+        }
+        else
+        {
+            waitpid(pid, NULL, 0);
+            printf("\n");
+            strcpy(buffer, "0");
+        }
     }
 
+    mq_close(fd);
+    unlink(argv[1]);
     return EXIT_SUCCESS;
 }

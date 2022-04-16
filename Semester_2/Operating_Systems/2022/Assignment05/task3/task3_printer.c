@@ -1,45 +1,58 @@
+#include <fcntl.h>
+#include <poll.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <semaphore.h> // for semathore obviously
 #include <string.h>
-#include <sys/types.h>
-#include <sys/shm.h>
-#include <errno.h>
-#include <sys/wait.h>
-#include <unistd.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <ctype.h>
-#include <limits.h> // for INT_MAX, INT_MIN
-#include <stdlib.h> // for strtol
-#include <stdint.h> // for uint64_t
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <semaphore.h>
+#include <sys/wait.h>
+#include <mqueue.h>
 #include <errno.h>
-#include <time.h>
-
-#define USAGE   printf("priority fail\n"); \
-                printf("Usage: ./task3_printer /YOURNAME PRIORITY(INT) FILE");
 
 int main(int argc, char **argv)
 {
-
-    if (argc != 4)
+    if (argc < 1)
     {
-        printf("Usage: ./task3_printer /YOURNAME PRIORITY(INT) FILE");
         return EXIT_FAILURE;
     }
 
-    char *p;
+    int prio = atoi(argv[2]);
+    unlink(argv[1]);
+    struct mq_attr attr = {
+        .mq_maxmsg = 10,
+        .mq_msgsize = 256,
+        .mq_curmsgs = 0,
+        .mq_flags = 0,
 
-    errno = 0;
-    long priority = strtol(argv[1], &p, 10);
+    };
+    char buffer[BUFSIZ];
 
-    if (errno != 0 || *p != '\0' || priority > INT_MAX || priority < INT_MIN)
+    mqd_t fd = mq_open(argv[1], O_CREAT | O_WRONLY, 0660, &attr);
+    if (fd == -1)
     {
-        // error handling
-        USAGE
-        return EXIT_FAILURE;
+        mq_close(fd);
+        unlink(argv[1]);
+        return errno;
     }
+    
+  
+        read(STDIN_FILENO, buffer, sizeof(buffer));
+        int send = mq_send(fd, buffer, strlen(buffer), prio);
+        if (send == -1)
+        {
+            mq_close(fd);
+            unlink(argv[1]);
+            return errno;
+        }
+       
+    
+
+    mq_close(fd);
+    unlink(argv[1]);
 
     return EXIT_SUCCESS;
 }
