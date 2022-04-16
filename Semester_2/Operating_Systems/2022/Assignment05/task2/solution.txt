@@ -1,0 +1,29 @@
+What is the difference between shared memory and e.g. a global variable after calling fork()?
+	Shared memory is shared realtime; global variables will just be copied;
+
+What is a race condition?
+	Two or more threads racing/running againt each other accessign some data
+
+Why do race conditions occur?
+	Because multiple threads access the same data and try to nteract with it
+
+Is the output of a program with a race condition always incorrect?
+	No, it's dependent on the schedule of the threads
+
+If you run your program 100 times and always get the correct result, does that mean that there is no race condition?
+	No it can occur on a diferent computer because the scheduler works different on that computer
+
+What is synchronization?
+	Synchronization is the coordination of threads and processes in a way that at no time
+	more than 1 process can access the same shared data
+
+Why are semaphores well suited for synchronizing producer-consumer patterns?
+	Because they can block and unblock synchroniously
+
+
+There are two ways of creating a POSIX semaphore. Which would you use when?
+	sem_init(): unnamed semaphores for communication between threads;
+	sem_open: named semaphore for interprocess communication
+
+Could Task 2 also be implemented using a single semaphore?
+    no, this is not possible because they both can have access to the semaphore and then there undefines behaviour
