@@ -8,14 +8,13 @@ public class Course {
     private List<String> students = new ArrayList<>();
     private static final int MAX_STUDENTS = 2;
 
-    public boolean addStudent(String student) {
+    public void addStudent(String student) throws CourseFullException, StudentAlreadyEnrolledException{
         if (students.size() >= MAX_STUDENTS) {
-            return false;
+            throw new CourseFullException("Course is already full!");
         }
         if (students.contains(student)) {
-            return false;
+            throw new StudentAlreadyEnrolledException("Student is already enrolled!");
         }
         students.add(student);
-        return true;
     }
 }
