@@ -12,7 +12,7 @@
 #include <signal.h>
 
 // begin user defines
-#define SLEEPER usleep(2000000)
+#define SLEEPER usleep(200000)
 
 #define MESSAGEQLENGTH 10
 

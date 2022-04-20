@@ -21,7 +21,6 @@
 
 #define RINGBUFFER 50
 
-
 #define DO_OR_DIE(x, s) \
     do                  \
     {                   \
