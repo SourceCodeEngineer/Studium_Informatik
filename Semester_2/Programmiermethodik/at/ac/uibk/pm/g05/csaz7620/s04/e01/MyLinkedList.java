@@ -6,6 +6,9 @@ public class MyLinkedList {
     private int size;
 
     public void add(String element) {
+        if (element == null){
+            throw new IllegalArgumentException("Argument must not be null!");
+        }
         Node node = new Node(element);
         if (tail == null) {
             tail = node;
@@ -19,7 +22,7 @@ public class MyLinkedList {
 
     public String get(int index) {
         if (index < 0 || index >= size) {
-            return null;
+            throw new IndexOutOfBoundsException("Index out of Bounds");
         }
         Node current = head;
         for (int i = 0; i < index; ++i) {
