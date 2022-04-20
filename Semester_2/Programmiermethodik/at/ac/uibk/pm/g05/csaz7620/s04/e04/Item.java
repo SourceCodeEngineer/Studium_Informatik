@@ -7,15 +7,15 @@ public class Item {
     public Item(String name, double price) throws IllegalArgumentException {
         try {
             if (price <= 0) {
-                throw new IllegalArgumentException("price must be greater than zero");
+                throw new IllegalArgumentException("price must not be zero!");
             }
             if (name.isEmpty()) {
-                throw new IllegalArgumentException("name of the item is empty");
+                throw new IllegalArgumentException("name must not be empty!");
             }
             this.name = name;
             this.price = price;
         } catch (NullPointerException e) {
-            throw new IllegalArgumentException("name is null");
+            throw new IllegalArgumentException("name is null!");
         }
 
     }

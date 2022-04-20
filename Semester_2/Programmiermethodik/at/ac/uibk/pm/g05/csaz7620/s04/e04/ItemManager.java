@@ -25,7 +25,7 @@ public class ItemManager {
 
     public void addItem(Item item) throws Exception {
         if (maxSize <= getSize()) {
-            throw new Exception("the maximum has been reached");
+            throw new Exception("maximum reached");
         } else {
             items.add(item);
         }
