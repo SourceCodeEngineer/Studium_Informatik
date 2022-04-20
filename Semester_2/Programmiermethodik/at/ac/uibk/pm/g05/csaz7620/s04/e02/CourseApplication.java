@@ -7,9 +7,14 @@ public class CourseApplication {
         String[] students = {"Donald Duck", "Donald Duck", "Uncle Scrooge", "Gyro Gearloose"};
 
         for (String student : students) {
-            if (course.addStudent(student)) {
+            try {
+                course.addStudent(student);
                 System.out.println("Successfully added " + student);
-            } else {
+            } catch (StudentAlreadyEnrolledException x) {
+                x.printStackTrace();
+                System.out.println("Failed to add " + student);
+            } catch (CourseFullException x) {
+                x.printStackTrace();
                 System.out.println("Failed to add " + student);
             }
         }

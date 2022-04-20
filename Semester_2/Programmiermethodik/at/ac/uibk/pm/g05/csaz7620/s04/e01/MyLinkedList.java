@@ -6,7 +6,7 @@ public class MyLinkedList {
     private int size;
 
     public void add(String element) {
-        if (element == null){
+        if (element == null) {
             throw new IllegalArgumentException("Argument must not be null!");
         }
         Node node = new Node(element);

@@ -2,9 +2,9 @@ package at.ac.uibk.pm.g05.csaz7620.s04.e03;
 
 public class PasswordChecker {
 
-    private char[] charArray = {'?', '!', '%', '&', '=', '[', ']', '+', '-'};
+    private final char[] charArray = {'?', '!', '%', '&', '=', '[', ']', '+', '-'};
 
-    public PasswordStrength checkPassword(User user, String password) throws IllegalArgumentException{
+    public PasswordStrength checkPassword(User user, String password) throws IllegalArgumentException {
 
         try {
             if (password.isEmpty()) {
@@ -14,19 +14,15 @@ public class PasswordChecker {
 
                 if (passwordStrength < 2) {
                     return PasswordStrength.TOO_WEAK;
-                }
-                else if (passwordStrength == 2) {
+                } else if (passwordStrength == 2) {
                     return PasswordStrength.WEAK;
-                }
-                else if (passwordStrength > 2 && passwordStrength < 5) {
+                } else if (passwordStrength < 5) {
                     return PasswordStrength.MEDIUM;
                 } else {
                     return PasswordStrength.STRONG;
                 }
             }
-        }
-
-        catch (NullPointerException x){
+        } catch (NullPointerException x) {
             throw new IllegalArgumentException("Password can't be a null value");
         }
     }
@@ -34,7 +30,7 @@ public class PasswordChecker {
     public int checkRules(User user, String password) throws IllegalArgumentException {
         int strength = 0;
 
-        if(password.length() > 15){
+        if (password.length() > 15) {
             ++strength;
         }
 
@@ -46,7 +42,7 @@ public class PasswordChecker {
         char[] charPassword = password.toCharArray(); // creates an array of char, so we can iterate over it.
 
         // we check for every char of the char array if it is a number, upper lower or special character.
-        for(char character : charPassword) {
+        for (char character : charPassword) {
             if (Character.isDigit(character)) {
                 ++numbers;
             } else {
@@ -56,10 +52,9 @@ public class PasswordChecker {
                     if (Character.isUpperCase(character)) {
                         ++upperCase;
                     } else {
-                        if (!(new String(charArray).contains(new String(String.valueOf(character))))) {
+                        if ((new String(charArray).contains(String.valueOf(character)))) {
                             ++specialChars;
-                        }
-                        else {
+                        } else {
                             throw new IllegalArgumentException("Invalid character!");
                         }
                     }
@@ -67,22 +62,26 @@ public class PasswordChecker {
             }
         }
 
-        if(password.contains(user.getFirstName()) == false && password.contains(user.getLastName())== false && password.contains(user.getBirthDate().toString()) == false){
+        if (!password.contains(user.getFirstName()) && !password.contains(user.getLastName()) && !password.contains(user.getBirthDate().toString())) {
             ++strength;
         }
 
-        if(numbers > 1){
+        if (numbers > 1) {
             ++strength;
         }
-        if(lowerCase > 2){
+
+        if (lowerCase > 2) {
             ++strength;
         }
-        if(upperCase > 1){
+
+        if (upperCase > 1) {
             ++strength;
         }
-        if(specialChars > 1){
+
+        if (specialChars > 1) {
             ++strength;
         }
+
         return strength;
     }
 }

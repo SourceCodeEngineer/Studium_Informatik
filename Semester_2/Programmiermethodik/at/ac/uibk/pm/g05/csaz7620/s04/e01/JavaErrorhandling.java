@@ -5,7 +5,7 @@ public class JavaErrorhandling {
         int sum = 0;
         for (int anInt : ints) {
             if (anInt < 0) {
-                throw new IllegalArgumentException ("only positive values are allowed!");
+                throw new IllegalArgumentException("only positive values are allowed!");
             }
             sum += anInt;
             if (sum < 0) {

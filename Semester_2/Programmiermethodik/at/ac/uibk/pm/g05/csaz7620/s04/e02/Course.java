@@ -8,7 +8,7 @@ public class Course {
     private List<String> students = new ArrayList<>();
     private static final int MAX_STUDENTS = 2;
 
-    public void addStudent(String student) throws CourseFullException, StudentAlreadyEnrolledException{
+    public void addStudent(String student) throws CourseFullException, StudentAlreadyEnrolledException {
         if (students.size() >= MAX_STUDENTS) {
             throw new CourseFullException("Course is already full!");
         }

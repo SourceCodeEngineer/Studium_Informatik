@@ -8,10 +8,9 @@ public class User {
     private Date birthDate;
 
     public User(String firstName, String lastName, Date birthDate) throws IllegalArgumentException {
-        if (firstName == null || lastName == null || firstName.isEmpty() || lastName.isEmpty()){
+        if (firstName == null || lastName == null || firstName.isEmpty() || lastName.isEmpty()) {
             throw new IllegalArgumentException("Invalid User parameters!");
-        }
-        else {
+        } else {
             this.firstName = firstName;
             this.lastName = lastName;
             this.birthDate = birthDate;
