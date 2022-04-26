@@ -1,4 +1,4 @@
-// worked together with csaz7804
+// worked together with csaz7804, csaz7620
 
 #include <fcntl.h>
 #include <stdio.h>
