@@ -21,8 +21,6 @@
 
 #define MAP_ANONYMOUS 0x20
 
-#define RINGBUFFER 50
-
 #define DO_OR_DIE(x, s) \
     do                  \
     {                   \
@@ -37,41 +35,41 @@ int main(int argc, char *argv[])
 {
     if (argc != 3)
     {
-        printf("Usage: ./task1 producer(number) consumer(number)\n");
+        printf("Usage: ./task1 number buffer(number)\n");
         return EXIT_FAILURE;
     }
 
     char *p;
 
     errno = 0;
-    long producer = strtol(argv[1], &p, 10);
+    long number = strtol(argv[1], &p, 10);
 
-    if (errno != 0 || *p != '\0' || producer > INT_MAX || producer < INT_MIN)
+    if (errno != 0 || *p != '\0' || number > INT_MAX || number < INT_MIN)
     {
         // error handling
-        printf("producer fail\n");
-        printf("Usage: ./task1 producer(number) consumer(number)\n");
+        printf("number fail\n");
+        printf("Usage: ./task1 number(number) ringbuffer(number)\n");
         return EXIT_FAILURE;
     }
 
-    long consumer = strtol(argv[2], &p, 10);
+    long ringbuffer = strtol(argv[2], &p, 10);
 
-    if (errno != 0 || *p != '\0' || consumer > INT_MAX || consumer < INT_MIN)
+    if (errno != 0 || *p != '\0' || ringbuffer > INT_MAX || ringbuffer < INT_MIN)
     {
         // error handling
-        printf("consumer fail\n");
-        printf("Usage: ./task1 producer(number) consumer(number)\n");
+        printf("ringbuffer fail\n");
+        printf("Usage: ./task1 number(number) ringbuffer(number)\n");
         return EXIT_FAILURE;
     }
 
-    if (consumer < 1 || producer < 1)
+    if (ringbuffer < 1 || number < 1)
     {
         printf("number must be greater then 0!\n");
         return EXIT_FAILURE;
     }
 
-    // input is correct and we can continue with the shared memory we need of size consumer!
-    uint64_t *sharedmemory = mmap(NULL, (RINGBUFFER + 1) * sizeof(uint64_t), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0); // share memory
+    // input is correct and we can continue with the shared memory we need of size ringbuffer!
+    uint64_t *sharedmemory = mmap(NULL, (ringbuffer + 1) * sizeof(uint64_t), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0); // share memory
 
     if (sharedmemory == MAP_FAILED)
     {
@@ -82,7 +80,7 @@ int main(int argc, char *argv[])
     uint64_t *array = sharedmemory;
 
     // creating bool check array to see if we can read or write
-    uint64_t *sharedmemoryCHECK = mmap(NULL, (RINGBUFFER + 1) * sizeof(uint64_t), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0); // share memory
+    uint64_t *sharedmemoryCHECK = mmap(NULL, (ringbuffer + 1) * sizeof(uint64_t), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0); // share memory
 
     if (sharedmemoryCHECK == MAP_FAILED)
     {
@@ -92,7 +90,7 @@ int main(int argc, char *argv[])
 
     uint64_t *arrayCHECK = sharedmemoryCHECK;
 
-    for (int i = 0; i < RINGBUFFER; ++i)
+    for (int i = 0; i < ringbuffer; ++i)
     {
         // 0 is for writing
         arrayCHECK[i] = 0;
@@ -124,23 +122,14 @@ int main(int argc, char *argv[])
     if (pid == 0)
     {
         // child process 1
-        int temp, count = 1;
-
-        if (producer > consumer)
-        {
-            temp = consumer;
-        }
-        else
-        {
-            temp = producer;
-        }
+        int temp = number, count = 1;
 
         while (temp > 0)
         {
-            sem_wait(&sema[0]); // writer
+            sem_wait(&sema[0]); // reader
             sem_wait(&sema[1]); // writer
 
-            for (int i = 0; i < RINGBUFFER; ++i)
+            for (int i = 0; i < ringbuffer; ++i)
             {
                 if (arrayCHECK[i] == 0)
                 {
@@ -154,12 +143,12 @@ int main(int argc, char *argv[])
                     break;
                 }
             }
-            sem_post(&sema[1]);
-            sem_post(&sema[0]);
+            sem_post(&sema[0]); // reader
+            sem_post(&sema[1]); // writer
         }
 
-        munmap(sharedmemory, (RINGBUFFER + 1) * sizeof(uint64_t));
-        munmap(sharedmemoryCHECK, (RINGBUFFER + 1) * sizeof(uint64_t));
+        munmap(sharedmemory, (ringbuffer + 1) * sizeof(uint64_t));
+        munmap(sharedmemoryCHECK, (ringbuffer + 1) * sizeof(uint64_t));
     }
 
     pid = fork();
@@ -168,28 +157,19 @@ int main(int argc, char *argv[])
     if (pid == 0)
     {
         // child process 2
-        int temp;
-
-        if (producer > consumer)
-        {
-            temp = consumer;
-        }
-        else
-        {
-            temp = producer;
-        }
+        int temp = number;
 
         while (temp > 0)
         {
-            sem_wait(&sema[0]);
+            sem_wait(&sema[0]); // reader
             sem_wait(&sema[1]); // writer
 
-            for (int i = 0; i < RINGBUFFER; ++i)
+            for (int i = 0; i < ringbuffer; ++i)
             {
                 if (arrayCHECK[i] == 1)
                 {
                     arrayCHECK[i] = 0;
-                    array[RINGBUFFER] += array[i];
+                    array[ringbuffer] += array[i];
                     array[i] = 0;
                     --temp;
                 }
@@ -199,12 +179,12 @@ int main(int argc, char *argv[])
                 }
             }
 
-            sem_post(&sema[1]);
-            sem_post(&sema[0]);
+            sem_post(&sema[0]); // reader
+            sem_post(&sema[1]); // writer
         }
 
-        munmap(sharedmemory, (RINGBUFFER + 1) * sizeof(uint64_t)); // sets the memory free (mmap)
-        munmap(sharedmemoryCHECK, (RINGBUFFER + 1) * sizeof(uint64_t));
+        munmap(sharedmemory, (ringbuffer + 1) * sizeof(uint64_t)); // sets the memory free (mmap)
+        munmap(sharedmemoryCHECK, (ringbuffer + 1) * sizeof(uint64_t));
     }
 
     // waiting for children
@@ -212,10 +192,10 @@ int main(int argc, char *argv[])
         ;
 
     // printing the result
-    printf("Result: %ld\n", array[RINGBUFFER]);
+    printf("Result: %ld\n", array[ringbuffer]);
 
     // cleanup
-    munmap(sharedmemory, (RINGBUFFER + 1) * sizeof(uint64_t));
+    munmap(sharedmemory, (ringbuffer + 1) * sizeof(uint64_t));
 
     for (int i = 0; i < 2; ++i)
     {
