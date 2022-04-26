@@ -29,7 +29,7 @@ public class PasswordCheckerTest {
             passwordChecker.checkPassword(rootUser, null);
         });
 
-        String expectedMessage = "Password can't be a null value";
+        String expectedMessage = "Password can't be of value null!";
         String exceptionMessage = exception.getMessage();
         Assertions.assertEquals(expectedMessage, exceptionMessage);
 
@@ -37,7 +37,7 @@ public class PasswordCheckerTest {
             User user = new User(null, null, new Date());
         });
 
-        String expectedMessage2 = "Invalid User parameters!";
+        String expectedMessage2 = "Invalid user parameters!";
         String exceptionMessage2 = exception2.getMessage();
         Assertions.assertEquals(expectedMessage2, exceptionMessage2);
 
@@ -45,7 +45,7 @@ public class PasswordCheckerTest {
             User user = new User("", "System", new Date());
         });
 
-        String expectedMessage3 = "Invalid User parameters!";
+        String expectedMessage3 = "Invalid user parameters!";
         String exceptionMessage3 = exception3.getMessage();
         Assertions.assertEquals(expectedMessage3, exceptionMessage3);
 

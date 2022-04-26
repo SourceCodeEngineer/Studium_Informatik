@@ -1,3 +1,5 @@
+// worked together with csaz7804
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <semaphore.h> // for semathore obviously
@@ -84,7 +86,7 @@ int main(int argc, char *argv[])
 
     if (sharedmemoryCHECK == MAP_FAILED)
     {
-        perror("mmap failed at sharedmemory array\n");
+        perror("mmap failed at sharedmemoryCHECK array\n");
         exit(EXIT_FAILURE);
     }
 
@@ -97,7 +99,7 @@ int main(int argc, char *argv[])
     }
 
     // creating sem array with every element being a sem to check if it is used or not.
-    sem_t *sema = mmap(NULL, sizeof(sema) * RINGBUFFER, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    sem_t *sema = mmap(NULL, sizeof(sema) * 2, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0); // 0 == read, 1 == write
 
     if (sema == MAP_FAILED)
     {
@@ -105,7 +107,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    for (int i = 0; i < RINGBUFFER; ++i)
+    for (int i = 0; i < 2; ++i)
     {
         // creating sem entry for every array element
         if (sem_init(&sema[i], 1, 1) < 0)
@@ -123,37 +125,39 @@ int main(int argc, char *argv[])
     {
         // child process 1
         int temp, count = 1;
-        
-        if (producer > consumer){
+
+        if (producer > consumer)
+        {
             temp = consumer;
-        }else{
+        }
+        else
+        {
             temp = producer;
         }
 
         while (temp > 0)
         {
+            sem_wait(&sema[0]); // writer
+            sem_wait(&sema[1]); // writer
+
             for (int i = 0; i < RINGBUFFER; ++i)
             {
                 if (arrayCHECK[i] == 0)
                 {
-                    sem_wait(&sema[i]);
+                    arrayCHECK[i] = 1;
                     array[i] = count;
                     ++count;
-                    arrayCHECK[i] = 1;
                     --temp;
-                    sem_post(&sema[i]);
-                    if(temp == 0) break;
+                }
+                if (temp <= 0)
+                {
+                    break;
                 }
             }
+            sem_post(&sema[1]);
+            sem_post(&sema[0]);
         }
 
-        /*for (int i = 0; i < producer; ++i)
-        {
-            sem_wait(&sema[i]);
-            // wrap around in ring buffer (i % buffer)
-            array[i % RINGBUFFER] = i + 1;
-            sem_post(&sema[i]);
-        }*/
         munmap(sharedmemory, (RINGBUFFER + 1) * sizeof(uint64_t));
         munmap(sharedmemoryCHECK, (RINGBUFFER + 1) * sizeof(uint64_t));
     }
@@ -164,56 +168,56 @@ int main(int argc, char *argv[])
     if (pid == 0)
     {
         // child process 2
-        unsigned long long result = 0;
-
         int temp;
-        
-        if (producer > consumer){
+
+        if (producer > consumer)
+        {
             temp = consumer;
-        }else{
+        }
+        else
+        {
             temp = producer;
         }
 
         while (temp > 0)
         {
+            sem_wait(&sema[0]);
+            sem_wait(&sema[1]); // writer
+
             for (int i = 0; i < RINGBUFFER; ++i)
             {
                 if (arrayCHECK[i] == 1)
                 {
-                    sem_wait(&sema[i]);
-                    result += array[i];
-                    --temp;
-                    array[i] = 0;
                     arrayCHECK[i] = 0;
-                    sem_post(&sema[i]);
-
-                    if(temp == 0) break;
+                    array[RINGBUFFER] += array[i];
+                    array[i] = 0;
+                    --temp;
+                }
+                if (temp <= 0)
+                {
+                    break;
                 }
             }
+
+            sem_post(&sema[1]);
+            sem_post(&sema[0]);
         }
 
-        /*for (int i = 0; i < producer; ++i)
-        {
-            sem_wait(&sema[i]);
-            // read from shared memory
-            result += array[i];
-            sem_post(&sema[i]);
-        }*/
-        array[RINGBUFFER + 1] = result;
         munmap(sharedmemory, (RINGBUFFER + 1) * sizeof(uint64_t)); // sets the memory free (mmap)
         munmap(sharedmemoryCHECK, (RINGBUFFER + 1) * sizeof(uint64_t));
     }
 
     // waiting for children
-    while ((pid = wait(NULL)) != -1);
+    while ((pid = wait(NULL)) != -1)
+        ;
 
     // printing the result
-    printf("Result: %ld\n", array[RINGBUFFER + 1]);
+    printf("Result: %ld\n", array[RINGBUFFER]);
 
     // cleanup
     munmap(sharedmemory, (RINGBUFFER + 1) * sizeof(uint64_t));
 
-    for (int i = 0; i < RINGBUFFER; ++i)
+    for (int i = 0; i < 2; ++i)
     {
         // destroying semaphore
         sem_destroy(&sema[i]);

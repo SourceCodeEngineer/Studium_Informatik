@@ -9,7 +9,7 @@ public class User {
 
     public User(String firstName, String lastName, Date birthDate) throws IllegalArgumentException {
         if (firstName == null || lastName == null || firstName.isEmpty() || lastName.isEmpty()) {
-            throw new IllegalArgumentException("Invalid User parameters!");
+            throw new IllegalArgumentException("Invalid user parameters!");
         } else {
             this.firstName = firstName;
             this.lastName = lastName;

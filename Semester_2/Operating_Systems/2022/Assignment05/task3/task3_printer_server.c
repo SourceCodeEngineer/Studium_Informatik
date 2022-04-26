@@ -1,3 +1,5 @@
+// worked together with csaz7804
+
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>

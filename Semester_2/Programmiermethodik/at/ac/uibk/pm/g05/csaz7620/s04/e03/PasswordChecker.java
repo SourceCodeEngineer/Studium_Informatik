@@ -23,7 +23,7 @@ public class PasswordChecker {
                 }
             }
         } catch (NullPointerException x) {
-            throw new IllegalArgumentException("Password can't be a null value");
+            throw new IllegalArgumentException("Password can't be of value null!");
         }
     }
 
