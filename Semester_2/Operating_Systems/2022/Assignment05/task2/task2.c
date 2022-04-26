@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
     return EXIT_SUCCESS;
 }
 
-// I did notice that task 1 is much faster then task 2 because task 2 requires to wait for the semaphores and task 1 doesn't use semaphores
+// I did notice that task 2 is much faster then task 1 because of optimisations
 
 /*
 #include <stdio.h>
