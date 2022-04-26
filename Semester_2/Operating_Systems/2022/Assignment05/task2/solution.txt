@@ -1,3 +1,5 @@
+// worked together with csaz7804
+
 What is the difference between shared memory and e.g. a global variable after calling fork()?
 	Shared memory is shared realtime; global variables will just be copied;
 
