@@ -28,4 +28,4 @@ There are two ways of creating a POSIX semaphore. Which would you use when?
 	sem_open: named semaphore for interprocess communication
 
 Could Task 2 also be implemented using a single semaphore?
-    yes, look at my solution and delete 1 semaphore of your choice!
+    yes, look at my solution in task 2 commented below!

@@ -112,6 +112,7 @@ int main(int argc, char *argv[])
             sharedmemory[i] = i + 1;
             sem_post(&sema[0]);
         }
+
         munmap(sharedmemory, (ringbuffer + 1) * sizeof(uint64_t));
     }
     else
@@ -135,8 +136,7 @@ int main(int argc, char *argv[])
     }
 
     // waiting for children
-    while ((pid = wait(NULL)) != -1)
-        ;
+    while ((pid = wait(NULL)) != -1);
 
     // printing the result
     printf("Result: %ld\n", array[ringbuffer]);
@@ -283,7 +283,6 @@ int main(int argc, char *argv[])
         while (temp > 0)
         {
             sem_wait(&sema[0]); // reader
-            sem_wait(&sema[1]); // writer
 
             for (int i = 0; i < ringbuffer; ++i)
             {
@@ -300,7 +299,6 @@ int main(int argc, char *argv[])
                 }
             }
             sem_post(&sema[0]); // reader
-            sem_post(&sema[1]); // writer
         }
 
         munmap(sharedmemory, (ringbuffer + 1) * sizeof(uint64_t));
@@ -318,7 +316,6 @@ int main(int argc, char *argv[])
         while (temp > 0)
         {
             sem_wait(&sema[0]); // reader
-            sem_wait(&sema[1]); // writer
 
             for (int i = 0; i < ringbuffer; ++i)
             {
@@ -336,7 +333,6 @@ int main(int argc, char *argv[])
             }
 
             sem_post(&sema[0]); // reader
-            sem_post(&sema[1]); // writer
         }
 
         munmap(sharedmemory, (ringbuffer + 1) * sizeof(uint64_t)); // sets the memory free (mmap)
