@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
         for (int i = 0; i < number; ++i)
         {
             sem_wait(&sema[1]);
-            sharedmemory[i] = i + 1;
+            sharedmemory[i%ringbuffer] = i + 1;
             sem_post(&sema[0]);
         }
 
@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
             for (int i = 0; i < number; ++i)
             {
                 sem_wait(&sema[0]);
-                sharedmemory[ringbuffer] += sharedmemory[i];
+                sharedmemory[ringbuffer] += sharedmemory[i % ringbuffer];
                 sem_post(&sema[1]);
             }
 
