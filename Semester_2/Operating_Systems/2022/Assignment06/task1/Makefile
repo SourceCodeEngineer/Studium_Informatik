@@ -2,10 +2,10 @@ CFLAGS = -Wall -Wextra
 
 .PHONY: all clean
 
-all: task1a task1ab
+all: task1a task1b
 
 task1a: task1a.o
-	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@ -lpthread
 
 task1a.o: task1a.c 
 	$(CC) $(CFLAGS) -c -o $@ $^
