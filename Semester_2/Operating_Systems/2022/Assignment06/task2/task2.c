@@ -62,7 +62,7 @@ int main(void)
         pthread_join(con[i], &status);
         sum_total += *(int *)status;
     }
-    
+
     printf("Final sum: %d\n", sum_total);
 
     pthread_mutex_destroy(&mutex);

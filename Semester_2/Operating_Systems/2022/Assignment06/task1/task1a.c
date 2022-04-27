@@ -46,7 +46,8 @@ int main(void)
 
     // parent
     // waiting for child
-    while ((pid = wait(NULL)) != -1);
+    while ((pid = wait(NULL)) != -1)
+        ;
 
     printf("%d\n", my_global);
 
