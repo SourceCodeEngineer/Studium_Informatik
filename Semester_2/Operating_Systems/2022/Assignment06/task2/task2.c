@@ -8,10 +8,10 @@
 struct myqueue_head queue;
 pthread_mutex_t mutex;
 
-int *consumer(void *cno)
+long long *consumer(void *cno)
 {
-    int *ret = malloc(sizeof(int));
-    int sum = 0;
+    long long *ret = malloc(sizeof(long long));
+    long long sum = 0;
     while (1)
     {
         pthread_mutex_lock(&mutex);
@@ -27,7 +27,7 @@ int *consumer(void *cno)
         pthread_mutex_unlock(&mutex);
     }
     *ret = sum;
-    printf("Consumer %d sum: %d\n", *((int *)cno), sum);
+    printf("Consumer %lld sum: %lld\n", *((long long *)cno), sum);
     pthread_exit(ret);
 }
 
@@ -37,33 +37,34 @@ int main(void)
     pthread_t con[5];
     pthread_mutex_init(&mutex, NULL);
     void *status = 0;
-    int name[5] = {1, 2, 3, 4, 5};
+    long long name[5] = {1, 2, 3, 4, 5};
 
     myqueue_init(&queue);
 
-    for (int i = 0; i < 5; ++i)
+    for (long long i = 0; i < 5; ++i)
     {
         pthread_create(&con[i], NULL, (void *)consumer, (void *)&name[i]);
     }
 
-    for (int i = 0; i < 10000; ++i)
+    for (long long i = 0; i < 10000; ++i)
     {
         myqueue_push(&queue, 1);
     }
 
-    for (int i = 0; i < 5; ++i)
+    for (long long i = 0; i < 5; ++i)
     {
         myqueue_push(&queue, 0);
     }
 
-    int sum_total = 0;
-    for (int i = 0; i < 5; ++i)
+    long long sum_total = 0;
+    
+    for (long long i = 0; i < 5; ++i)
     {
         pthread_join(con[i], &status);
-        sum_total += *(int *)status;
+        sum_total += *(long long *)status;
     }
 
-    printf("Final sum: %d\n", sum_total);
+    printf("Final sum: %lld\n", sum_total);
 
     pthread_mutex_destroy(&mutex);
     return EXIT_SUCCESS;
