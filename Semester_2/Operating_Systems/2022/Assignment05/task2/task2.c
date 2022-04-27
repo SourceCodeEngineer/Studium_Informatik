@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
         for (int i = 0; i < number; ++i)
         {
             sem_wait(&sema[1]);
-            sharedmemory[i%ringbuffer] = i + 1;
+            sharedmemory[i % ringbuffer] = i + 1;
             sem_post(&sema[0]);
         }
 
@@ -136,7 +136,8 @@ int main(int argc, char *argv[])
     }
 
     // waiting for children
-    while ((pid = wait(NULL)) != -1);
+    while ((pid = wait(NULL)) != -1)
+        ;
 
     // printing the result
     printf("Result: %ld\n", array[ringbuffer]);
