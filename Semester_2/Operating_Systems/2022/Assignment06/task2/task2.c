@@ -63,7 +63,7 @@ int main(void)
         sum_total += *(int *)status;
     }
     
-    printf("Consumer sum total: %d\n", sum_total);
+    printf("Final sum: %d\n", sum_total);
 
     pthread_mutex_destroy(&mutex);
     return EXIT_SUCCESS;
