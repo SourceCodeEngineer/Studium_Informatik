@@ -46,8 +46,7 @@ int main(void)
 
     // parent
     // waiting for child
-    while ((pid = wait(NULL)) != -1)
-        ;
+    while ((pid = wait(NULL)) != -1);
 
     printf("%d\n", my_global);
 
@@ -58,3 +57,5 @@ int main(void)
     printf("%d\n", my_global);
     return EXIT_SUCCESS;
 }
+
+// we do get the following sequence "1 \n 0 \0 1\n" because the child is a separat process!
