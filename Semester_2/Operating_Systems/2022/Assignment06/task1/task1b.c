@@ -46,15 +46,20 @@ int main(int argc, char **argv)
     }
 
     pthread_t *pt = (pthread_t *)malloc(sizeof(pthread_t) * argc - 1);
-
     struct args *arguments = (struct args *)malloc(sizeof(struct args) * argc - 1);
+
+    if (pt == NULL || arguments == NULL)
+    {
+        printf("malloc pt or arguments failed!\n");
+        return EXIT_FAILURE;
+    }
 
     int *values = malloc(sizeof(int) * argc - 1);
     int *result = malloc(sizeof(int) * argc - 1);
 
     if (values == NULL || result == NULL)
     {
-        printf("malloc failed!\n");
+        printf("malloc values or result failed!\n");
         return EXIT_FAILURE;
     }
 
