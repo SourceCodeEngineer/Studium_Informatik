@@ -58,4 +58,4 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-// we do get the following sequence "1 \n 0 \0 1\n" because the child is a separat process!
+// we do get the following sequence "1\n 0\n 1\n" because the child is a separat process!
