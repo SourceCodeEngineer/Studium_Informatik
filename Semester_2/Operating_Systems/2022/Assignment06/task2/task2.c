@@ -27,13 +27,12 @@ long long *consumer(void *cno)
         pthread_mutex_unlock(&mutex);
     }
     *ret = sum;
-    printf("Consumer %lld sum: %lld\n", *((long long *)cno), sum);
+    printf("Consumer %lld sum: %lld\n", *((long long *)cno) - 1, sum);
     pthread_exit(ret);
 }
 
 int main(void)
 {
-
     pthread_t con[5];
     pthread_mutex_init(&mutex, NULL);
     void *status = 0;
