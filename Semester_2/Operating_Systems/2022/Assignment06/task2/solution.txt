@@ -1,0 +1,1 @@
+yes, a semaphore could be used but not a single semaphore, you would need atleast 2 semaphores
