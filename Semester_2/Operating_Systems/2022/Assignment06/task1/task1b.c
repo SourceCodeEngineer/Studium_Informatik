@@ -92,7 +92,7 @@ int main(int argc, char **argv)
     for (int i = 0; i < argc - 1; ++i)
     {
         pthread_join(pt[i], NULL);
-        printf("sum%d = %d\n", arguments->index + 1, arguments->result[i]);
+        printf("sum%d = %d\n", i + 1, arguments->result[i]);
     }
 
     free(result);
