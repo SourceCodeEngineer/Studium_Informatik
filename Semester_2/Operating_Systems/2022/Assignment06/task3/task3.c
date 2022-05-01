@@ -23,6 +23,7 @@ long long *consumer(void *cno)
     {
         pthread_mutex_lock(&threadMutex);
         pthread_cond_wait(&threadCond, &threadMutex);
+
         if (!myqueue_is_empty(&queue))
         {
             if (myqueue_pop(&queue) == 0)
@@ -50,9 +51,9 @@ int main(void)
 
     void *status = 0;
 
-    long long name[THREADS] = {0};
+    int name[THREADS] = {0};
 
-    for (long long i = 0; i < THREADS; ++i)
+    for (int i = 0; i < THREADS; ++i)
     {
         name[i] = i;
     }
@@ -79,7 +80,7 @@ int main(void)
 
     long long sum_total = 0;
 
-    for (long long i = 0; i < THREADS; ++i)
+    for (int i = 0; i < THREADS; ++i)
     {
         pthread_join(con[i], &status);
         sum_total += *(long long *)status;
