@@ -1,0 +1,7 @@
+What is the advantage of using a condition variable in this case, compared to using plain mutexes?
+    That you don't have to wait in a loop and check the condition again and again and only check it as soon as recources are available
+
+How does the program behavior differ between the two variants? Measure the execution time of both using /usr/bin/time -v and report your findings. 
+Make sure to use an optimized build (-O2 or -O3).
+    500 Threads do take longer but it is still fast because of the cond signal.
+    for me optimisation build -O2 worked better for task2 and -O3 worked better for task3.
