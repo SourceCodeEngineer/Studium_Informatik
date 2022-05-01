@@ -35,7 +35,7 @@ long long *consumer(void *cno)
     }
 
     *ret = sum;
-    printf("Consumer %lld sum: %lld\n", *((long long *)cno) + 1, sum);
+    printf("Consumer %lld sum: %lld\n", *((long long *)cno) - 1, sum);
     pthread_exit(ret);
 }
 
