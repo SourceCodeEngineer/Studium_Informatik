@@ -1,3 +1,6 @@
+// worked together in a colaboration with csaz7804, csaz7620
+
+
 #include <pthread.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -35,7 +38,7 @@ long long *consumer(void *cno)
     }
 
     *ret = sum;
-    printf("Consumer %lld sum: %lld\n", *((long long *)cno) - 1, sum);
+    printf("Consumer %lld sum: %lld\n", *((long long *)cno), sum);
     pthread_exit(ret);
 }
 
@@ -65,6 +68,7 @@ int main(void)
     for (int i = 0; i < SUMUPTO; ++i)
     {
         myqueue_push(&queue, 1);
+        pthread_cond_signal(&threadCond);
     }
 
     for (int i = 0; i < THREADS; ++i)
