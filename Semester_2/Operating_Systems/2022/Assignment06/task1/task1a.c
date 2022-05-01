@@ -1,4 +1,4 @@
-// worked in a colaboration with --
+// worked together in a colaboration with csaz7804, csaz7620
 
 #include <stdio.h>
 #include <stdlib.h>
