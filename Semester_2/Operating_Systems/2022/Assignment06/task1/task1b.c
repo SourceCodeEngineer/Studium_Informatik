@@ -31,7 +31,7 @@ void *sumArguments(void *arguments)
 
     for (int i = 0; i <= index; ++i)
     {
-        sum = sum + values[i];
+        sum += values[i];
     }
 
     result[index] = sum;
@@ -47,8 +47,8 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    pthread_t *pt = (pthread_t *)malloc(sizeof(pthread_t) * argc - 1);
-    struct args *arguments = (struct args *)malloc(sizeof(struct args) * argc - 1);
+    pthread_t *pt = (pthread_t *)malloc(sizeof(pthread_t) * (argc - 1));
+    struct args *arguments = (struct args *)malloc(sizeof(struct args) * (argc - 1));
 
     if (pt == NULL || arguments == NULL)
     {
@@ -56,8 +56,8 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    int *values = malloc(sizeof(int) * argc - 1);
-    int *result = malloc(sizeof(int) * argc - 1);
+    int *values = malloc(sizeof(int) * (argc - 1));
+    int *result = malloc(sizeof(int) * (argc - 1));
 
     if (values == NULL || result == NULL)
     {
