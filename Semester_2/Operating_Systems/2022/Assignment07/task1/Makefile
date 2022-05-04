@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -st=c11
 
 .PHONY: all clean
 LIBS = -lrt -pthread
