@@ -1,52 +1,75 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include <stdint.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/mman.h>
-#include <sys/stat.h> /* For mode constants */
-#include <fcntl.h>    /* For O_* constants */
 #include <pthread.h>
-#include <errno.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdatomic.h>
+#include <string.h>
+
+#define VALUE_OF_VARIABLE 100000
+#define NUMBER_OF_ITERATIONS 10000
+#define NUMBER_OF_THREADS 1000
+
+int count_i = VALUE_OF_VARIABLE;
+atomic_int count_a = VALUE_OF_VARIABLE;
 
 pthread_mutex_t mutex;
 
-// user defines to change paameter
-#define THREADS 1000
-#define NUMBER_OF_ITERATIONS 10000
-
-int* myThreadFunction(int x){
-
-    for (int i = 0; i < NUMBER_OF_ITERATIONS; ++i){
+void *consumer_int()
+{
+    for (int i = 0; i < NUMBER_OF_ITERATIONS; ++i)
+    {
         pthread_mutex_lock(&mutex);
-        ++x;
+        --count_i;
         pthread_mutex_unlock(&mutex);
     }
-    pthread_exit(&x);
+    return NULL;
 }
 
-int main()
+void *consumer_atm()
 {
-    int x = 100000;
+    for (int i = 0; i < NUMBER_OF_ITERATIONS; ++i)
+    {
+        --count_a;
+    }
+    return NULL;
+}
 
-    pthread_t con[THREADS];
+int main(int argc, char *argv[])
+{
 
-    // init the mutex
+    if (argc != 2)
+    {
+        printf("USAGE: %s atm/int\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+
+    pthread_t con[NUMBER_OF_THREADS];
     pthread_mutex_init(&mutex, NULL);
-    
-    // create 10000 threads
-    for (int i = 0; i < THREADS; ++i){
-        pthread_create(&con[i], (int *)myThreadFunction, x, NULL);
+
+    if (strcmp(argv[1], "atm"))
+    {
+        for (int i = 0; i < NUMBER_OF_THREADS; ++i)
+        {
+            pthread_create(&con[i], NULL, consumer_atm, NULL);
+        }
+    }
+    else
+    {
+        for (int i = 0; i < NUMBER_OF_THREADS; ++i)
+        {
+            pthread_create(&con[i], NULL, consumer_int, NULL);
+        }
     }
 
-    for (int i = 0; i < THREADS; ++i){
+    for (int i = 0; i < NUMBER_OF_ITERATIONS; ++i)
+    {
         pthread_join(con[i], NULL);
+        printf("joined %d\n", i);
     }
 
-    printf("%d", x);
+    printf("Thread-Mutex-Count: %d\n", count_i);
+    printf("Thread-Atomic-Count: %d\n", count_a);
+
     // cleanup
     pthread_mutex_destroy(&mutex);
 
