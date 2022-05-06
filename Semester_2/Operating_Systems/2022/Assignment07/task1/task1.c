@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    for (int i = 0; i < NUMBER_OF_ITERATIONS; ++i)
+    for (int i = 0; i < NUMBER_OF_THREADS; ++i)
     {
         pthread_join(con[i], NULL);
         printf("joined %d\n", i);
