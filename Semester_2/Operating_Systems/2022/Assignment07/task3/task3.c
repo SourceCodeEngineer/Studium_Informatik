@@ -154,6 +154,8 @@ void* threadRoutine(){
 
     // exit if we are a loser! else wait for others and play again!
 
+    // reset hasrolled counter in node to false!
+
     return NULL;
 }
 
@@ -165,12 +167,11 @@ int main(void){
     struct Player* head = NULL;
 
     // Adding 5 players to the DLL and setting starter parameters.
-    push(&head, 0, 0, 0);
-    push(&head, 1, 0, 0);
-    push(&head, 2, 0, 0);
-    push(&head, 3, 0, 0);
-    push(&head, 4, 0, 0);
-
+    push(&head, 0, 0, 0, false);
+    push(&head, 1, 0, 0, false);
+    push(&head, 2, 0, 0, false);
+    push(&head, 3, 0, 0, false);
+    push(&head, 4, 0, 0, false);
 
     return EXIT_SUCCESS;
 }
