@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     pthread_t con[NUMBER_OF_THREADS];
     pthread_mutex_init(&mutex, NULL);
 
-    if (strcmp(argv[1], "atm"))
+    if (!strcmp(argv[1], "atm"))
     {
         for (int i = 0; i < NUMBER_OF_THREADS; ++i)
         {
@@ -67,8 +67,14 @@ int main(int argc, char *argv[])
         printf("joined %d\n", i);
     }
 
-    printf("Thread-Mutex-Count: %d\n", count_i);
-    printf("Thread-Atomic-Count: %d\n", count_a);
+    if (strcmp(argv[1], "atm"))
+    {
+        printf("Thread-Mutex-Count: %d\n", count_i);
+    }
+    else
+    {
+        printf("Thread-Atomic-Count: %d\n", count_a);
+    }
 
     // cleanup
     pthread_mutex_destroy(&mutex);
