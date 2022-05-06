@@ -5,7 +5,7 @@
 
 #define NUMBER_OF_PLAYERS 5
 
-// creating double linked list (may be overkill but first thaought). Might change that later!
+// creating double linked list (may be overkill but first thaought). Might change that later! DO NOT TOUCH!!!
 struct Player {
     int threadNumber;
     int diceRoll;
@@ -107,9 +107,11 @@ void append(struct Player** head_ref, int threadNumber, int diceRoll, int rollCo
     return;
 }
 
+// DO NOT TOUCH ABOVE!!!!!!!
+
 int main(void){
 
-    
+
 
     return EXIT_SUCCESS;
 }
