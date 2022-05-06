@@ -8,6 +8,8 @@
 #include "myqueue.h"
 #include "usemymutex.h"
 
+int mutex;
+
 struct myqueue_head queue;
 
 long long *consumer(void *cno)
