@@ -7,6 +7,8 @@
 
 #define NUMBER_OF_PLAYERS 5
 
+pthread_mutex_t mutex;
+
 // creating double linked list (may be overkill but first thaought). Might change that later! DO NOT TOUCH!!!
 struct Player {
     int threadNumber;
@@ -142,7 +144,69 @@ int rollDice(){
     return rand() % 6;
 }
 
-void* threadRoutine(){
+int search(struct Player** head_ref, int x)
+{
+ 
+    // Stores head Node
+    struct Player* temp = *head_ref;
+ 
+    // Stores position of the integer
+    // in the doubly linked list
+    int pos = 0;
+ 
+    // Traverse the doubly linked list
+    while (temp->hasRolled != x
+           && temp->next != NULL) {
+ 
+        // Update pos
+        pos++;
+ 
+        // Update temp
+        temp = temp->next;
+    }
+ 
+    // If the integer not present
+    // in the doubly linked list
+    if (temp->hasRolled != x)
+        return -1;
+ 
+    // If the integer present in
+    // the doubly linked list
+    return (pos + 1);
+}
+
+bool checkIfDiceRolled(struct Player** head_ref){
+    pthread_mutex_lock(&mutex);
+
+    bool rv = true;
+
+    for (int i = 0; i < NUMBER_OF_PLAYERS; ++i){
+        // check every player if the dices have rolled
+        if(search(*(&head_ref), false) == -1) rv = false;
+    }
+
+    pthread_mutex_unlock(&mutex);
+    return rv;
+}
+
+void printFunctionBeforeElimination(struct Player player){
+    pthread_mutex_lock(&mutex);
+
+    for (int i = 0; i < NUMBER_OF_PLAYERS; ++i){
+        // do printing
+
+    }
+
+    pthread_mutex_unlock(&mutex);
+}
+
+void printFunctionAfterElimination(struct Player player){
+    pthread_mutex_lock(&mutex);
+
+    pthread_mutex_unlock(&mutex);
+}
+
+void* threadRoutine(void* pt){
     // rolling dice + 1 because of range 0-5 and we want 1 - 6:
     int roll = rollDice() + 1;
 
@@ -161,7 +225,8 @@ void* threadRoutine(){
 
 int main(void){
 
-    // creating 5 Players for the game, modifiable at the top define
+    // initing mutex
+    pthread_mutex_init(&mutex, NULL);
     
     // creating starting point of DLL
     struct Player* head = NULL;
@@ -172,6 +237,24 @@ int main(void){
     push(&head, 2, 0, 0, false);
     push(&head, 3, 0, 0, false);
     push(&head, 4, 0, 0, false);
+
+    pthread_t con[NUMBER_OF_PLAYERS];
+    int name[NUMBER_OF_PLAYERS] = {0};
+
+    for (int i = 0; i < NUMBER_OF_PLAYERS; ++i)
+    {
+        name[i] = i;
+    }
+
+    // creating 5 threads for 5 players
+    for (int i = 0; i < NUMBER_OF_PLAYERS; ++i){
+        pthread_create(&con[i], NULL, (void *)threadRoutine, (void *)&name[i]);
+    }
+
+    // waiting for 5 threads for 5 players
+    for (int i = 0; i < NUMBER_OF_PLAYERS; ++i){
+        pthread_join(con[i], NULL);
+    }
 
     return EXIT_SUCCESS;
 }
