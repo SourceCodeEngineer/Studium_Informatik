@@ -12,44 +12,20 @@
 // rolled and saved
 int dice_values[THREAD_NUM] = {0};
 
-// if 0 then alive, if 1 just died, if 2 was dead
+// if 0 then alive, if -1 dead
 int alive[THREAD_NUM] = {0};
 
-int dead = THREAD_NUM;
+int loopAlive = THREAD_NUM;
 
 pthread_barrier_t barrierRolledDice;
 pthread_barrier_t barrierCalculated;
 
-void calculateLoser()
-{
-
-    // Calculate loser
-    int min = 6;
-    for (int i = 0; i < THREAD_NUM; ++i)
-    {
-        if (dice_values[i] < min)
-        {
-            min = dice_values[i];
-        }
-    }
-
-    for (int i = 0; i < THREAD_NUM; ++i)
-    {
-        if (dice_values[i] == min && alive[i] >= 0)
-        {
-            printf("Player %d got eliminated\n", i);
-            alive[i] = -1;
-            --dead;
-        }
-    }
-}
-
 void *roll(void *args)
 {
-    while (dead)
-    {
-        int index = *(int *)args;
+    int index = *(int *)args;
 
+    while (loopAlive)
+    {
         // rolling the dice for each thread individually
         if (alive[index] == 0)
         {
@@ -59,7 +35,7 @@ void *roll(void *args)
         // waiting for the barriers
         pthread_barrier_wait(&barrierRolledDice);
 
-        if (index == 1)
+        if (index == 0)
         {
 
             // check how many are alive
@@ -83,26 +59,49 @@ void *roll(void *args)
                     }
                 }
 
-                calculateLoser();
+                int min = 6;
+                for (int i = 0; i < THREAD_NUM; ++i)
+                {
+                    if (dice_values[i] < min)
+                    {
+                        min = dice_values[i];
+                    }
+                }
+
+                for (int i = 0; i < THREAD_NUM; ++i)
+                {
+                    if (dice_values[i] == min && alive[i] >= 0)
+                    {
+                        printf("%d eliminated\n", i);
+                        alive[i] = -1;
+                        --loopAlive;
+                    }
+                }
             }
 
-            printf("---------------------\n");
+            if (deadCounter < 4)
+            {
+                printf("---------------------\n");
+            }
 
-            if (deadCounter == 4){
-                for (int i = 0; i < THREAD_NUM; ++i){
-                    if(alive[i] == 0){
+            if (deadCounter == (THREAD_NUM - 1))
+            {
+                for (int i = 0; i < THREAD_NUM; ++i)
+                {
+                    if (alive[i] == 0)
+                    {
                         printf("Player %d won the game!\n", i);
                     }
                 }
-                dead = 0;
+                loopAlive = 0;
             }
 
-            if (deadCounter == 5){
+            if (deadCounter == THREAD_NUM)
+            {
                 printf("All players were eliminated!\n");
-                dead = 0;
+                loopAlive = 0;
             }
-
-        }
+        } 
 
         pthread_barrier_wait(&barrierCalculated);
     }
