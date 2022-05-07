@@ -15,7 +15,7 @@ int dice_values[THREAD_NUM] = {0};
 // if 0 then alive, if -1 dead
 int alive[THREAD_NUM] = {0};
 
-int loopAlive = THREAD_NUM;
+int loopAlive = THREAD_NUM + 1;
 
 pthread_barrier_t barrierRolledDice;
 pthread_barrier_t barrierCalculated;
@@ -49,30 +49,37 @@ void *roll(void *args)
                 }
             }
 
+            // check if 2 or more players are alive
             if (deadCounter < 4)
             {
+                // print the rolls
                 for (int i = 0; i < THREAD_NUM; ++i)
                 {
                     if (alive[i] == 0)
                     {
                         printf("Player %d rolled a %d\n", i, dice_values[i]);
+                        fflush(stdout);
                     }
                 }
 
                 int min = 6;
+
+                // set new minimum roll
                 for (int i = 0; i < THREAD_NUM; ++i)
                 {
-                    if (dice_values[i] < min)
+                    if (dice_values[i] < min && alive[i] >= 0)
                     {
                         min = dice_values[i];
                     }
                 }
 
+                // eliminate players taht rolled the minimum
                 for (int i = 0; i < THREAD_NUM; ++i)
                 {
-                    if (dice_values[i] == min && alive[i] >= 0)
+                    if ((dice_values[i] == min) && (alive[i] != -1))
                     {
-                        printf("%d eliminated\n", i);
+                        printf("Eliminated player %d\n", i);
+                        fflush(stdout);
                         alive[i] = -1;
                         --loopAlive;
                     }
@@ -82,6 +89,14 @@ void *roll(void *args)
             if (deadCounter < 4)
             {
                 printf("---------------------\n");
+                fflush(stdout);
+            }
+
+            if (deadCounter >= 5)
+            {
+                printf("All players were eliminated!\n");
+                fflush(stdout);
+                loopAlive = 0;
             }
 
             if (deadCounter == (THREAD_NUM - 1))
@@ -91,14 +106,10 @@ void *roll(void *args)
                     if (alive[i] == 0)
                     {
                         printf("Player %d won the game!\n", i);
+                        fflush(stdout);
+                        break;
                     }
                 }
-                loopAlive = 0;
-            }
-
-            if (deadCounter == THREAD_NUM)
-            {
-                printf("All players were eliminated!\n");
                 loopAlive = 0;
             }
         } 
@@ -138,7 +149,10 @@ int main(void)
             perror("Failed to join thread");
         }
     }
+
+    // cleanup
     pthread_barrier_destroy(&barrierRolledDice);
     pthread_barrier_destroy(&barrierCalculated);
+
     return EXIT_SUCCESS;
 }
