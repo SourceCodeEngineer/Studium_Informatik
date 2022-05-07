@@ -1,4 +1,4 @@
-// worked together in a colaboration with 
+// worked together in a colaboration with csaz7620, csaz2055, csaz7804
 
 #include <pthread.h>
 #include <stdlib.h>
@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <sys/queue.h>
 #include <stdatomic.h>
+#include <stdbool.h>
 
 // queue setup start
 struct myqueue_entry {
