@@ -6,8 +6,6 @@
 #include <unistd.h>
 #include <assert.h>
 #include <stdbool.h>
-#include <sys/queue.h>
-#include <stdatomic.h>
 
 #define THREAD_NUM 5
 
@@ -17,33 +15,13 @@ int dice_values[THREAD_NUM] = {0};
 // if 0 then alive, if 1 just died, if 2 was dead
 int alive[THREAD_NUM] = {0};
 
-// checks for loser(s)
-int status[THREAD_NUM] = {0};
-
-int minrolled = 0;
+int dead = THREAD_NUM;
 
 pthread_barrier_t barrierRolledDice;
 pthread_barrier_t barrierCalculated;
 
-void kill(){
-    for (int i = 0; i < THREAD_NUM; ++i){
-        if(dice_values[i] == minrolled){
-            alive[i] == 1;
-            printf("Player %d was eliminated\n", i);
-        }
-    }
-}
-
-void makeDeadWasDead(){
-    for (int i = 0; i < THREAD_NUM; ++i){
-        if(alive[i] == 1){
-            alive[i] == 2;
-        }
-    }
-}
-
-void calculateLoser(){
-    pthread_barrier_wait(&barrierRolledDice);
+void calculateLoser()
+{
 
     // Calculate loser
     int min = 6;
@@ -57,89 +35,80 @@ void calculateLoser(){
 
     for (int i = 0; i < THREAD_NUM; ++i)
     {
-        if (dice_values[i] == min)
+        if (dice_values[i] == min && alive[i] >= 0)
         {
-            status[i] = 1;
-            minrolled = min;
+            printf("Player %d got eliminated\n", i);
+            alive[i] = -1;
+            --dead;
         }
     }
 }
 
 void *roll(void *args)
 {
-    while (1)
+    while (dead)
     {
         int index = *(int *)args;
 
         // rolling the dice for each thread individually
-        if(alive[index] == 0){dice_values[index] = rand() % 6 + 1;}
+        if (alive[index] == 0)
+        {
+            dice_values[index] = rand() % 6 + 1;
+        }
 
         // waiting for the barriers
         pthread_barrier_wait(&barrierRolledDice);
-        
-        calculateLoser();
 
-        if (index == 0)
+        if (index == 1)
         {
-            int bc = 0;
+
+            // check how many are alive
+            int deadCounter = 0;
 
             for (int i = 0; i < THREAD_NUM; ++i)
             {
-                if (alive[i] == 1 || alive[i] == 2)
+                if (alive[i] == -1)
                 {
-                    ++bc;
+                    ++deadCounter;
                 }
             }
 
-            if (bc == 4)
+            if (deadCounter < 4)
             {
                 for (int i = 0; i < THREAD_NUM; ++i)
                 {
                     if (alive[i] == 0)
                     {
-                        printf("Player %d has won the game!\n", i);
-                        break;
+                        printf("Player %d rolled a %d\n", i, dice_values[i]);
                     }
                 }
+
+                calculateLoser();
             }
 
-            if (bc == 5)
-            {
+            printf("---------------------\n");
+
+            if (deadCounter == 4){
+                for (int i = 0; i < THREAD_NUM; ++i){
+                    if(alive[i] == 0){
+                        printf("Player %d won the game!\n", i);
+                    }
+                }
+                dead = 0;
+            }
+
+            if (deadCounter == 5){
                 printf("All players were eliminated!\n");
-                break;
+                dead = 0;
             }
 
-            for (int i = 0; i < THREAD_NUM; ++i)
-            {
-                if (alive[i] == 0)
-                {
-                    printf("Player %d has rolled a %d\n", i, dice_values[i]);
-                }
-            }
-
-            if (bc < 4)
-            {
-                kill();
-                printf("---------------------\n");
-                makeDeadWasDead();
-                sleep(1);
-            }
-        } else {
-            int bc = 0;
-
-            for (int i = 0; i < THREAD_NUM; ++i)
-            {
-                if (alive[i] == 1 || alive[i] == 2)
-                {
-                    ++bc;
-                }
-            }
-
-            if (bc > 3){
-                break;
-            }
         }
+
+        pthread_barrier_wait(&barrierCalculated);
     }
+
+    free(args);
+
     return NULL;
 }
 
