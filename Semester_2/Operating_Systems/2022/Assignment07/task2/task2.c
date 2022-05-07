@@ -66,19 +66,19 @@ long long *consumer()
     while (1)
     {
         while(atomic != 0){
-            my_mutex_lock();
+            atomic_flag_test_and_set(&atomic);
         }
         
         if (!myqueue_is_empty(&queue))
         {
             if (myqueue_pop(&queue) == 0)
             {
-                my_mutex_unlock();
+                atomic_flag_clear(&atomic);
                 break;
             }
             sum += 1;
         }
-        my_mutex_unlock();
+        atomic_flag_clear(&atomic);
     }
     *ret = sum;
     pthread_exit(ret);
@@ -115,6 +115,9 @@ int main(void)
     
     // creating thread 1 to read 10 mil 1's
     pthread_create(&con[1], NULL, (void *)consumer, (void *)&name[1]);
+
+    // wait for thread 0 to push 10 million 
+    pthread_join(con[0], &status);
 
     // wait for thread 1
     pthread_join(con[0], &status);
