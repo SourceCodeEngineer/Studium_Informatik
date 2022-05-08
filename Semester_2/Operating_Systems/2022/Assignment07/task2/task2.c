@@ -111,7 +111,7 @@ void *consumer(void *args)
             MUTEX_UNLOCK(mutex);
             break;
         }
-        count++;
+        ++count;
 
         MUTEX_UNLOCK(mutex);
     }
@@ -120,7 +120,7 @@ void *consumer(void *args)
 }
 void *producer(void *args)
 {
-    for (int i = 0; i < 1000 * 1000; i++)
+    for (int i = 0; i < 1000 * 1000; ++i)
     {
         MUTEX_LOCK(mutex);
         myqueue_push(&queue, 1);
@@ -149,7 +149,7 @@ int main(void)
         perror("Failed to create thread");
         return EXIT_FAILURE;
     }
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 2; ++i)
     {
 
         if (pthread_join(threads[i], NULL) != 0)
