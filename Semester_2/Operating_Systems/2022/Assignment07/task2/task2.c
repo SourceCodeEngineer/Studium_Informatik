@@ -19,6 +19,9 @@
 #include <stdatomic.h>
 #include <stdbool.h>
 
+#define NUMBER 10000000
+#define THREAD_NUMBER 2
+
 // queue setup start
 struct myqueue_entry
 {
@@ -120,7 +123,7 @@ void *consumer(void *args)
 }
 void *producer(void *args)
 {
-    for (int i = 0; i < 1000 * 1000; ++i)
+    for (int i = 0; i < NUMBER; ++i)
     {
         MUTEX_LOCK(mutex);
         myqueue_push(&queue, 1);
@@ -135,7 +138,7 @@ void *producer(void *args)
 
 int main(void)
 {
-    pthread_t threads[2];
+    pthread_t threads[THREAD_NUMBER];
     myqueue_init(&queue);
 
     MUTEX_INIT(mutex)
@@ -149,7 +152,7 @@ int main(void)
         perror("Failed to create thread");
         return EXIT_FAILURE;
     }
-    for (int i = 0; i < 2; ++i)
+    for (int i = 0; i < THREAD_NUMBER; ++i)
     {
 
         if (pthread_join(threads[i], NULL) != 0)
