@@ -1,0 +1,33 @@
+e01.MyCustomClass1@6acbcfc0
+e01.MyCustomClass1@5f184fc6
+e01.MyCustomClass1@3feba861
+e01.MyCustomClass1@5b480cf9
+
+a) Why is the string representation of the instances of type MyCustomClass1 rather cryptic?
+Explain why that is the case and where this string representation comes from. Put your
+answers in a file called e01.txt.
+
+If you just print an instance with System.out.println then you get the classname here e01.MyCustomClass1 after
+that an @ and then the hashcode in hexadezimal.
+If you convert these to Int you get the values which are printed later
+6acbcfc0 = 1791741888
+
+mcc1a.hashCode() 1791741888
+
+
+
+b) Assume that two instances of type MyCustomClass1 are equal if the values of their attributes
+are equal. Why do some of the comparisons with equals() not show the expected outcome?
+Put your answers in a file called e01.txt.
+
+ MyCustomClass1 mcc1a = new MyCustomClass1(17, text, 13.4, 20);
+        MyCustomClass1 mcc1b = new MyCustomClass1(int17, text, 13.4, 20);
+        MyCustomClass1 mcc1c = new MyCustomClass1(17, "hallo", 13.4, Integer.valueOf(20));
+        MyCustomClass1 mcc1d = new MyCustomClass1(18, "hallo", 12.3, Integer.valueOf(800));
+
+The equals() method of the Object class compare the equality of two objects. The two objects will be equal if they share the same memory address.
+So it can only be true if :
+ MyCustomClass1 mcc1a = new MyCustomClass1(17, text, 13.4, 20);
+ MyCustomClass1 mcc1b = mcc1a
+.
+

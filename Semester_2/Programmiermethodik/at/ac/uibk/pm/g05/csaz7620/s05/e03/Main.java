@@ -1,7 +1,9 @@
 package at.ac.uibk.pm.g05.csaz7620.s05.e03;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Main {
 
@@ -28,13 +30,49 @@ public class Main {
 
         for (int i = 0; i < csv.length; i++) {
             String csv_row = csv[i];
+            String [] splitted = csv_row.split(",");
+            String name = splitted[0];
+            String address = splitted[1];
+            String birthday = splitted[2];
+            String hobbies = splitted[3];
 
-            /**
-             * add code here to split the data of each row, such that you can create
-             * instances of type Person
-             * 
-             * store the individual instances in the list named persons
-             */
+            String [] addressSplitted = address.split(";");
+            String street = addressSplitted[0];
+            String housenumber = "";
+            
+            for(int j = 0; j < street.length();j++){
+                if(Character.isDigit(street.charAt(j))){
+                    housenumber = street.substring(j, street.length()) + housenumber;
+                    street = street.substring(0,j-1);
+                }
+            }
+            char[] housenumberArray = housenumber.toCharArray();
+            char firstNumber = housenumberArray[0];
+            if(firstNumber == '0'){
+                housenumber = housenumber.substring(1,housenumber.length());
+            }
+
+            String zipCodeString = addressSplitted[1];
+            int zipCode = Integer.parseInt(zipCodeString);
+            String city = addressSplitted[2];
+            String country = addressSplitted[3];
+
+            Address address1 = new Address(street,housenumber,zipCode,city,country);
+
+            String [] nameSplitted = name.split(" ");
+            String firstName = nameSplitted[0];
+            String lastName = nameSplitted[1];
+            System.out.println(lastName);
+
+            String[] hobbiesSplitted = hobbies.split(":");
+            String hobbiesSplitted2 = hobbiesSplitted[1];
+            String[] formatedHobbies = hobbiesSplitted2.split(";");
+
+            for(int j = 0; j<formatedHobbies.length;j++){
+                formatedHobbies[j] = formatedHobbies[j].toLowerCase();
+            }
+            Person person = new Person(firstName,lastName,address1,birthday,formatedHobbies);
+            persons.add(person);
 
         }
 

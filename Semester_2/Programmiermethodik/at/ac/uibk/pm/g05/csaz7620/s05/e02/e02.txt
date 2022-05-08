@@ -1,0 +1,15 @@
+a) In the main method, where mcc1a is created, an integer and a float literal are passed where
+the constructor expects something of type Integer and Double, respectively. At the instantiation of mcc1b, the int variable int17 is passed where the constructor expects something of
+type Integer. Why does this work? Which mechanism in Java is used to handle such cases?
+
+This works with the Autoboxing.
+The Compiler changes automatically the type.
+
+This works with the Wrapper Classes so the Compiler changes automatically the type.
+
+b)At the definition of mcc1c and mcc1d in the main method, a value of type Integer is passed
+where the constructor expects an value of data type int. Explain how Java handles this case
+and which mechanism is used to make this work.
+
+This works with the Autoboxing.
+The Compiler changes automatically the type.

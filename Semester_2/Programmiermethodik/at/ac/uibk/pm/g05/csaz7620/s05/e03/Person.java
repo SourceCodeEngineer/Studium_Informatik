@@ -1,5 +1,7 @@
 package at.ac.uibk.pm.g05.csaz7620.s05.e03;
 
+import java.util.Arrays;
+
 public class Person {
 
     private String firstname;
@@ -56,4 +58,14 @@ public class Person {
         this.hobbies = hobbies;
     }
 
+    @Override
+    public String toString() {
+        return "Person{" +
+                "firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", address=" + address +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", hobbies=" + Arrays.toString(hobbies) +
+                '}';
+    }
 }
