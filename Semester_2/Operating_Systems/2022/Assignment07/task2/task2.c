@@ -1,3 +1,5 @@
+// worked together in a colaboration with csaz7620, csaz2055, csaz7804
+
 #include <fcntl.h>
 #include <poll.h>
 #include <stdio.h>
