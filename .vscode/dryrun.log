@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/sourcecodeengineer/StudiumInformatik/Studium_Informatik'
+make: Leaving directory '/home/sourcecodeengineer/StudiumInformatik/Studium_Informatik'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+
