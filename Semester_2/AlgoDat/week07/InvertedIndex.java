@@ -1,3 +1,5 @@
+package week07;
+
 public class InvertedIndex {
     public static void main(String[] args) {
         String test = """
@@ -19,6 +21,7 @@ public class InvertedIndex {
     }
 
     //think of an appropriate return type
-    public static invertedIndex(String string) {
+    public static int invertedIndex(String string) {
+        return -1;
     }
 }

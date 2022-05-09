@@ -1,3 +1,5 @@
+package week07;
+
 import java.util.*;
 
 public class UniqueCharacterCount {
