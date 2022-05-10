@@ -1,5 +1,7 @@
 package week07;
 
+import java.util.*;
+
 public class InvertedIndex {
     public static void main(String[] args) {
         String test = """
@@ -20,8 +22,42 @@ public class InvertedIndex {
         System.out.println(invertedIndex(test));
     }
 
-    //think of an appropriate return type
-    public static int invertedIndex(String string) {
-        return -1;
+    public static HashMap<String,ArrayList<Integer>> invertedIndex(String string) {
+
+        HashMap<String, ArrayList<Integer>> hashMap= new HashMap<>();
+
+        // all to lower because I don't care about upper or lower case difference
+        String[] lineArray = string.toLowerCase().replaceAll("[^a-zA-Z0-9\\s\\r\\n]", "").split("\n");
+
+        // creating double array
+        String[][] wordArray = new String[lineArray.length][];
+
+        for(int i = 0; i < lineArray.length; ++i) {
+
+            // add every word of line i to the word array
+            wordArray[i] = lineArray[i].split(" ");
+
+            // do the loopy loop
+            for(String word : wordArray[i]) {
+
+                // create array List
+                ArrayList<Integer> arrayList;
+
+                // if hashmap doesn't contain the word do stuff
+                if(!hashMap.containsKey(word)) {
+
+                    arrayList = new ArrayList<Integer>();
+
+                    arrayList.add(++i);
+
+                    hashMap.put(word, arrayList);
+
+                } else {
+                    arrayList = hashMap.get(word);
+                    arrayList.add(++i);
+                }
+            }
+        }
+        return hashMap;
     }
 }
