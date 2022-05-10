@@ -1,0 +1,2 @@
+There is not really a difference in those 2 methods.
+Atomic is faster, for me atleast.

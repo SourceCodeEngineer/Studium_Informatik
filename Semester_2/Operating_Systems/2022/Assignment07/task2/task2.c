@@ -86,7 +86,7 @@ void my_mutex_lock()
 {
     while (atomic_flag_test_and_set(&mutex))
     {
-        // if flag isnt set than the it returns true. so the section is "locked"
+        // locked obviously
     }
 }
 void my_mutex_unlock()
