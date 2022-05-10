@@ -51,6 +51,45 @@ public class UniqueCharacterCount {
         // the suggested solution uses the WordCountPair class, which is provided to you
         // You do not have to use this class, if you are unhappy with this approach
         List<WordCountPair> wordUniqueCharsCountPairs = new ArrayList<>();
+
+        // split string into substrings
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        String stringWithoutNL = string.replace('\n', '.');
+        stringWithoutNL = stringWithoutNL.replace('.', ',');
+        stringWithoutNL = stringWithoutNL.replace(' ', ',');
+        stringWithoutNL = stringWithoutNL.replaceAll(",,", ",");
+
+        String[] stringArray = stringWithoutNL.split(",");
+
+        for (int i = 0; i < stringArray.length; ++i){
+            stringArray[i] = stringArray[i].toLowerCase();
+        }
+
+        // remove duplicates from string array
+        stringArray = new HashSet<String>(Arrays.asList(stringArray)).toArray(new String[0]);
+
+        for (String x: stringArray) {
+            // returns value of the given charArray
+            char[] temp = getCharArray(x.toCharArray());
+
+            WordCountPair wcp = new WordCountPair(x, temp.length);
+
+            wordUniqueCharsCountPairs.add(wcp);
+        }
+
+        Collections.sort(wordUniqueCharsCountPairs, WordCountPair::compareTo);
+
         return wordUniqueCharsCountPairs;
+    }
+
+    // get unique char array
+    public static char[] getCharArray(char[] array) {
+        String _array = "";
+        for(int i = 0; i < array.length; ++i) {
+            if(_array.indexOf(array[i]) == -1) // check if a char already exist, if not exist then return -1
+                _array = _array+array[i];      // add new char
+        }
+        return _array.toCharArray();
     }
 }
