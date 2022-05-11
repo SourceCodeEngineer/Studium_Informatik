@@ -13,26 +13,33 @@ int main(int argc, char const *argv[])
     struct sockaddr_in server, client;
     socklen_t len;
     int port = 1337;
-    char buffer[1024];
+    char buffer[BUFSIZ];
+
     if (argc == 2)
     {
         port = atoi(argv[1]);
     }
+
     serverFd = socket(AF_INET, SOCK_STREAM, 0);
+
     if (serverFd < 0)
     {
         perror("Cannot create socket");
         exit(1);
     }
+
     server.sin_family = AF_INET;
     server.sin_addr.s_addr = INADDR_ANY;
     server.sin_port = htons(port);
+
     len = sizeof(server);
+
     if (bind(serverFd, (struct sockaddr *)&server, len) < 0)
     {
         perror("Cannot bind socket");
         exit(2);
     }
+
     if (listen(serverFd, 10) < 0)
     {
         perror("Listen error");
@@ -40,29 +47,33 @@ int main(int argc, char const *argv[])
     } else {
         printf("Listening on port %d.\n", port);
     }
+    
     while (1)
     {
         len = sizeof(client);
+
         if ((clientFd = accept(serverFd, (struct sockaddr *)&client, &len)) < 0)
         {
             perror("accept error");
             exit(4);
         }
+
         char *client_ip = inet_ntoa(client.sin_addr);
+
         printf("Accepted new connection from a client %s:%d\n", client_ip, ntohs(client.sin_port));
+
         memset(buffer, 0, sizeof(buffer));
+
         int size = read(clientFd, buffer, sizeof(buffer));
+
         if (size < 0)
         {
             perror("read error");
             exit(5);
         }
+
         printf("Echo: %s\n", buffer);
-        if (write(clientFd, buffer, size) < 0)
-        {
-            perror("write error");
-            exit(6);
-        }
+        
         close(clientFd);
     }
     close(serverFd);
