@@ -23,6 +23,9 @@
 pthread_mutex_t mutexQueue;
 pthread_cond_t condQueue;
 
+// create job_id
+// create thread_pool
+
 // start of FIFO queue implementation - pls do not touch below!
 struct myqueue_entry
 {
@@ -76,7 +79,7 @@ void pool_create(thread_pool* pool, size_t size){
 
 // The job_id pool_submit(thread_pool* pool, job_function start_routine, job_arg arg) 
 //submits a job to the thread pool and returns a job_id.
-void job_id_pool_submit(thread_pool* pool, job_function start_routine, job_arg arg){
+job_id pool_submit(thread_pool* pool, job_function start_routine, job_arg arg){
 
 }
 
