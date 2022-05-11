@@ -10,7 +10,7 @@ int main(int argc, char const *argv[])
     int serverFd, clientFd;
     struct sockaddr_in server, client;
     socklen_t len;
-    int port = 1234;
+    int port = 1337;
     char buffer[1024];
     if (argc == 2)
     {
