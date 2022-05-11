@@ -4,6 +4,8 @@
 #include <arpa/inet.h> // sockaddr_in, AF_INET, SOCK_STREAM, INADDR_ANY, socket etc...
 #include <string.h>    // memset
 
+
+// server program, client program can be found at my Github Repo
 int main(int argc, char const *argv[])
 {
 
