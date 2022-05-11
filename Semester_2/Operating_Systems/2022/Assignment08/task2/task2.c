@@ -37,11 +37,12 @@ int main(int argc, char const *argv[])
     {
         perror("Listen error");
         exit(3);
+    } else {
+        printf("Listening on port %d.\n", port);
     }
     while (1)
     {
         len = sizeof(client);
-        printf("waiting for clients\n");
         if ((clientFd = accept(serverFd, (struct sockaddr *)&client, &len)) < 0)
         {
             perror("accept error");
@@ -56,7 +57,7 @@ int main(int argc, char const *argv[])
             perror("read error");
             exit(5);
         }
-        printf("received %s from client\n", buffer);
+        printf("Echo: %s\n", buffer);
         if (write(clientFd, buffer, size) < 0)
         {
             perror("write error");
