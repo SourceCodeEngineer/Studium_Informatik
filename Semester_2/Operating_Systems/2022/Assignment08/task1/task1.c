@@ -24,7 +24,15 @@ pthread_mutex_t mutexQueue;
 pthread_cond_t condQueue;
 
 // create job_id
+struct job_id {
+    int id;
+    struct job_id* next;
+} job_id;
+
 // create thread_pool
+struct thread_pool{
+    int thrads;
+} thread_pool;
 
 // start of FIFO queue implementation - pls do not touch below!
 struct myqueue_entry
@@ -66,6 +74,9 @@ static int myqueue_pop(myqueue *q)
 }
 // end of queue implementation - pls do not touch above!
 
+typedef void* (*job_function)(void*);
+typedef void* job_arg;
+
 void* routine(void* counter){
     *(atomic_int *)counter += -1;
     pthread_exit(0);
@@ -73,24 +84,24 @@ void* routine(void* counter){
 
 // The void pool_create(thread_pool* pool, size_t size) function initializes a thread_pool 
 //by starting size worker threads. Each thread checks for submitted jobs and runs them.
-void pool_create(thread_pool* pool, size_t size){
+void pool_create(struct thread_pool* pool, size_t size){
 
 }
 
 // The job_id pool_submit(thread_pool* pool, job_function start_routine, job_arg arg) 
 //submits a job to the thread pool and returns a job_id.
-job_id pool_submit(thread_pool* pool, job_function start_routine, job_arg arg){
-
+struct job_id pool_submit(struct thread_pool* pool, job_function start_routine, job_arg arg){
+    
 }
 
 // The void pool_await(job_id id) function waits for the job with the given job_id to finish.
-void pool_await(job_id id){
+void pool_await(struct job_id id){
 
 }
 
 // shuts down the thread pool and frees all associated resources. Worker threads finish the 
 //currently running job (if any) and then stop gracefully.
-void pool_destroy(thread_pool* pool){
+void pool_destroy(struct thread_pool* pool){
 
 }
 
