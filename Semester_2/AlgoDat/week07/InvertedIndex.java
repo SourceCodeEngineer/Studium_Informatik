@@ -27,34 +27,34 @@ public class InvertedIndex {
         HashMap<String, ArrayList<Integer>> hashMap= new HashMap<>();
 
         // all to lower because I don't care about upper or lower case difference
-        String[] lineArray = string.toLowerCase().replaceAll("[^a-zA-Z0-9\\s\\r\\n]", "").split("\n");
+        String[] lineArray = string.toLowerCase().replaceAll(",|\\.", "").split("\n");
 
         // creating double array
         String[][] wordArray = new String[lineArray.length][];
 
-        for(int i = 0; i < lineArray.length; ++i) {
+        for (int i = 0; i < lineArray.length; ++i) {
 
             // add every word of line i to the word array
             wordArray[i] = lineArray[i].split(" ");
 
             // do the loopy loop
-            for(String word : wordArray[i]) {
+            for (int j = 0; j < wordArray[i].length; ++j) {
 
                 // create array List
                 ArrayList<Integer> arrayList;
 
                 // if hashmap doesn't contain the word do stuff
-                if(!hashMap.containsKey(word)) {
+                if(!hashMap.containsKey(wordArray[i][j])) {
 
                     arrayList = new ArrayList<Integer>();
 
-                    arrayList.add(++i);
+                    arrayList.add(i + 1);
 
-                    hashMap.put(word, arrayList);
+                    hashMap.put(wordArray[i][j], arrayList);
 
                 } else {
-                    arrayList = hashMap.get(word);
-                    arrayList.add(++i);
+                    arrayList = hashMap.get(wordArray[i][j]);
+                    arrayList.add(i + 1);
                 }
             }
         }

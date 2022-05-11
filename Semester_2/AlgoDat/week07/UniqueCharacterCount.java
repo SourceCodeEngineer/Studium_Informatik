@@ -55,6 +55,7 @@ public class UniqueCharacterCount {
         // split string into substrings
         ArrayList<String> arrayList = new ArrayList<>();
 
+        // could be optimized with more regex stuff but laziness got the better time of me
         String stringWithoutNL = string.replace('\n', '.');
         stringWithoutNL = stringWithoutNL.replace('.', ',');
         stringWithoutNL = stringWithoutNL.replace(' ', ',');

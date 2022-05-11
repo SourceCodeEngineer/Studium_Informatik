@@ -6,7 +6,7 @@ LIBS = -lrt -pthread
 all: task1 
 
 task1: task1.o
-	$(CC) $(LDFLAGS) $^ $(LIBS) -o $@ -O3
+	$(CC) $(LDFLAGS) $^ $(LIBS) -o $@
 
 task1.o: task1.c 
 	$(CC) $(CFLAGS) -c -o $@ $^
