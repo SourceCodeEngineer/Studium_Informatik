@@ -9,10 +9,16 @@
 int main(int argc, char const *argv[])
 {
 
+    
+
     int serverFd, clientFd;
     struct sockaddr_in server, client;
     socklen_t len;
+
+    // default port if no port is given to listen on!
     int port = 1337;
+
+    // buffer 
     char buffer[BUFSIZ];
 
     if (argc == 2)
@@ -58,10 +64,6 @@ int main(int argc, char const *argv[])
             exit(4);
         }
 
-        char *client_ip = inet_ntoa(client.sin_addr);
-
-        printf("Accepted new connection from a client %s:%d\n", client_ip, ntohs(client.sin_port));
-
         memset(buffer, 0, sizeof(buffer));
 
         int size = read(clientFd, buffer, sizeof(buffer));
@@ -72,10 +74,17 @@ int main(int argc, char const *argv[])
             exit(5);
         }
 
-        printf("Echo: %s\n", buffer);
+        if (strcmp(buffer, "/shutdown")){
+            printf("Shutting down\n");
+            close(clientFd);
+            break;
+        } else {
+            printf("Echo: %s\n", buffer);
+        }
         
-        close(clientFd);
     }
+
     close(serverFd);
+
     return EXIT_SUCCESS;
 }
