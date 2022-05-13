@@ -8,8 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
- 
-# Make data base, printed on Fri May 13 09:16:17 2022
+# Make data base, printed on Fri May 13 16:50:19 2022
 
 # Variables
 
@@ -18,9 +17,9 @@ GDK_BACKEND = x11
 # environment
 LC_ALL = C
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-55cdc1ae-d1cc-49ab-8ae8-adb801d40570.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-ad5c7ab0-2f00-47a6-925c-5e3c6d049512.sock
 # environment
-VSCODE_CWD = /home/sourcecodeengineer/StudiumInformatik/Studium_Informatik/Semester_2/Operating_Systems/2022/Assignment08
+VSCODE_CWD = /home/sourcecodeengineer
 # environment
 WINDOWID = 0
 # environment
@@ -43,9 +42,8 @@ PWD = /home/sourcecodeengineer/StudiumInformatik/Studium_Informatik
 %D = $(patsubst %/,%,$(dir $%))
 # environment
 XDG_DATA_DIRS = /usr/share/xfce4:/usr/local/share/:/usr/share/:/usr/share
- 
 # environment
-OLDPWD = /home/sourcecodeengineer/StudiumInformatik/Studium_Informatik
+OLDPWD = /home/sourcecodeengineer
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
@@ -103,7 +101,7 @@ MAKEFILE_LIST :=
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 4197
+VSCODE_PID = 361546
 # environment
 XDG_SESSION_TYPE = x11
 # automatic
@@ -298,7 +296,8 @@ GNUmakefile:
 
 # strcache performance: lookups = 23 / hit rate = 13%
 # hash-table stats:
+ 
 # Load=20/8192=0%, Rehash=0, Collisions=0/23=0%
-# Finished Make data base on Fri May 13 09:16:17 2022
+# Finished Make data base on Fri May 13 16:50:19 2022
 
  
