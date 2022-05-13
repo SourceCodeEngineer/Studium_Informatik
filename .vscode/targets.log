@@ -8,7 +8,8 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed May 11 08:54:30 2022
+ 
+# Make data base, printed on Fri May 13 09:16:17 2022
 
 # Variables
 
@@ -17,9 +18,9 @@ GDK_BACKEND = x11
 # environment
 LC_ALL = C
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-d2effff0-7777-424d-92b1-0572b24dae6c.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-55cdc1ae-d1cc-49ab-8ae8-adb801d40570.sock
 # environment
-VSCODE_CWD = /home/sourcecodeengineer
+VSCODE_CWD = /home/sourcecodeengineer/StudiumInformatik/Studium_Informatik/Semester_2/Operating_Systems/2022/Assignment08
 # environment
 WINDOWID = 0
 # environment
@@ -42,8 +43,9 @@ PWD = /home/sourcecodeengineer/StudiumInformatik/Studium_Informatik
 %D = $(patsubst %/,%,$(dir $%))
 # environment
 XDG_DATA_DIRS = /usr/share/xfce4:/usr/local/share/:/usr/share/:/usr/share
+ 
 # environment
-OLDPWD = /home/sourcecodeengineer
+OLDPWD = /home/sourcecodeengineer/StudiumInformatik/Studium_Informatik
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
@@ -51,7 +53,7 @@ VSCODE_LOG_STACK = false
 # automatic
 %F = $(notdir $%)
 # environment
-VSCODE_CODE_CACHE_PATH = /home/sourcecodeengineer/.config/Code/CachedData/57fd6d0195bb9b9d1b49f6da5db789060795de47
+VSCODE_CODE_CACHE_PATH = /home/sourcecodeengineer/.config/Code/CachedData/da15b6fd3ef856477bf6f4fb29ba1b7af717770d
 # environment
 XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session0
 # environment
@@ -85,7 +87,7 @@ LESS_TERMCAP_ue = [0m
 # environment
 MFLAGS = -pqrR
 # environment
-SSH_AUTH_SOCK = /tmp/ssh-XXXXXXDqQ78c/agent.901
+SSH_AUTH_SOCK = /tmp/ssh-XXXXXX81bPFU/agent.901
 # default
 .SHELLFLAGS := -c
 # environment
@@ -101,7 +103,7 @@ MAKEFILE_LIST :=
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 1349
+VSCODE_PID = 4197
 # environment
 XDG_SESSION_TYPE = x11
 # automatic
@@ -183,7 +185,7 @@ GTK_MODULES = gail:atk-bridge
 # default
 MAKE_VERSION := 4.3
 # environment
-SSH_AGENT_PID = 986
+SSH_AGENT_PID = 985
 # environment
 _ = /usr/bin/code
 # environment
@@ -203,7 +205,7 @@ _JAVA_OPTIONS = -Dawt.useSystemAAFontSettings=on -Dswing.aatext=true
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-d31a8a43-1.67.0-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-d31a8a43-1.67.1-main.sock
 # environment
 TERM = xterm-256color
 # environment
@@ -297,6 +299,6 @@ GNUmakefile:
 # strcache performance: lookups = 23 / hit rate = 13%
 # hash-table stats:
 # Load=20/8192=0%, Rehash=0, Collisions=0/23=0%
-# Finished Make data base on Wed May 11 08:54:30 2022
+# Finished Make data base on Fri May 13 09:16:17 2022
 
  
