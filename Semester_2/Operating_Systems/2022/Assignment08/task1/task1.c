@@ -15,8 +15,9 @@
 #include <sys/queue.h>
 #include <stdatomic.h>
 #include <stdbool.h>
+#include "myqueue.h"
 
-// can't go higher then 32000 threads.
+// can't go higher then 32000 threads on my system, zid works with 50k.
 #define NUMBER_OF_THREADS 32000
 #define ATOMIC_VALUE 50000
 #define THREAD_POOL 1000
@@ -25,57 +26,16 @@ pthread_mutex_t mutexQueue;
 pthread_cond_t condQueue;
 
 // create job_id
-struct job_id
+typedef struct job_id
 {
-    int id;
-    struct job_id *next;
+    // what goes in here?
 } job_id;
 
 // create thread_pool
-struct thread_pool
+typedef struct thread_pool
 {
-    int thrads;
+    // what goes in here?
 } thread_pool;
-
-// start of FIFO queue implementation - pls do not touch below!
-struct myqueue_entry
-{
-    int value;
-    STAILQ_ENTRY(myqueue_entry)
-    entries;
-};
-
-STAILQ_HEAD(myqueue_head, myqueue_entry);
-
-typedef struct myqueue_head myqueue;
-
-static void myqueue_init(myqueue *q)
-{
-    STAILQ_INIT(q);
-}
-
-static bool myqueue_is_empty(myqueue *q)
-{
-    return STAILQ_EMPTY(q);
-}
-
-static void myqueue_push(myqueue *q, int value)
-{
-    struct myqueue_entry *entry = malloc(sizeof(struct myqueue_entry));
-    entry->value = value;
-    STAILQ_INSERT_TAIL(q, entry, entries);
-}
-
-static int myqueue_pop(myqueue *q)
-{
-    assert(!myqueue_is_empty(q));
-    struct myqueue_entry *entry = STAILQ_FIRST(q);
-    const int value = entry->value;
-    STAILQ_REMOVE_HEAD(q, entries);
-    free(entry);
-    return value;
-}
-// end of queue implementation - pls do not touch above!
 
 typedef void *(*job_function)(void *);
 typedef void *job_arg;
@@ -88,10 +48,11 @@ void *routine(void *counter)
 
 // The void pool_create(thread_pool* pool, size_t size) function initializes a thread_pool
 // by starting size worker threads. Each thread checks for submitted jobs and runs them.
-void pool_create(struct thread_pool *pool, size_t size)
+void pool_create(thread_pool *pool, size_t size)
 {
     pthread_t threads[size];
 
+    // creating size threads
     for (size_t i = 0; i < size; ++i)
     {
         if (pthread_create(&threads[0], NULL, pool_submit, NULL) != 0)
@@ -100,11 +61,15 @@ void pool_create(struct thread_pool *pool, size_t size)
             return EXIT_FAILURE;
         }
     }
+
+    // executing the job
+
+    
 }
 
 // The job_id pool_submit(thread_pool* pool, job_function start_routine, job_arg arg)
 // submits a job to the thread pool and returns a job_id.
-struct job_id pool_submit(struct thread_pool *pool, job_function start_routine, job_arg arg)
+job_id pool_submit(thread_pool *pool, job_function start_routine, job_arg arg)
 {
     // doing the routine
     pthread_mutex_lock(&mutexQueue);
@@ -117,22 +82,23 @@ struct job_id pool_submit(struct thread_pool *pool, job_function start_routine, 
 }
 
 // The void pool_await(job_id id) function waits for the job with the given job_id to finish.
-void pool_await(struct job_id id)
+void pool_await(job_id id)
 {
 }
 
 // shuts down the thread pool and frees all associated resources. Worker threads finish the
 // currently running job (if any) and then stop gracefully.
-void pool_destroy(struct thread_pool *pool)
+void pool_destroy(thread_pool *pool)
 {
+
 }
 
 int main(int argc, char **argv)
 {
 
-    if (argc != 3)
+    if (argc != 1)
     {
-        printf("Usgae: (input 1 for task1, 2 for task2), threadpoolsize\n");
+        printf("Usgae: %s", argv[0]);
         return EXIT_FAILURE;
     }
 
@@ -141,20 +107,23 @@ int main(int argc, char **argv)
     if (selection == 2)
     {
         // do task2
-        int tpz = atoi(argv[2]);
 
         // init mutex
         pthread_mutex_init(&mutexQueue, NULL);
 
-        // init cond
-        pthread_cond_init(&condQueue, NULL);
+        // creating pool
+        pool_create();
 
-        
+        // submitting 50000 jobs
+        for (int i = 0; i < 50000; ++i)
+        {
+            pool_submit();
+        }
+                
+        // if queue is empty -> pool destroy
+        pool_destroy();
 
-        // create threadpool of size tpz
-        pool_create(, tpz);
-
-        // 
+        pthread_mutex_destroy(&mutexQueue);
     }
     else
     {
