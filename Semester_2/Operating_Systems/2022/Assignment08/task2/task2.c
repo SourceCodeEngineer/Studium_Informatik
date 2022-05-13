@@ -75,12 +75,23 @@ int main(int argc, char const *argv[])
         return -1;
     }
 
+    int tmp = 0;
+
     while (1)
     {
-        if (recv(client_sock, buff, sizeof(buff), 0) < 0)
+        tmp = recv(client_sock, buff, sizeof(buff), 0);
+
+        if (tmp < 0)
         {
             printf("Couldn't receive\n");
+            close(listenfd);
             return -1;
+        }
+
+        if (tmp == 0){
+            printf("Shutting down!\n");
+            close(listenfd);
+            break;
         }
 
         if (strcmp(buff, "/shutdown\r\n") == 0)
