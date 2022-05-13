@@ -105,7 +105,6 @@ int main(int argc, char const *argv[])
         if (tmp == 0)
         {
             accepter++;
-            printf("\n");
         }
 
         if (strcmp(buff, "/shutdown\r\n") == 0)
