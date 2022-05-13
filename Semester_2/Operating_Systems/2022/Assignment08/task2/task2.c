@@ -2,14 +2,12 @@
 #include <stdlib.h>    // exit, atoi
 #include <unistd.h>    // read, write, close
 #include <arpa/inet.h> // sockaddr_in, AF_INET, SOCK_STREAM, INADDR_ANY, socket etc...
-#include <string.h>    // memset
+#include <string.h>    // memset, strcmp
 
 
 // server program, client program can be found at my Github Repo
 int main(int argc, char const *argv[])
 {
-
-    
 
     int serverFd, clientFd;
     struct sockaddr_in server, client;
@@ -54,8 +52,11 @@ int main(int argc, char const *argv[])
         printf("Listening on port %d.\n", port);
     }
     
+    // make it to a for loop of connected clients and lock it with mutexes.
     while (1)
     {
+
+        // create a while loop that creates a socket for the first connection and check for new connections
         len = sizeof(client);
 
         if ((clientFd = accept(serverFd, (struct sockaddr *)&client, &len)) < 0)
