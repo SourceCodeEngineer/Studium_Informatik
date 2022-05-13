@@ -68,7 +68,16 @@ int main(int argc, char const *argv[])
 
     int tmp = 0;
 
-    int accepter = 1;
+    int accepter = 0;
+
+    client_size = sizeof(client_addr);
+    client_sock = accept(listenfd, (struct sockaddr *)&client_addr, &client_size);
+
+    if (client_sock < 0)
+    {
+        printf("Can't accept\n");
+        return -1;
+    }
 
     while (1)
     {
@@ -82,6 +91,7 @@ int main(int argc, char const *argv[])
                 printf("Can't accept\n");
                 return -1;
             }
+            --accepter;
         }
 
         tmp = recv(client_sock, buff, sizeof(buff), 0);
@@ -94,9 +104,7 @@ int main(int argc, char const *argv[])
 
         if (tmp == 0)
         {
-            printf("Shutting down!\n");
-            close(listenfd);
-            break;
+            accepter++;
         }
 
         if (strcmp(buff, "/shutdown\r\n") == 0)
