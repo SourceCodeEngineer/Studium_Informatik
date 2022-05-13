@@ -4,88 +4,97 @@
 #include <arpa/inet.h> // sockaddr_in, AF_INET, SOCK_STREAM, INADDR_ANY, socket etc...
 #include <string.h>    // memset, strcmp
 
+/* DO NOT TOUCH BELOW!
+TELNET SCRIPT
+for i in $(seq 1 10); \
+        do sleep 1; \
+        telnet localhost 1337 & \
+done
+
+DO NOT TOUCH ABOVE! */
+
+#define DO_OR_DIE(x, s) \
+    do                  \
+    {                   \
+        if ((x) < 0)    \
+        {               \
+            perror(s);  \
+            exit(1);    \
+        }               \
+    } while (0)
 
 // server program, client program can be found at my Github Repo
 int main(int argc, char const *argv[])
 {
-
-    int serverFd, clientFd;
-    struct sockaddr_in server, client;
-    socklen_t len;
-
-    // default port if no port is given to listen on!
-    int port = 1337;
-
-    // buffer 
-    char buffer[BUFSIZ];
-
-    if (argc == 2)
+    if (argc != 2)
     {
-        port = atoi(argv[1]);
+        printf("Usage: %s PORT\n", argv[0]);
     }
 
-    serverFd = socket(AF_INET, SOCK_STREAM, 0);
+    int client_sock;
+    socklen_t client_size;
+    int listenfd;
 
-    if (serverFd < 0)
+    char buff[BUFSIZ];
+
+    int port = atoi(argv[1]);
+
+    printf("Listening on port %d\n", port);
+
+    struct sockaddr_in serveraddr, client_addr;
+    memset(&serveraddr, 0, sizeof(struct sockaddr_in));
+
+    memset(buff, '\0', sizeof(buff));
+
+    listenfd = socket(AF_INET, SOCK_STREAM, 0);
+
+    DO_OR_DIE(listenfd, "FD LISTEN FAILED");
+
+    serveraddr.sin_family = AF_INET;
+    serveraddr.sin_port = htons(port);
+    serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+    if (bind(listenfd, (struct sockaddr *)&serveraddr, sizeof(serveraddr)) < 0)
     {
-        perror("Cannot create socket");
-        exit(1);
+        printf("Couldn't bind to the port\n");
+        return -1;
     }
 
-    server.sin_family = AF_INET;
-    server.sin_addr.s_addr = INADDR_ANY;
-    server.sin_port = htons(port);
-
-    len = sizeof(server);
-
-    if (bind(serverFd, (struct sockaddr *)&server, len) < 0)
+    if (listen(listenfd, 1) < 0)
     {
-        perror("Cannot bind socket");
-        exit(2);
+        printf("Error while listening\n");
+        return -1;
     }
 
-    if (listen(serverFd, 10) < 0)
+    client_size = sizeof(client_addr);
+    client_sock = accept(listenfd, (struct sockaddr *)&client_addr, &client_size);
+
+    if (client_sock < 0)
     {
-        perror("Listen error");
-        exit(3);
-    } else {
-        printf("Listening on port %d.\n", port);
+        printf("Can't accept\n");
+        return -1;
     }
-    
-    // make it to a for loop of connected clients and lock it with mutexes.
+
     while (1)
     {
-
-        // create a while loop that creates a socket for the first connection and check for new connections
-        len = sizeof(client);
-
-        if ((clientFd = accept(serverFd, (struct sockaddr *)&client, &len)) < 0)
+        if (recv(client_sock, buff, sizeof(buff), 0) < 0)
         {
-            perror("accept error");
-            exit(4);
+            printf("Couldn't receive\n");
+            return -1;
         }
 
-        memset(buffer, 0, sizeof(buffer));
-
-        int size = read(clientFd, buffer, sizeof(buffer));
-
-        if (size < 0)
+        if (strcmp(buff, "/shutdown\r\n") == 0)
         {
-            perror("read error");
-            exit(5);
-        }
-
-        if (strcmp(buffer, "/shutdown")){
-            printf("Shutting down\n");
-            close(clientFd);
+            printf("Shutting down!\n");
+            close(listenfd);
             break;
-        } else {
-            printf("Echo: %s\n", buffer);
         }
-        
+        else
+        {
+            printf("Echo: %s", buff);
+            memset(buff, '\0', sizeof(buff));
+        }
     }
-
-    close(serverFd);
 
     return EXIT_SUCCESS;
 }
