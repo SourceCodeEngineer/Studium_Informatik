@@ -2,7 +2,6 @@ package at.ac.uibk.pm.g05.csaz7620.s06.e02;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class PoliticalParty {
     private String name;

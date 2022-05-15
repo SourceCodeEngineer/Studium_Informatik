@@ -6,9 +6,9 @@ import java.util.HashMap;
 public class ElectionApp {
     public static void main(String[] args) throws WrongVoteException {
 
-        System.out.println("Ausgabe aus der main()-Methode");
+        System.out.println("main()-methode");
         ElectoralRegion electoralRegion = new ElectoralRegion("Pinzgau",5);
-        ElectoralRegion electoralRegion1 = new ElectoralRegion("Hollersbach",5);
+        ElectoralRegion electoralRegion1 = new ElectoralRegion("Wien",5);
         ElectoralRegion electoralRegion2 = new ElectoralRegion("Innsbruck",5);
         ElectoralRegion electoralRegion3 = new ElectoralRegion("Salzburg",5);
 
@@ -18,10 +18,10 @@ public class ElectionApp {
         initVotes.put(electoralRegion2,0);
         initVotes.put(electoralRegion3,0);
 
-        PoliticalParty politicalParty = new PoliticalParty("Tobi for die Präsident",initVotes);
-        PoliticalParty politicalParty1 = new PoliticalParty("Bier",initVotes);
-        PoliticalParty politicalParty2 = new PoliticalParty("Kaffee",initVotes);
-        PoliticalParty politicalParty3 = new PoliticalParty("Red Bull",initVotes);
+        PoliticalParty politicalParty = new PoliticalParty("Santino for die President",initVotes);
+        PoliticalParty politicalParty1 = new PoliticalParty("Bier for President",initVotes);
+        PoliticalParty politicalParty2 = new PoliticalParty("Kaffee for President",initVotes);
+        PoliticalParty politicalParty3 = new PoliticalParty("Red Bull for President",initVotes);
 
         ArrayList<PoliticalParty> politicalParties = new ArrayList<>();
         politicalParties.add(politicalParty);
