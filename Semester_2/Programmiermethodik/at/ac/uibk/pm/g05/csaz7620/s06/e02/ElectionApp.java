@@ -1,4 +1,4 @@
-package e02;
+package at.ac.uibk.pm.g05.csaz7620.s06.e02;
 
 import java.util.ArrayList;
 import java.util.HashMap;

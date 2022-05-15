@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri May 13 17:07:51 2022
+# Make data base, printed on Sun May 15 14:20:36 2022
 
 # Variables
 
@@ -17,7 +17,7 @@ GDK_BACKEND = x11
 # environment
 LC_ALL = C
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-ad5c7ab0-2f00-47a6-925c-5e3c6d049512.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-7fdccf4e-fd7e-48d4-98dd-9e97ae98fa67.sock
 # environment
 VSCODE_CWD = /home/sourcecodeengineer
 # environment
@@ -85,7 +85,7 @@ LESS_TERMCAP_ue = [0m
 # environment
 MFLAGS = -pqrR
 # environment
-SSH_AUTH_SOCK = /tmp/ssh-XXXXXX81bPFU/agent.901
+SSH_AUTH_SOCK = /tmp/ssh-XXXXXXyRiUVd/agent.900
 # default
 .SHELLFLAGS := -c
 # environment
@@ -101,13 +101,13 @@ MAKEFILE_LIST :=
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 361546
+VSCODE_PID = 2223
 # environment
 XDG_SESSION_TYPE = x11
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/kali:@/tmp/.ICE-unix/901,unix/kali:/tmp/.ICE-unix/901
+SESSION_MANAGER = local/kali:@/tmp/.ICE-unix/900,unix/kali:/tmp/.ICE-unix/900
 # automatic
 *F = $(notdir $*)
 # environment
@@ -183,7 +183,7 @@ GTK_MODULES = gail:atk-bridge
 # default
 MAKE_VERSION := 4.3
 # environment
-SSH_AGENT_PID = 985
+SSH_AGENT_PID = 983
 # environment
 _ = /usr/bin/code
 # environment
@@ -298,6 +298,6 @@ GNUmakefile:
 # strcache performance: lookups = 23 / hit rate = 13%
 # hash-table stats:
 # Load=20/8192=0%, Rehash=0, Collisions=0/23=0%
-# Finished Make data base on Fri May 13 17:07:51 2022
+# Finished Make data base on Sun May 15 14:20:36 2022
 
  
