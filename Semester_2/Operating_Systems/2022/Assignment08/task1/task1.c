@@ -3,158 +3,175 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <sys/types.h>
+#include <signal.h>
 #include <sys/wait.h>
-#include <pthread.h>
-#include <errno.h>
 #include <unistd.h>
-#include <assert.h>
-#include <stdbool.h>
-#include <sys/queue.h>
+#include <semaphore.h>
+#include <sys/wait.h>
+#include <mqueue.h>
+#include <errno.h>
+#include <time.h>
+#include <pthread.h>
 #include <stdatomic.h>
-#include <stdbool.h>
 #include "myqueue.h"
 
-// can't go higher then 32000 threads on my system, zid works with 50k.
-#define NUMBER_OF_THREADS 32000
-#define ATOMIC_VALUE 50000
-#define THREAD_POOL 1000
+// define threadpoolsize and jobs to do
+#define THREADPOOL_SIZE 500
+#define JOBS 50000
 
-pthread_mutex_t mutexQueue;
-pthread_cond_t condQueue;
-
-// create job_id
-typedef struct job_id
+typedef struct work
 {
-    // what goes in here?
-} job_id;
+    atomic_int decr;
+} work;
 
-// create thread_pool
 typedef struct thread_pool
 {
-    // what goes in here?
+    pthread_t *workers;
+    myqueue queue;
+    pthread_mutex_t queue_mutex;
+    pthread_cond_t mutex_condition;
 } thread_pool;
 
-typedef void *(*job_function)(void *);
-typedef void *job_arg;
-
-void *routine(void *counter)
+void *jobFunc(void *arg)
 {
-    *(atomic_int *)counter -= 1;
-    pthread_exit(0);
+    work *argument = (work *)arg;
+    atomic_int *counter = (&(argument->decr));
+    atomic_fetch_add(counter, -1);
+    return arg;
 }
 
-// The void pool_create(thread_pool* pool, size_t size) function initializes a thread_pool
-// by starting size worker threads. Each thread checks for submitted jobs and runs them.
+void *workerfunc(void *args)
+{
+    // casting the pool
+    thread_pool *pool = (thread_pool *)args;
+
+    pthread_mutex_lock(&(pool->queue_mutex));
+
+    // while q is empty, wait for the cond var
+    while (1)
+    {
+        while (myqueue_is_empty(&(pool->queue)))
+        {
+            pthread_cond_wait(&(pool->mutex_condition), &(pool->queue_mutex));
+        }
+
+        // doing stuff
+        job task = myqueue_pop(&(pool->queue));
+
+        if (task.arg == 0){
+            pthread_mutex_unlock(&(pool->queue_mutex));
+            pthread_mutex_unlock(&(task.workerLock));
+            break;
+        }
+
+        work *argument = (work *)task.arg;
+        pthread_mutex_unlock(&(pool->queue_mutex));
+        task.routine(task.arg);
+        pthread_mutex_unlock(&(task.workerLock));
+    }
+
+    pthread_exit(args);
+}
+
 void pool_create(thread_pool *pool, size_t size)
 {
-    pthread_t threads[size];
+    // allocating memory for the workers
+    pthread_t *workers = (pthread_t *)malloc(sizeof(pthread_t) * size);
+    pool->workers = workers;
 
-    // creating size threads
+    // init the queue
+    myqueue_init(&(pool->queue));
+
+    // init the mutexes
+    pthread_mutex_init(&(pool->queue_mutex), NULL);
+    pthread_cond_init(&(pool->mutex_condition), NULL);
+
+    // creating threads and doing the workerfunc with parameter pool
     for (size_t i = 0; i < size; ++i)
     {
-        if (pthread_create(&threads[0], NULL, pool_submit, NULL) != 0)
-        {
-            perror("Failed to create thread");
-            return EXIT_FAILURE;
-        }
+        pthread_create(&workers[i], NULL, workerfunc, pool);
     }
-
-    // executing the job
-
-    
 }
 
-// The job_id pool_submit(thread_pool* pool, job_function start_routine, job_arg arg)
-// submits a job to the thread pool and returns a job_id.
-job_id pool_submit(thread_pool *pool, job_function start_routine, job_arg arg)
+job *pool_submit(thread_pool *pool, job_function start_routine, job_arg arg)
 {
-    // doing the routine
-    pthread_mutex_lock(&mutexQueue);
 
-    // do stuff
+    job *task = (job *)malloc(sizeof(job));
+    task->routine = start_routine;
+    task->arg = arg;
 
+    // init mutexes
+    pthread_mutex_init(&(task->workerLock), NULL);
 
-    // unlock mutex
-    pthread_mutex_unlock(&mutexQueue);
+    // lock them up
+    pthread_mutex_lock(&(task->workerLock));
+    pthread_mutex_lock(&(pool->queue_mutex));
+
+    // push in the queue
+    myqueue_push(&(pool->queue), *task);
+
+    // signal that we have an element in the queue
+    pthread_cond_signal(&(pool->mutex_condition));
+
+    // unlock
+    pthread_mutex_unlock(&(pool->queue_mutex));
+    return task;
 }
 
-// The void pool_await(job_id id) function waits for the job with the given job_id to finish.
-void pool_await(job_id id)
+void pool_await(job *id)
 {
+    // try locking the mutex
+    pthread_mutex_trylock(&(id->workerLock));
+
+    // free the malloced space
+    free(id);
+
+    // unlock and destroy
+    pthread_mutex_unlock(&(id->workerLock));
+    pthread_mutex_destroy(&(id->workerLock));
 }
 
-// shuts down the thread pool and frees all associated resources. Worker threads finish the
-// currently running job (if any) and then stop gracefully.
-void pool_destroy(thread_pool *pool)
+void pool_destroy(thread_pool *pool, size_t size)
 {
-
-}
-
-int main(int argc, char **argv)
-{
-
-    if (argc != 1)
+    for (size_t i = 0; i < size; i++)
     {
-        printf("Usgae: %s", argv[0]);
-        return EXIT_FAILURE;
+        if (pthread_join(pool->workers[i], NULL) != 0)
+        {
+            printf("join failed");
+        }
     }
+}
+int main(void)
+{
+    // number of tasks
+    size_t tasks = THREADPOOL_SIZE;
 
-    int selection = atoi(argv[1]);
+    // allocating memory
+    work *argument = (work *)malloc(sizeof(work));
 
-    if (selection == 2)
+    // setting the starting value
+    argument->decr = JOBS;
+
+    // creating a pool
+    thread_pool pool;
+    pool_create(&pool, tasks);
+
+    // pushin jobs
+    for (int i = 0; i < THREADPOOL_SIZE; ++i)
     {
-        // do task2
-
-        // init mutex
-        pthread_mutex_init(&mutexQueue, NULL);
-
-        // creating pool
-        pool_create();
-
-        // submitting 50000 jobs
-        for (int i = 0; i < 50000; ++i)
-        {
-            pool_submit();
-        }
-                
-        // if queue is empty -> pool destroy
-        pool_destroy();
-
-        pthread_mutex_destroy(&mutexQueue);
+        pool_await((pool_submit(&pool, jobFunc, argument)));
     }
-    else
-    {
-        // initalizing atomic value
-        atomic_int counter = ATOMIC_VALUE;
 
-        // creating array of size thread
-        pthread_t con[NUMBER_OF_THREADS];
+    pool_await((pool_submit(&pool, jobFunc, 0)));
 
-        // init the mutex and cond
-        pthread_mutex_init(&mutexQueue, NULL);
-        pthread_cond_init(&condQueue, NULL);
+    // destroying the pool again
+    pool_destroy(&pool, tasks);
 
-        for (int i = 0; i < NUMBER_OF_THREADS; ++i)
-        {
-            if (pthread_create(&con[i], NULL, &routine, (void *)&counter) != 0)
-            {
-                perror("Failed to create thread");
-            }
-        }
+    // printing the decremented result
+    printf("Atomic int is now: %d\n", argument->decr);
 
-        for (int i = 0; i < NUMBER_OF_THREADS; ++i)
-        {
-            if (pthread_join(con[i], NULL) != 0)
-            {
-                perror("Failed to join thread");
-            }
-        }
-
-        printf("%d\n", counter);
-    }
+    // free the allocated memory
+    free(argument);
 
     return EXIT_SUCCESS;
 }
