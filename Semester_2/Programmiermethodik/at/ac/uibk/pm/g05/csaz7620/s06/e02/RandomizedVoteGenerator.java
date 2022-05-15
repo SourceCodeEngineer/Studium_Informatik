@@ -19,7 +19,7 @@ public class RandomizedVoteGenerator {
                 Random random = new Random();
                 int upperBound = 100001;
                 int j = random.nextInt(upperBound);
-                for(int i = 0; i < j;i++){
+                for(int i = 0; i < j; i++){
                     voteGenerator.doVote(electoralRegions,politicalParties,electoralRegion,politicalParty);
                 }
             }
