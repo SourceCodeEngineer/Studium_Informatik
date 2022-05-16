@@ -1,0 +1,1 @@
+A thread pool is way faster because you don't need to create so many thread at once and your thread can instantly start to work.

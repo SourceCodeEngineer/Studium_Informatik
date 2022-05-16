@@ -8,89 +8,96 @@
 #include <unistd.h>
 #include <semaphore.h>
 #include <sys/wait.h>
-#include <mqueue.h>
 #include <errno.h>
 #include <time.h>
 #include <pthread.h>
 #include <stdatomic.h>
+#include <assert.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <sys/queue.h>
+
 #include "myqueue.h"
 
-// define threadpoolsize and jobs to do
-#define THREADPOOL_SIZE 500
-#define JOBS 50000
+typedef void *(*job_function)(void *args);
+typedef void *job_arg;
+
+typedef struct job
+{
+    job_function routine;
+    job_arg arg;
+    sem_t *workerLock;
+} job;
+
+typedef struct thread_pool
+{
+    size_t numberOfThreads;
+    int statePool;
+    myqueue work;
+    pthread_mutex_t queue_mutex;
+    pthread_cond_t mutex_condition;
+    pthread_t *workers;
+    unsigned int activeWork;
+} thread_pool;
+
+thread_pool *pool_init(size_t size)
+{
+    thread_pool *pool = (thread_pool *)malloc(sizeof(thread_pool));
+    pool->workers = (pthread_t *)(malloc(sizeof(pthread_t) * size));
+    pool->activeWork = 0;
+    pool->numberOfThreads = size;
+    pool->statePool = 1;
+    pthread_mutex_init(&(pool->queue_mutex), NULL);
+    pthread_cond_init(&(pool->mutex_condition), NULL);
+
+    myqueue_init(&pool->work);
+
+    return pool;
+}
 
 typedef struct work
 {
     atomic_int decr;
 } work;
 
-typedef struct thread_pool
+void *jobFunc(void *args)
 {
-    pthread_t *workers;
-    myqueue queue;
-    pthread_mutex_t queue_mutex;
-    pthread_cond_t mutex_condition;
-} thread_pool;
-
-void *jobFunc(void *arg)
-{
-    work *argument = (work *)arg;
+    struct work *argument = (struct work *)args;
     atomic_int *counter = (&(argument->decr));
     atomic_fetch_add(counter, -1);
-    return arg;
+
+    return NULL;
 }
 
 void *workerfunc(void *args)
 {
-    // casting the pool
     thread_pool *pool = (thread_pool *)args;
 
-    pthread_mutex_lock(&(pool->queue_mutex));
-
-    // while q is empty, wait for the cond var
     while (1)
+
     {
-        while (myqueue_is_empty(&(pool->queue)))
+        pthread_mutex_lock(&(pool->queue_mutex));
+        while (myqueue_is_empty(&pool->work))
         {
             pthread_cond_wait(&(pool->mutex_condition), &(pool->queue_mutex));
         }
 
-        // doing stuff
-        job task = myqueue_pop(&(pool->queue));
+        job *task = myqueue_pop(&pool->work);
 
-        if (task.arg == 0){
-            pthread_mutex_unlock(&(pool->queue_mutex));
-            pthread_mutex_unlock(&(task.workerLock));
+        pthread_mutex_unlock(&(pool->queue_mutex));
+
+        if (task->routine == NULL)
+        {
+            sem_post(task->workerLock);
             break;
         }
 
-        work *argument = (work *)task.arg;
-        pthread_mutex_unlock(&(pool->queue_mutex));
-        task.routine(task.arg);
-        pthread_mutex_unlock(&(task.workerLock));
+        work *argument = (work *)task->arg;
+        task->routine(argument);
+        sem_post(task->workerLock);
     }
 
-    pthread_exit(args);
-}
-
-void pool_create(thread_pool *pool, size_t size)
-{
-    // allocating memory for the workers
-    pthread_t *workers = (pthread_t *)malloc(sizeof(pthread_t) * size);
-    pool->workers = workers;
-
-    // init the queue
-    myqueue_init(&(pool->queue));
-
-    // init the mutexes
-    pthread_mutex_init(&(pool->queue_mutex), NULL);
-    pthread_cond_init(&(pool->mutex_condition), NULL);
-
-    // creating threads and doing the workerfunc with parameter pool
-    for (size_t i = 0; i < size; ++i)
-    {
-        pthread_create(&workers[i], NULL, workerfunc, pool);
-    }
+    return NULL;
 }
 
 job *pool_submit(thread_pool *pool, job_function start_routine, job_arg arg)
@@ -99,41 +106,34 @@ job *pool_submit(thread_pool *pool, job_function start_routine, job_arg arg)
     job *task = (job *)malloc(sizeof(job));
     task->routine = start_routine;
     task->arg = arg;
+    sem_t *sem = (sem_t *)malloc(sizeof(sem_t));
+    task->workerLock = sem;
 
-    // init mutexes
-    pthread_mutex_init(&(task->workerLock), NULL);
-
-    // lock them up
-    pthread_mutex_lock(&(task->workerLock));
+    sem_init((task->workerLock), 0, 0);
     pthread_mutex_lock(&(pool->queue_mutex));
 
-    // push in the queue
-    myqueue_push(&(pool->queue), *task);
-
-    // signal that we have an element in the queue
+    myqueue_push(&pool->work, task);
     pthread_cond_signal(&(pool->mutex_condition));
-
-    // unlock
+    pool->activeWork++;
     pthread_mutex_unlock(&(pool->queue_mutex));
+
     return task;
 }
-
 void pool_await(job *id)
 {
-    // try locking the mutex
-    pthread_mutex_trylock(&(id->workerLock));
-
-    // free the malloced space
-    free(id);
-
-    // unlock and destroy
-    pthread_mutex_unlock(&(id->workerLock));
-    pthread_mutex_destroy(&(id->workerLock));
+    sem_wait((id->workerLock));
+    free(id->workerLock);
+    sem_close(id->workerLock);
 }
-
 void pool_destroy(thread_pool *pool, size_t size)
 {
-    for (size_t i = 0; i < size; i++)
+
+    for (size_t i = 0; i < size; ++i)
+    {
+        pool_await(pool_submit(pool, NULL, NULL));
+    }
+
+    for (size_t i = 0; i < size; ++i)
     {
         if (pthread_join(pool->workers[i], NULL) != 0)
         {
@@ -141,37 +141,34 @@ void pool_destroy(thread_pool *pool, size_t size)
         }
     }
 }
+
+void pool_create(thread_pool *pool, size_t size)
+{
+
+    for (size_t i = 0; i < size; ++i)
+    {
+
+        pthread_create(&(pool->workers[i]), NULL, workerfunc, pool);
+    }
+}
+
 int main(void)
 {
-    // number of tasks
-    size_t tasks = THREADPOOL_SIZE;
-
-    // allocating memory
+    size_t num = 10;
     work *argument = (work *)malloc(sizeof(work));
+    argument->decr = 20000;
+    thread_pool *pool = pool_init(num);
+    pool_create(pool, num);
+    size_t i = 0;
 
-    // setting the starting value
-    argument->decr = JOBS;
-
-    // creating a pool
-    thread_pool pool;
-    pool_create(&pool, tasks);
-
-    // pushin jobs
-    for (int i = 0; i < THREADPOOL_SIZE; ++i)
+    while (i < 20000)
     {
-        pool_await((pool_submit(&pool, jobFunc, argument)));
+        pool_await((pool_submit(pool, jobFunc, argument)));
+        ++i;
     }
 
-    pool_await((pool_submit(&pool, jobFunc, 0)));
-
-    // destroying the pool again
-    pool_destroy(&pool, tasks);
-
-    // printing the decremented result
-    printf("Atomic int is now: %d\n", argument->decr);
-
-    // free the allocated memory
-    free(argument);
+    pool_destroy(pool, num);
+    printf("Atomic int is: %d\n", argument->decr);
 
     return EXIT_SUCCESS;
 }

@@ -104,7 +104,7 @@ int main(int argc, char const *argv[])
 
         if (tmp == 0)
         {
-            accepter++;
+            ++accepter;
         }
 
         if (strcmp(buff, "/shutdown\r\n") == 0)

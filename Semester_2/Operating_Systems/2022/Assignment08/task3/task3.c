@@ -1,66 +1,63 @@
-#include <stdio.h>     // perror, printf
-#include <stdlib.h>    // exit, atoi
-#include <unistd.h>    // read, write, close
-#include <arpa/inet.h> // sockaddr_in, AF_INET, SOCK_STREAM, INADDR_ANY, socket etc...
-#include <string.h>    // memset, strcmp
-#include <pthread.h>
+#include <stdio.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <netinet/in.h>
+#include <string.h>
 
-#define THREADS 2
-
-void *listener(void *buffer)
+int main(int argc, char const *argv[])
 {
-    pthread_exit(0);
-}
 
-int main(int argc, char **argv)
-{
     if (argc != 2)
     {
         printf("Usage: %s PORT\n", argv[0]);
+        return EXIT_FAILURE;
     }
-
+    
     int port = atoi(argv[1]);
 
-    int client_sock;
-
-    socklen_t client_size;
-
-    int listenfd;
-
-    char buff[BUFSIZ];
-
-    struct sockaddr_in serveraddr, client_addr;
-    memset(&serveraddr, 0, sizeof(struct sockaddr_in));
-
-    memset(buff, '\0', sizeof(buff));
-
-    listenfd = socket(AF_INET, SOCK_STREAM, 0);
-
-    DO_OR_DIE(listenfd, "FD LISTEN FAILED");
-
-    serveraddr.sin_family = AF_INET;
-    serveraddr.sin_port = htons(port);
-    serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
-
-    if (bind(listenfd, (struct sockaddr *)&serveraddr, sizeof(serveraddr)) < 0)
+    int server_fd, new_socket;
+    struct sockaddr_in address;
+    int addrlen = sizeof(address);
+    char buffer[1024] = {0};
+    //    char *hello = "Hello from server";
+    const char *hello = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 12\r\n\r\nHello world!";
+    // Creating socket file descriptor
+    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
     {
-        printf("Couldn't bind to the port\n");
-        return -1;
+        perror("In socket");
+        exit(EXIT_FAILURE);
     }
 
-    pthread_t con[THREADS];
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons( port );
 
-    if (pthread_create(&con[0], NULL, listener, NULL) != 0)
+    // Forcefully attaching socket to the port from argv
+    if (bind(server_fd, (struct sockaddr *)&address, sizeof(address))<0)
     {
-        perror("Failed to create thread");
-        return EXIT_FAILURE;
+        perror("In bind");
+        exit(EXIT_FAILURE);
     }
 
-    if (pthread_join(con[0], NULL) != 0)
+    if (listen(server_fd, 3) < 0)
     {
-        perror("Failed to join thread");
-        return EXIT_FAILURE;
+        perror("In listen");
+        exit(EXIT_FAILURE);
     }
 
-    return EXIT_SUCCESS;
+    while(1)
+    {
+        if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen))<0)
+        {
+            perror("In accept");
+            exit(EXIT_FAILURE);
+        }
+        read( new_socket , buffer, 1024);
+        printf("%s\n",buffer );
+        write(new_socket , hello , strlen(hello));
+        printf("Hello message sent\n");
+    }
+
+    return 0;
 }
