@@ -1,21 +1,27 @@
 using Plots
 using Plots.PlotMeasures
 
+# QUICK OVERVIEW OF VARIABLE NAMES
+# rv = return value
+# xi = x on i
+# xim = x on i minus 1
+# xb = x inbetween
+
 module Quadrature
 function right(s::Float64, e::Float64, N::Int, f::Function)::Float64
 
     h = (e - s) / N
 
-    result = 0.0
+    rv = 0.0
 
     for i = 1 : N
 
         xi = s + i * h
 
-        result += h * f(xi)
+        rv += h * f(xi)
     end
 
-    return result
+    return rv
 
 end
 
@@ -23,7 +29,7 @@ function trapez(s::Float64, e::Float64, N::Int, f::Function)::Float64
 
     h = (e - s) / N
 
-    result = 0.0
+    rv = 0.0
 
     for i = 1 : N
 
@@ -31,10 +37,10 @@ function trapez(s::Float64, e::Float64, N::Int, f::Function)::Float64
 
         xi = xim + h
 
-        result += h / 2 * (f(xim) + f(xi))
+        rv += h / 2 * (f(xim) + f(xi))
     end
 
-    return result
+    return rv
 
 end
 
@@ -42,7 +48,7 @@ function simpson(s::Float64, e::Float64, N::Int, f::Function)::Float64
 
     h = (e - s) / N
 
-    result = 0.0
+    rv = 0.0
 
     for i = 1 : N
 
@@ -50,12 +56,12 @@ function simpson(s::Float64, e::Float64, N::Int, f::Function)::Float64
 
         xi = xim + h
 
-        xi_between = (xim + xi) / 2
+        xb = (xim + xi) / 2
 
-        result += h / 6 * (f(xim) + 4 * f(xi_between) + f(xi))
+        rv += h / 6 * (f(xim) + 4 * f(xb) + f(xi))
     end
 
-    return result
+    return rv
 end
 end
 
