@@ -10,6 +10,7 @@
         "string_view": "c",
         "ranges": "c",
         "atomic": "c",
-        "queue.h": "c"
+        "queue.h": "c",
+        "unistd.h": "c"
     }
 }

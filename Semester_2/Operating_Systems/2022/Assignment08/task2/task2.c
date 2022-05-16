@@ -1,3 +1,5 @@
+// worked together in a colaboration with csaz7620, csaz2055, csaz7804
+
 #include <stdio.h>     // perror, printf
 #include <stdlib.h>    // exit, atoi
 #include <unistd.h>    // read, write, close
