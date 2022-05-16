@@ -45,21 +45,80 @@ public final class Sets {
 
     // do not change the input sets
     public static Set<Integer> intersection(final Set<Integer> set1, final Set<Integer> set2) {
-        return new HashSet<>();
+        final Set<Integer> set = new HashSet<>();
+        for (Integer i:set1) {
+            for (Integer j:set2) {
+                if(i == j){
+                    set.add(i);
+                }
+            }
+        }
+        return set;
     }
+
 
     // do not change the input sets
     public static Set<Integer> union(final Set<Integer> set1, final Set<Integer> set2) {
-        return new HashSet<>();
+        final Set<Integer> set = new HashSet<>();
+
+        if (set1.isEmpty()){
+            return set2;
+        } else if(set2.isEmpty()){
+            return set1;
+        } else {
+
+        for (Integer i : set1) {
+            for (Integer j : set2) {
+                if(!i.equals(j)){
+                    set.add(i);
+                    set.add(j);
+                }
+            }
+        }
+        return set;
+        }
     }
 
     // do not change the input sets
     public static Set<Integer> difference(final Set<Integer> set1, final Set<Integer> set2) {
-        return new HashSet<>();
+        final Set<Integer> set = new HashSet<>();
+
+        // return empty because the given task doesn't specify what we should do exactly, so I do A without B
+        if(set1.isEmpty()){
+            return set;
+        }
+
+        for (int i = 0; i < (set1.size()+set2.size()); ++i) {
+            if((set1.contains(i) && (!set2.contains(i)))){
+                set.add(i);
+            }
+        }
+        return set;
     }
 
     // do not change the input sets
     public static Set<Integer> symmetricDifference(final Set<Integer> set1, final Set<Integer> set2) {
-        return new HashSet<>();
+        final Set<Integer> set = new HashSet<>();
+
+        if(set1.isEmpty() && set2.isEmpty()){
+            return set;
+        } else
+
+        if (set1.isEmpty()){
+            return set2;
+        } else
+
+        if (set2.isEmpty()){
+            return set1;
+        }
+
+        for (int i = 0; i < (set1.size()+set2.size());i++) {
+            if((set1.contains(i)&&(!set2.contains(i))) || (!set1.contains(i)&&(set2.contains(i)))){
+                set.add(i);
+            }
+        }
+
+        return set;
     }
 }
+
