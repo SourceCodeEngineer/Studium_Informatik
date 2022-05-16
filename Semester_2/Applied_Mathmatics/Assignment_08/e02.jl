@@ -3,35 +3,58 @@ using Plots.PlotMeasures
 
 module Quadrature
 function right(s::Float64, e::Float64, N::Int, f::Function)::Float64
+
     h = (e - s) / N
+
     result = 0.0
+
     for i = 1 : N
-        x_i = s + i * h
-        result += h * f(x_i)
+
+        xi = s + i * h
+
+        result += h * f(xi)
     end
+
     return result
+
 end
 
 function trapez(s::Float64, e::Float64, N::Int, f::Function)::Float64
+
     h = (e - s) / N
+
     result = 0.0
+
     for i = 1 : N
-        x_i_minus1 = s + (i - 1) * h
-        x_i = x_i_minus1 + h
-        result += h / 2 * (f(x_i_minus1) + f(x_i))
+
+        xim = s + (i - 1) * h
+
+        xi = xim + h
+
+        result += h / 2 * (f(xim) + f(xi))
     end
+
     return result
+
 end
 
 function simpson(s::Float64, e::Float64, N::Int, f::Function)::Float64
+
     h = (e - s) / N
+
     result = 0.0
+
     for i = 1 : N
-        x_i_minus1 = s + ( i - 1 ) * h
-        x_i = x_i_minus1 + h
-        x_i_between = (x_i_minus1 + x_i) / 2
-        result += h/6 * (f(x_i_minus1) + 4 * f(x_i_between) + f(x_i))
+
+        xim = s + ( i - 1 ) * h
+
+        xi = xim + h
+
+        xi_between = (xim + xi) / 2
+
+        result += h / 6 * (f(xim) + 4 * f(xi_between) + f(xi))
     end
+
     return result
 end
 end
@@ -41,7 +64,7 @@ function f(x::Float64)::Float64
 end
 
 function F(x::Float64)::Float64
-    log(cosh(x)) #=ln =#
+    log(cosh(x))
 end
 
 # plot function, its analtyic integral, the numerical approximations, and the local error
