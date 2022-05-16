@@ -1,3 +1,6 @@
+#include "myqueue.h"
+#include "threadpool.h" // threadpool implementation
+
 #include <errno.h>
 #include <pthread.h>
 #include <stdbool.h>
@@ -11,12 +14,6 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
-
-#include "myqueue.h"    // queue implementation
-#include "threadpool.h" // threadpool implementation
-
-typedef void* (*job_function)(void*);
-typedef void* job_arg;
 
 #define MESSAGE_SIZE 4096
 
@@ -50,7 +47,7 @@ void *listener_routine(void *arg);
 int main(int argc, char *argv[]) {
   /* Input */
   if (argc != 2) {
-    fprintf(stderr, "Expected 1 argument received: %d\n", argc - 1);
+    fprintf(stderr, "Usage: %s PORT", argv[0]);
     return EXIT_FAILURE;
   }
   char *endptr;
@@ -152,7 +149,7 @@ void connection_handler(job_arg arg) {
   char Http_return[] = "HTTP/1.1 200 OK\r\n"
                        "Content-Type: text/html\r\n"
                        "Content-Length: 10\r\n\r\n"
-                       "AAAA aaaa";
+                       "YIKES";
   /* Simulate workload */
   usleep(100 * 1000);
 

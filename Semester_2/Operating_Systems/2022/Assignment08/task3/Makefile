@@ -1,15 +1,18 @@
-CFLAGS = -Wall -Wextra -std=c11
+.PHONY =  all clean
 
-.PHONY: all clean
-LIBS = -lrt -pthread
+CC = gcc
 
-all: task3 
+CFLAGS = -O3 -std=c11 -Wall -Wextra -Wpedantic  -D_POSIX_C_SOURCE -D_BSD_SOURCE
+LFLAGS = -lm -lrt -pthread
+BINS = task3
 
+all: ${BINS}
+	
 task3: task3.o
-	$(CC) $(LDFLAGS) $^ $(LIBS) -o $@
+	$(CC) -o $@ $^ $(LFLAGS)
 
-task3.o: task3.c 
-	$(CC) $(CFLAGS) -c -o $@ $^
+task3.o: task3.c
+	$(CC) $(CFLAGS) -c $<
 
 clean:
-	$(RM) task3 task3.o
+	$(RM) *.o ${BINS}
