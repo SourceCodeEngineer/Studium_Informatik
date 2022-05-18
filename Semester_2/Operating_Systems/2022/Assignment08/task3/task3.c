@@ -19,26 +19,31 @@
 
 #define MESSAGE_SIZE 4096
 
-#define ERROR(message)                                                         \
-  do {                                                                         \
-    perror(message);                                                           \
-    return EXIT_FAILURE;                                                       \
+#define ERROR(message)   \
+  do                     \
+  {                      \
+    perror(message);     \
+    return EXIT_FAILURE; \
   } while (0)
 
-#define CHECK_STRTOL(errno, endptr, strptr, message)                           \
-  do {                                                                         \
-    if (errno != 0 || *endptr != '\0' || endptr == strptr) {                   \
-      ERROR(message);                                                          \
-    }                                                                          \
+#define CHECK_STRTOL(errno, endptr, strptr, message)       \
+  do                                                       \
+  {                                                        \
+    if (errno != 0 || *endptr != '\0' || endptr == strptr) \
+    {                                                      \
+      ERROR(message);                                      \
+    }                                                      \
   } while (0)
 
-typedef struct {
+typedef struct
+{
   int sockfd;
   struct sockaddr *addr;
   pthread_t *listener_thread;
 } listener_args;
 
-typedef struct {
+typedef struct
+{
   int connectionfd;
   pthread_t *listener_thread;
 } handler_args;
@@ -46,9 +51,11 @@ typedef struct {
 void connection_handler(job_arg arg);
 void *listener_routine(void *arg);
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
   /* Input */
-  if (argc != 2) {
+  if (argc != 2)
+  {
     fprintf(stderr, "Usage: %s PORT", argv[0]);
     return EXIT_FAILURE;
   }
@@ -60,7 +67,8 @@ int main(int argc, char *argv[]) {
   /* Create socket */
   int sockfd;
   sockfd = socket(AF_INET, SOCK_STREAM, 0);
-  if (sockfd <= 0) {
+  if (sockfd <= 0)
+  {
     /* Cleanup */
     close(sockfd);
     ERROR("creating socket");
@@ -73,7 +81,8 @@ int main(int argc, char *argv[]) {
   addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
   /* Bind socket */
-  if (bind(sockfd, (struct sockaddr *)&addr, sizeof(addr)) != 0) {
+  if (bind(sockfd, (struct sockaddr *)&addr, sizeof(addr)) != 0)
+  {
     /* Cleanup */
     close(sockfd);
     ERROR("bind socket\n");
@@ -86,13 +95,15 @@ int main(int argc, char *argv[]) {
   arg.addr = (struct sockaddr *)&addr;
   arg.listener_thread = &listener_thread;
 
-  if (pthread_create(&listener_thread, NULL, &listener_routine, &arg)) {
+  if (pthread_create(&listener_thread, NULL, &listener_routine, &arg))
+  {
     ERROR("pthread_create listener");
   }
   printf("Listening on port %d.\n", port);
 
   /* Join listener thread on shutdown */
-  if (pthread_join(listener_thread, NULL)) {
+  if (pthread_join(listener_thread, NULL))
+  {
     ERROR("pthread_join listener");
   }
   printf("Shutting down.\n");
@@ -101,7 +112,8 @@ int main(int argc, char *argv[]) {
   return EXIT_SUCCESS;
 }
 
-void *listener_routine(void *arg) {
+void *listener_routine(void *arg)
+{
   /* Setup */
   listener_args *args = arg;
   int sockfd = args->sockfd;
@@ -110,7 +122,8 @@ void *listener_routine(void *arg) {
   pool_create(&pool, 4);
 
   /* Start listening */
-  if (listen(sockfd, 5) != 0) {
+  if (listen(sockfd, 5) != 0)
+  {
     /* Cleanup */
     close(sockfd);
     pool_destroy(&pool);
@@ -119,11 +132,13 @@ void *listener_routine(void *arg) {
   }
 
   /* Accept requests and add them to thread pool */
-  while (true) {
+  while (true)
+  {
     /* Connect to client */
     socklen_t addrlen = sizeof(*args->addr);
     int connectionfd = accept(sockfd, args->addr, &addrlen);
-    if (connectionfd <= 0) {
+    if (connectionfd <= 0)
+    {
       /* Cleanup */
       close(connectionfd);
       close(sockfd);
@@ -140,7 +155,8 @@ void *listener_routine(void *arg) {
   pthread_exit(NULL);
 }
 
-void connection_handler(job_arg arg) {
+void connection_handler(job_arg arg)
+{
   /* Setup */
   handler_args *args = arg;
   int connectionfd = args->connectionfd;
@@ -158,7 +174,8 @@ void connection_handler(job_arg arg) {
   /* Read from Client */
   bzero(message, MESSAGE_SIZE); // clean previous message
   int read_ret = read(connectionfd, &message, MESSAGE_SIZE - 1);
-  if (read_ret < 0) {
+  if (read_ret < 0)
+  {
     /* Cleanup */
     close(connectionfd);
     pthread_cancel(*listener_thread);
@@ -166,7 +183,8 @@ void connection_handler(job_arg arg) {
   }
 
   /* Check for shutdown request */
-  if (strncmp("GET /shutdown", message, 13) == 0) {
+  if (strncmp("GET /shutdown", message, 13) == 0)
+  {
     /* Cleanup */
     close(connectionfd);
     pthread_cancel(*listener_thread);
