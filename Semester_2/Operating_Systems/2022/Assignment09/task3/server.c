@@ -70,7 +70,7 @@ void *client(void *sockfd)
                 strcat(*msg, *name);
                 strcat(*msg, "(whispers): ");
                 strcat(*msg, message);
-                for (int i = 0; i < MAX_CLIENTS; i++)
+                for (int i = 0; i < MAX_CLIENTS; ++i)
                 {
                     if (*clients[i].name != NULL && (strcmp(*clients[i].name, token2) == 0) && i != *id && clients[i].status == ACTIVE)
                     {
@@ -89,7 +89,7 @@ void *client(void *sockfd)
                 strcat(*msg, *name);
                 strcat(*msg, ": ");
                 strcat(*msg, buff);
-                for (int i = 0; i < MAX_CLIENTS; i++)
+                for (int i = 0; i < MAX_CLIENTS; ++i)
                 {
                     if (i != *id && clients[i].status == ACTIVE && *clients[i].name != NULL)
                     {
@@ -155,7 +155,7 @@ void *listener(void *sockfd)
 
         client_t currClient = {id, cName, cThread, connfd, ACTIVE};
         clients[*id] = currClient;
-        cclients++;
+        ++cclients;
         printf("%s connected; %d total clients\n", *cName, cclients);
     }
     return NULL;
@@ -209,14 +209,14 @@ int main(int argc, char **argv)
     while (cclients > 0)
     {
         pthread_t currDc;
-        for (int i = 0; i < MAX_CLIENTS; i++)
+        for (int i = 0; i < MAX_CLIENTS; ++i)
         {
             if (clients[i].status == TERM)
             {
                 currDc = clients[i].cThread;
                 clients[i].status = LEFT;
                 pthread_join(currDc, NULL);
-                cclients--;
+                --cclients;
             }
         }
     }
