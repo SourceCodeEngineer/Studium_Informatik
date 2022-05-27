@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.3
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon May 16 14:04:28 2022
+# Make data base, printed on Fri May 27 13:35:41 2022
 
 # Variables
 
@@ -17,9 +15,9 @@ GDK_BACKEND = x11
 # environment
 LC_ALL = C
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-641e78ca-7ca6-4766-85eb-0fdd6beff9cb.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-625e22a4-8a3b-407e-9400-bab6ae02ffed.sock
 # environment
-VSCODE_CWD = /home/sourcecodeengineer
+VSCODE_CWD = /home/sourcecodeengineer/StudiumInformatik
 # environment
 WINDOWID = 0
 # environment
@@ -85,7 +83,7 @@ LESS_TERMCAP_ue = [0m
 # environment
 MFLAGS = -pqrR
 # environment
-SSH_AUTH_SOCK = /tmp/ssh-XXXXXXFK6nxu/agent.908
+SSH_AUTH_SOCK = /tmp/ssh-XXXXXXVJ3PcI/agent.2048
 # default
 .SHELLFLAGS := -c
 # environment
@@ -101,13 +99,13 @@ MAKEFILE_LIST :=
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 1360
+VSCODE_PID = 5700
 # environment
 XDG_SESSION_TYPE = x11
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/kali:@/tmp/.ICE-unix/908,unix/kali:/tmp/.ICE-unix/908
+SESSION_MANAGER = local/kali:@/tmp/.ICE-unix/2048,unix/kali:/tmp/.ICE-unix/2048
 # automatic
 *F = $(notdir $*)
 # environment
@@ -183,7 +181,7 @@ GTK_MODULES = gail:atk-bridge
 # default
 MAKE_VERSION := 4.3
 # environment
-SSH_AGENT_PID = 992
+SSH_AGENT_PID = 2130
 # environment
 _ = /usr/bin/code
 # environment
@@ -207,7 +205,7 @@ VSCODE_IPC_HOOK = /run/user/1000/vscode-d31a8a43-1.67.1-main.sock
 # environment
 TERM = xterm-256color
 # environment
-XDG_SESSION_ID = 2
+XDG_SESSION_ID = 40
 # environment
 DOTNET_CLI_TELEMETRY_OPTOUT = 1
 # default
@@ -239,7 +237,7 @@ GDMSESSION = lightdm-xsession
 
 # Directories
 
-# . (device 2049, inode 2228287): 12 files, no impossibilities.
+# . (device 2049, inode 2229240): 12 files, no impossibilities.
 
 # 12 files, no impossibilities in 1 directories.
 
@@ -285,6 +283,8 @@ GNUmakefile:
 
 # files hash-table stats:
  
+make: *** No rule to make target 'all'.  Stop.
+
 # Load=6/1024=1%, Rehash=0, Collisions=0/15=0%
 # VPATH Search Paths
 
@@ -298,6 +298,6 @@ GNUmakefile:
 # strcache performance: lookups = 23 / hit rate = 13%
 # hash-table stats:
 # Load=20/8192=0%, Rehash=0, Collisions=0/23=0%
-# Finished Make data base on Mon May 16 14:04:28 2022
+# Finished Make data base on Fri May 27 13:35:41 2022
 
  
