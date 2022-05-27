@@ -1,4 +1,4 @@
-package week6;
+package week06;
 
 import java.text.MessageFormat;
 import java.util.Comparator;
