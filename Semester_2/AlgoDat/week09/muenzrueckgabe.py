@@ -5,12 +5,12 @@ y = 10
 S = [1, 5, 10]
 
 # set left border
-left = y - x 
+difference = y - x 
 
 solution_array = [] # declare emptyarray
 
 # create loop until left is equal to 0
-while left != 0:
+while difference != 0:
 
     # set take and boolean
     take = 0
@@ -21,7 +21,7 @@ while left != 0:
 
         # if we find an element that matches then set boolean to true 
         # and take the element and break out of the loop because element is found
-        if element <= left:
+        if element <= difference:
             found = True 
             take = element
             break 
@@ -30,7 +30,7 @@ while left != 0:
     if not found:
         exit(-1)
 
-    left -= take
+    difference -= take
 
     solution_array.append(take)
 
