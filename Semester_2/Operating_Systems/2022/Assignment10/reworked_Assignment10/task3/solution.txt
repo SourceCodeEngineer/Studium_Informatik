@@ -1,0 +1,64 @@
+the results clearly show the advantage of thread local content. even the clunky implementation with best fit lists 
+is faster then build in malloc.
+
+task1
+(global)
+
+1 thread(s), 1000 allocations of size 256 - 1024 byte per thread. Avg time per thread:
+	System: 1.40 ms
+	Custom: 0.24 ms
+10 thread(s), 1000 allocations of size 256 - 1024 byte per thread. Avg time per thread:
+	System: 15.53 ms
+	Custom: 4.81 ms
+50 thread(s), 1000 allocations of size 256 - 1024 byte per thread. Avg time per thread:
+	System: 36.77 ms
+	Custom: 27.59 ms
+100 thread(s), 1000 allocations of size 32 - 128 byte per thread. Avg time per thread:
+	System: 0.14 ms
+	Custom: 24.97 ms
+
+(thread local)
+
+1 thread(s), 1000 allocations of size 256 - 1024 byte per thread. Avg time per thread:
+	System: 0.93 ms
+	Custom: 0.19 ms
+10 thread(s), 1000 allocations of size 256 - 1024 byte per thread. Avg time per thread:
+	System: 12.19 ms
+	Custom: 0.19 ms
+50 thread(s), 1000 allocations of size 256 - 1024 byte per thread. Avg time per thread:
+	System: 30.07 ms
+	Custom: 0.18 ms
+100 thread(s), 1000 allocations of size 32 - 128 byte per thread. Avg time per thread:
+	System: 0.12 ms
+	Custom: 0.13 ms
+
+task2
+(global)
+
+1 thread(s), 1000 allocations of size 256 - 1024 byte per thread. Avg time per thread:
+        System: 0.55 ms
+        Custom: 0.62 ms
+10 thread(s), 1000 allocations of size 256 - 1024 byte per thread. Avg time per thread:
+        System: 5.11 ms
+        Custom: 32.32 ms
+50 thread(s), 1000 allocations of size 256 - 1024 byte per thread. Avg time per thread:
+        System: 19.71 ms
+        Custom: 1268.61 ms
+100 thread(s), 1000 allocations of size 32 - 128 byte per thread. Avg time per thread:
+        System: 0.10 ms
+        Custom: 2859.58 ms
+
+(thread local)
+
+1 thread(s), 1000 allocations of size 256 - 1024 byte per thread. Avg time per thread:
+        System: 0.58 ms
+        Custom: 0.61 ms
+10 thread(s), 1000 allocations of size 256 - 1024 byte per thread. Avg time per thread:
+        System: 8.58 ms
+        Custom: 1.42 ms
+50 thread(s), 1000 allocations of size 256 - 1024 byte per thread. Avg time per thread:
+        System: 41.03 ms
+        Custom: 9.81 ms
+100 thread(s), 1000 allocations of size 32 - 128 byte per thread. Avg time per thread:
+        System: 0.12 ms
+        Custom: 4.92 ms
