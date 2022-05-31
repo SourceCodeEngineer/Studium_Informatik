@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+
 # GNU Make 4.3
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri May 27 13:35:41 2022
+# Make data base, printed on Tue May 31 11:20:08 2022
 
 # Variables
 
@@ -15,9 +17,9 @@ GDK_BACKEND = x11
 # environment
 LC_ALL = C
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-625e22a4-8a3b-407e-9400-bab6ae02ffed.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-f1394ffe-caa6-4e77-8faa-b13f7f3fafd7.sock
 # environment
-VSCODE_CWD = /home/sourcecodeengineer/StudiumInformatik
+VSCODE_CWD = /home/sourcecodeengineer
 # environment
 WINDOWID = 0
 # environment
@@ -83,7 +85,7 @@ LESS_TERMCAP_ue = [0m
 # environment
 MFLAGS = -pqrR
 # environment
-SSH_AUTH_SOCK = /tmp/ssh-XXXXXXVJ3PcI/agent.2048
+SSH_AUTH_SOCK = /tmp/ssh-XXXXXX4abdPj/agent.853
 # default
 .SHELLFLAGS := -c
 # environment
@@ -99,13 +101,13 @@ MAKEFILE_LIST :=
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 5700
+VSCODE_PID = 1295
 # environment
 XDG_SESSION_TYPE = x11
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/kali:@/tmp/.ICE-unix/2048,unix/kali:/tmp/.ICE-unix/2048
+SESSION_MANAGER = local/kali:@/tmp/.ICE-unix/853,unix/kali:/tmp/.ICE-unix/853
 # automatic
 *F = $(notdir $*)
 # environment
@@ -181,7 +183,7 @@ GTK_MODULES = gail:atk-bridge
 # default
 MAKE_VERSION := 4.3
 # environment
-SSH_AGENT_PID = 2130
+SSH_AGENT_PID = 938
 # environment
 _ = /usr/bin/code
 # environment
@@ -205,7 +207,7 @@ VSCODE_IPC_HOOK = /run/user/1000/vscode-d31a8a43-1.67.1-main.sock
 # environment
 TERM = xterm-256color
 # environment
-XDG_SESSION_ID = 40
+XDG_SESSION_ID = 2
 # environment
 DOTNET_CLI_TELEMETRY_OPTOUT = 1
 # default
@@ -280,11 +282,9 @@ GNUmakefile:
 #  File does not exist.
 #  File has been updated.
 #  Failed to be updated.
+ 
 
 # files hash-table stats:
- 
-make: *** No rule to make target 'all'.  Stop.
-
 # Load=6/1024=1%, Rehash=0, Collisions=0/15=0%
 # VPATH Search Paths
 
@@ -298,6 +298,6 @@ make: *** No rule to make target 'all'.  Stop.
 # strcache performance: lookups = 23 / hit rate = 13%
 # hash-table stats:
 # Load=20/8192=0%, Rehash=0, Collisions=0/23=0%
-# Finished Make data base on Fri May 27 13:35:41 2022
+# Finished Make data base on Tue May 31 11:20:08 2022
 
  
