@@ -1,17 +1,22 @@
 results of the benchmarks:
-it seems that this implementation of the alocator is much faster than the built in malloc for a reasonable amount of threads,
+
+it seems that this implementation of the alocator is much faster then the built in malloc for a reasonable amount of threads,
 and block sizes.
-only for an unreasonable amount of threads and small block sizes the built in malloc seems to be insanely fast
+
+Only for an unreasonable amount of threads and small block sizes the built in malloc seems to be insanely fast
 
 1 thread(s), 1000 allocations of size 256 - 1024 byte per thread. Avg time per thread:
         System: 0.65 ms
         Custom: 0.19 ms
+
 10 thread(s), 1000 allocations of size 256 - 1024 byte per thread. Avg time per thread:
         System: 8.39 ms
         Custom: 1.02 ms
+        
 50 thread(s), 1000 allocations of size 256 - 1024 byte per thread. Avg time per thread:
         System: 30.16 ms
         Custom: 8.83 ms
+
 100 thread(s), 1000 allocations of size 32 - 128 byte per thread. Avg time per thread:
         System: 0.08 ms
         Custom: 18.96 ms

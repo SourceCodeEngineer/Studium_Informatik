@@ -1,5 +1,5 @@
-the results clearly show the advantage of thread local content. even the clunky implementation with best fit lists 
-is faster then build in malloc.
+The results clearly show the advantage of thread local content. 
+Even the clunky implementation with best fit lists is faster then build in malloc.
 
 task1
 (global)

@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.3
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue May 31 19:18:35 2022
+# Make data base, printed on Tue May 31 20:09:17 2022
 
 # Variables
 
@@ -17,7 +15,7 @@ GDK_BACKEND = x11
 # environment
 LC_ALL = C
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-e2f92955-a793-4e26-8d62-68d065f4de62.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-426cad93-add9-4f74-bdc0-c8b76a232237.sock
 # environment
 VSCODE_CWD = /home/sourcecodeengineer
 # environment
@@ -85,7 +83,7 @@ LESS_TERMCAP_ue = [0m
 # environment
 MFLAGS = -pqrR
 # environment
-SSH_AUTH_SOCK = /tmp/ssh-XXXXXXyKymNM/agent.900
+SSH_AUTH_SOCK = /tmp/ssh-XXXXXXOBhdHB/agent.856
 # default
 .SHELLFLAGS := -c
 # environment
@@ -101,13 +99,13 @@ MAKEFILE_LIST :=
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 4752
+VSCODE_PID = 2074
 # environment
 XDG_SESSION_TYPE = x11
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/kali:@/tmp/.ICE-unix/900,unix/kali:/tmp/.ICE-unix/900
+SESSION_MANAGER = local/kali:@/tmp/.ICE-unix/856,unix/kali:/tmp/.ICE-unix/856
 # automatic
 *F = $(notdir $*)
 # environment
@@ -183,7 +181,7 @@ GTK_MODULES = gail:atk-bridge
 # default
 MAKE_VERSION := 4.3
 # environment
-SSH_AGENT_PID = 984
+SSH_AGENT_PID = 943
 # environment
 _ = /usr/bin/code
 # environment
@@ -279,12 +277,14 @@ makefile:
 # Not a target:
 GNUmakefile:
 #  Implicit rule search has been done.
- 
 #  File does not exist.
 #  File has been updated.
 #  Failed to be updated.
 
 # files hash-table stats:
+ 
+make: *** No rule to make target 'all'.  Stop.
+
 # Load=6/1024=1%, Rehash=0, Collisions=0/15=0%
 # VPATH Search Paths
 
@@ -298,6 +298,6 @@ GNUmakefile:
 # strcache performance: lookups = 23 / hit rate = 13%
 # hash-table stats:
 # Load=20/8192=0%, Rehash=0, Collisions=0/23=0%
-# Finished Make data base on Tue May 31 19:18:35 2022
+# Finished Make data base on Tue May 31 20:09:17 2022
 
  

@@ -1,4 +1,4 @@
-CFLAGS = -std=c11 -Wall -Wextra -Wpedantic -g -D_POSIX_SOURCE -D_BSD_SOURCE -O3#-fsanitize=address -Wconversion
+CFLAGS = -std=c11 -Wall -Wextra -Wpedantic -g -D_POSIX_SOURCE -D_BSD_SOURCE -O3 #-fsanitize=address -Wconversion
 LDFLAGS= -lrt -pthread
 
 .PHONY: all
