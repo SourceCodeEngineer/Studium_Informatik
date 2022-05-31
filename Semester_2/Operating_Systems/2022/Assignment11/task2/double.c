@@ -1,3 +1,4 @@
-int doubles (int x) {
+int doubles(int x)
+{
 	return x * 2;
 }

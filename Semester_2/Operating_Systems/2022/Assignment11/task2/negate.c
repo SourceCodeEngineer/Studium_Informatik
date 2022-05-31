@@ -1,3 +1,4 @@
-int negate (int x) {
+int negate(int x)
+{
 	return x * -1;
 }

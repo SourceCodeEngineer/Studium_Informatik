@@ -1,3 +1,4 @@
-int increase (int x) {
+int increase(int x)
+{
 	return (x + 1);
 }
