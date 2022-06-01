@@ -1,10 +1,15 @@
-.PHONY : all clean
+CFLAGS = -Wall -Wextra -std=c11
 
-all: malloc_spy
+.PHONY: all clean
+LIBS = -lrt -pthread
 
-malloc_spy: malloc_spy.c
-	gcc -std=c11 -fPIC -shared malloc_spy.c -o malloc_spy.so -ldl
+all: malloc_spy.c some_library task3 allocator_tests membench
+
+malloc_spy: malloc_spy.o
+	$(CC) $(LDFLAGS) $^ $(LIBS) -o $@ -O3
+
+malloc_spy.o: malloc_spy.c 
+	$(CC) $(CFLAGS) -c -o $@ $^
 
 clean:
-	$(RM) malloc_spy.so
-
+	$(RM) malloc_spy malloc_spy.o 

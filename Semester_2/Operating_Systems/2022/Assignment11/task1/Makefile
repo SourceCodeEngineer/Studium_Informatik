@@ -1,23 +1,21 @@
-.PHONY : all clean
-CFLAGS= -Wall -Werror -Wpedantic -fpic
-CC=gcc
+CFLAGS = -Wall -Wextra -std=c11
 
-all: some_library my_program
+.PHONY: all clean
+LIBS = -lrt -pthread
 
-BIN=bin
-INCLUDE=include
-SRC=src
+all: my_program.c some_library task3 allocator_tests membench
 
-some_library: clean some_library_o
-	clear
-	$(CC) -shared -o some_library.so some_library.o
+my_program: my_program.o
+	$(CC) $(LDFLAGS) $^ $(LIBS) -o $@ -O3
 
-some_library: clean
-	clear
-	$(CC) -static my_program.c -o my_program
+my_program.o: my_program.c 
+	$(CC) $(CFLAGS) -c -o $@ $^
 
-some_library_o:
-	$(CC) $(CFLAGS) -c some_library.c 
+some_library: some_library.o
+	$(CC) $(LDFLAGS) $^ $(LIBS) -o $@ -O3
+
+some_library.o: some_library.c 
+	$(CC) $(CFLAGS) -c -o $@ $^
 
 clean:
-	$(RM) some_library.o
+	$(RM) my_program my_program.o some_library some_library.o
