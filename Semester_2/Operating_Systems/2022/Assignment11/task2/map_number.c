@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 {
 	if (argc < 3)
 	{
-		printf("Usage: %s <number> <plugin>\n", argv[0]);
+		printf("Usage: %s <number> <plugin(s)>\n", argv[0]);
 		return EXIT_FAILURE;
 	}
 
@@ -32,9 +32,10 @@ int main(int argc, char *argv[])
 	fptr func;
 	char *src;
 
-	for (int i = 2; i < argc; i++)
+	for (int i = 2; i < argc; ++i)
 	{
 		handle = dlopen(argv[i], RTLD_NOW);
+
 		if (handle == NULL)
 		{
 			printf("%s\n", dlerror());
@@ -43,12 +44,14 @@ int main(int argc, char *argv[])
 
 		src = strip(argv[i]);
 		func = (fptr)dlsym(handle, &src[2]);
+
 		if (func == NULL)
 		{
 			printf("%s\n", dlerror());
 			return EXIT_FAILURE;
 		}
-		printf("%s: %d\n", argv[i], (*func)(atoi(argv[1])));
+		printf("%s.so: %d\n", argv[i], (*func)(atoi(argv[1])));
+		fflush(stdin);
 	}
 	return EXIT_SUCCESS;
 }
