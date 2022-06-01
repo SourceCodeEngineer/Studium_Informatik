@@ -1,15 +1,12 @@
-CFLAGS = -Wall -Wextra -std=c11
+CFLAGS = -std=c11 -Wall -Wextra #-Wpedantic -g -D_BSD_SOURCE -D_POSIX_SOURCE #-O3 #-fsanitize=address -Wconversion
+LDFLAGS= -ldl
 
-.PHONY: all clean
-LIBS = -lrt -pthread
+.PHONY: all
+all: malloc_spy
 
-all: malloc_spy.c some_library task3 allocator_tests membench
-
-malloc_spy: malloc_spy.o
-	$(CC) $(LDFLAGS) $^ $(LIBS) -o $@ -O3
-
-malloc_spy.o: malloc_spy.c 
-	$(CC) $(CFLAGS) -c -o $@ $^
-
+.PHONY: clean
 clean:
-	$(RM) malloc_spy malloc_spy.o 
+	$(RM) malloc_spy.so
+
+malloc_spy: malloc_spy.c 
+	$(CC) -shared -o malloc_spy.so -fPIC malloc_spy.c
