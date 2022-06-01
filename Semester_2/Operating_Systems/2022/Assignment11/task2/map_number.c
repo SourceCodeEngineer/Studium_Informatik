@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 {
 	if (argc < 3)
 	{
-		printf("Usage: %s <number> <plugin>\n", argv[1]);
+		printf("Usage: %s <number> <plugin>\n", argv[0]);
 		return EXIT_FAILURE;
 	}
 
