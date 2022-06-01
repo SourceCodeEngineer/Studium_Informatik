@@ -1,4 +1,3 @@
-int this_function_should_increment_a_number_by_ten(int x)
-{
-	return x + 10;
+int square_my_integer(int x) {
+	return (x * x) + 1;
 }

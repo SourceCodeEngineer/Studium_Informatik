@@ -4,9 +4,9 @@
 #include <string.h>
 #include <dlfcn.h>
 
-int this_function_should_increment_a_number_by_ten(int x)
+int square_my_integer(int x)
 {
-	return x + 10;
+	return (x * x) + 1;
 }
 
 int main(int argc, char *argv[])
@@ -17,6 +17,6 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
-	printf("%d\n", this_function_should_increment_a_number_by_ten(atoi(argv[1])));
+	printf("%d\n", square_my_integer(atoi(argv[1])));
 	return EXIT_SUCCESS;
 }
