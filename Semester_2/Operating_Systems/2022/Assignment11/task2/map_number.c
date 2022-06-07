@@ -3,22 +3,18 @@
 #include <dlfcn.h>
 #include <string.h>
 
-char *strip(char *fname)
+typedef int (*f_ptr)(int);
+
+char *prepare_string(char *fname, int size)
 {
-	char *end = fname + strlen(fname);
-	while (end > fname && *end != '.')
+	char *f_string = malloc(size - 4);
+	for (int i = 2; i < size - 3; ++i)
 	{
-		--end;
+		f_string[i - 2] = fname[i];
 	}
-
-	if (end > fname)
-	{
-		*end = '\0';
-	}
-	return fname;
+	f_string[size - 3] = '\0';
+	return f_string;
 }
-
-typedef int (*fptr)(int);
 
 int main(int argc, char *argv[])
 {
@@ -28,30 +24,31 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
-	void *handle;
-	fptr func;
-	char *src;
+	int arg = atoi(argv[1]);
 
 	for (int i = 2; i < argc; ++i)
 	{
-		handle = dlopen(argv[i], RTLD_NOW);
-
-		if (handle == NULL)
+		// open .so file
+		void *file = dlopen(argv[i], RTLD_NOW);
+		if (file == NULL)
 		{
 			printf("%s\n", dlerror());
 			return EXIT_FAILURE;
 		}
-
-		src = strip(argv[i]);
-		func = (fptr)dlsym(handle, &src[2]);
-
-		if (func == NULL)
+		// link function
+		f_ptr extern_function = (f_ptr)dlsym(file, prepare_string(argv[i], strlen(argv[i])));
+		if (extern_function == NULL)
 		{
 			printf("%s\n", dlerror());
 			return EXIT_FAILURE;
 		}
-		printf("%s.so: %d\n", argv[i], (*func)(atoi(argv[1])));
-		fflush(stdin);
+		// calculate and print
+		arg = extern_function(arg);
+
+		printf("%s: %d\n", argv[i], arg);
+		// close file link
+		dlclose(file);
 	}
+
 	return EXIT_SUCCESS;
 }
