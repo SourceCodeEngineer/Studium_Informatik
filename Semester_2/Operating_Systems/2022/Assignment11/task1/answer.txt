@@ -1,0 +1,33 @@
+Re-implement the functionality of some_program and some_library.so in a single program my_program.
+    Did that in the c file.
+
+Extend your Makefile to compile this program as a fully static executable (read up on how this can be done with GCC).
+    Done in the Makefile.
+
+Compare the sizes of some_program and my_program — what do you find?
+    my_program is bigger than the provided library.
+
+What is the difference between dynamic and static linking?
+    The main difference between static and dynamic linking is 
+    that static linking copies all library modules used in the 
+    program into the final executable file at the final step of 
+    the compilation while, in dynamic linking, the linking occurs 
+    at run time when both executable files and libraries are placed in the memory.
+
+When would you use dynamic linking?
+    When you don't need the libraries copied into the .so file.
+
+When would you use static linking?
+    Line 17 but inversed.
+
+What is position independent code, and why is it useful?
+    PIC is commonly used for shared libraries, so that the 
+    same library code can be loaded in a location in each program 
+    address space where it does not overlap with other memory in use 
+    (for example, other shared libraries).
+
+What is the purpose of the LD_LIBRARY_PATH environment variable?
+    LD_LIBRARY_PATH is an environmental variable used in Linux/UNIX Systems. 
+    It is used to tell dynamic link loaders where to look for shared libraries 
+    for specific applications. It is useful until you don't mess with it. 
+    It's better to avoid the use of LD_LIBRARY_PATH and use alternatives.
