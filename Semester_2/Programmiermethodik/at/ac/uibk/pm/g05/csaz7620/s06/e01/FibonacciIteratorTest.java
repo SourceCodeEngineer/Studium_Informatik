@@ -1,8 +1,7 @@
 package at.ac.uibk.pm.g05.csaz7620.s06.e01;
 
-
 import org.junit.jupiter.api.Assertions;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 

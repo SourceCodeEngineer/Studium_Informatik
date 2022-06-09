@@ -1,11 +1,14 @@
 .PHONY : all clean
-CFLAGS= -std=c11 -Wall -Werror -Wpedantic
-CC=gcc
+CFLAGS = -Wall -Werror -std=c11 -D _DEFAULT_SOURCE #-Wpedantic
+CC = gcc
 
 all: restaurant
 
-reatsurant: restaurant.c
-	$(CC) $(CFLAGS) restaurant.c -o restaurant -pthread
+restaurant: restaurant.o
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@ -lrt -pthread
+
+restaurant.o: restaurant.c
+	$(CC) $(CFLAGS) -c -o $@ $^
 
 clean:
-	$(RM) some_library.o
+	$(RM) restaurant.o

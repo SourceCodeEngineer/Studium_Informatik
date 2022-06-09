@@ -1,4 +1,3 @@
-#define _POSIX_SOURCE 1
 #include <pthread.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -28,7 +27,7 @@ void *cook()
 
     int val;
     unsigned int seed = (unsigned)pthread_self();
-    int rand_time = rand_r(&seed) % 500 + 100;
+    int rand_time = (rand_r(&seed) % 500 + 100);
     while (guests_total > 0)
     {
         pthread_mutex_lock(&mutex);
@@ -76,7 +75,7 @@ void *guest()
             {
                 uint64_t ms = ts.tv_sec * 1e3 + ts.tv_nsec / 1e6;
                 printf("Guest %d has picked up order %d after %ld ms\n", id, order, ms);
-                guests_total--;
+                --guests_total;
                 totalms = totalms + ms;
                 pthread_mutex_unlock(&mutex);
                 pthread_exit(0);
@@ -89,7 +88,7 @@ void *guest()
                     myqueue_push(&counter, val);
                     uint64_t ms = ts.tv_sec * 1e3 + ts.tv_nsec / 1e6;
                     printf("Guest %d has picked up order %d after %ld ms\n", id, order, ms);
-                    guests_total--;
+                    --guests_total;
                     totalms = totalms + ms;
                     pthread_mutex_unlock(&mutex);
                     pthread_exit(0);
@@ -116,8 +115,6 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    uint64_t totalms = 0;
-
     pthread_mutex_init(&mutex, NULL);
     myqueue_init(&order_queue);
     myqueue_init(&counter);
@@ -143,7 +140,7 @@ int main(int argc, char **argv)
 
     // would have been for notification
 
-    //  }
+    //}
 
     for (int i = 0; i < COOKS; ++i)
     {
