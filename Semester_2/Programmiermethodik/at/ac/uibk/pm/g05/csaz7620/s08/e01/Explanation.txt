@@ -1,0 +1,81 @@
+a)When should inner classes be used and what are their advantages and disadvantages? Con-
+sider three scenarios in which it would be advantageous to use inner classes!
+
+Pros:
+Man kann die Hilfsklassen möglich nahe implementieren, wo man sie braucht.
+Klassen die man nur an einem Ort braucht kann man damit zusammenschließen
+Erhöhung der Lesbarkeit und Wartbarkeit des Codes
+Bessere Kapselung
+
+Cons:
+Schlechte Wartbarkeit:
+Funktioniert nur bei klassen die man wirklich nur innerhalb dieser Klasse braucht
+-> daher kann man diese Funktionalitäten der Klasse nicht im ganzen Programm benutzen.
+Problematisch, da man nie weiß ob man bei der Erweiterung des Programmes diese Klasse nicht auch in anderen Klassen außerhalb der Top Klasse braucht.
+
+Die inneren Klassen würden für mich wirklich nur als Hilfsklassen sinnvoll erscheinen.
+Beispiele:
+Eine Klasse Baum und ihre innere Klasse Node.
+Eine Hilfsklasse nur fürs printen. (wegen besserer Lesbarkeit bei vielen verschiedenen print Funktionen)
+Eine Hilfsklasse nur für mathematische Berechnungen. (auch wegen besserer Lesbarkeit) 
+
+
+Have a look at the code in the file InnerClassExample.java inOLAT
+. Before executing the code, think about what the output could be and why. Execute the main method contained in the file and
+check whether your assumptions were correct. Explain how this output came about!
+
+Code :
+
+public class InnerClassExample {
+
+    static class NestedClass {
+        char c;
+        public NestedClass(char c) {
+            this.c = c;
+        }
+        public void print() {
+            System.out.print(c);
+        }
+    }
+
+    public static void main(String[] args) {
+        printContext(new NestedClass('A'));
+        printContext(new NestedClass('B') {
+            public void print() {
+                System.out.print("(");
+                super.print();
+                System.out.print(")");
+            }
+        });
+    }
+
+    private static void printContext(NestedClass c) {
+        c.print();
+    }
+}
+
+Lets look:
+Start Main:
+printContext(new NestedClass('A'));            this.c = A
+private static void printContext(NestedClass c) {
+        c.print();
+    }
+-> Erste Ausgabe A
+printContext(new NestedClass('B') {
+	public void print() {
+	  System.out.print("(");
+        super.print();
+        System.out.print(")");
+            }
+        });
+
+Hier wird die print Funktion überschrieben. Dadurch wird dies ausgefürt:
+   public void print() {
+                System.out.print("(");
+                super.print();
+                System.out.print(")");
+            }
+super.print(); führt natürlich wieder die print von der Top Classe aus und daher ist die Ausgabe:
+A(B)
+
+

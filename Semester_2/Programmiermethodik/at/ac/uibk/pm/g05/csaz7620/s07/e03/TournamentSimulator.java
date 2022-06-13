@@ -1,10 +1,10 @@
-package at.ac.uibk.pm.g05.csaz7620.s07.e03;
+package e03;
 
+import e02.ExampleGame;
+import e02.Group;
+import e02.Players;
+import e02.RandomGroupGenerator;
 
-import at.ac.uibk.pm.g05.csaz7620.s07.e02.ExampleGame;
-import at.ac.uibk.pm.g05.csaz7620.s07.e02.Group;
-import at.ac.uibk.pm.g05.csaz7620.s07.e02.Players;
-import at.ac.uibk.pm.g05.csaz7620.s07.e02.RandomGroupGenerator;
 import java.util.ArrayList;
 
 public class TournamentSimulator {

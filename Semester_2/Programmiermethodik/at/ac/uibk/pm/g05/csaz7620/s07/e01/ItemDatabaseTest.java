@@ -1,7 +1,11 @@
-package at.ac.uibk.pm.g05.csaz7620.s07.e01;
+package e01;
 
 import com.google.common.collect.Ordering;
-import org.testng.annotations.Test;
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+
+import java.util.Comparator;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 

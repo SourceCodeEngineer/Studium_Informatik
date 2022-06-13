@@ -1,4 +1,4 @@
-package at.ac.uibk.pm.g05.csaz7620.s07.e01;
+package e01;
 
 public class Main {
     public static void main(String[] args) throws PrimaryKeyAlreadyInUseException {
