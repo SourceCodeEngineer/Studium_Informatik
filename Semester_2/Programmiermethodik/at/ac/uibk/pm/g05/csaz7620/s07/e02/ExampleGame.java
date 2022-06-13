@@ -1,4 +1,4 @@
-package e02;
+package at.ac.uibk.pm.g05.csaz7620.s07.e02;
 
 import java.util.Random;
 
@@ -26,8 +26,8 @@ public class ExampleGame implements Game {
         if(x == 2) {
             return "Paper";
         }
-       else{
-           return "Stone";
+        else{
+            return "Stone";
         }
     }
 }

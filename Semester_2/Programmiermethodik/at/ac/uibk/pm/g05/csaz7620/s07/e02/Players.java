@@ -1,4 +1,4 @@
-package e02;
+package at.ac.uibk.pm.g05.csaz7620.s07.e02;
 
 public class Players {
     private String name;

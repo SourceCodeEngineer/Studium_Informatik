@@ -1,6 +1,4 @@
-package e02;
-
-import e01.Entity;
+package at.ac.uibk.pm.g05.csaz7620.s07.e02;
 
 import java.util.ArrayList;
 
@@ -28,7 +26,6 @@ public class TournamentManager {
         groups.add(group1);
         groups.add(group2);
 
-
         RandomGroupGenerator randomGroupGenerator = new RandomGroupGenerator();
         randomGroupGenerator.generateGroups(players,groups);
         ExampleGame exampleGame = new ExampleGame();
@@ -42,7 +39,4 @@ public class TournamentManager {
             x.printRankingList();
         }
     }
-
-
-
 }

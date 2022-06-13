@@ -1,4 +1,4 @@
-package e02;
+package at.ac.uibk.pm.g05.csaz7620.s07.e02;
 
 public class ResultGenerator<T> {
     public void generateResult(Players player1, Players player2, Game game) {
