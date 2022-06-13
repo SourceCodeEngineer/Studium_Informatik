@@ -1,4 +1,4 @@
-package e02;
+package at.ac.uibk.pm.g05.csaz7620.s08.e02;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

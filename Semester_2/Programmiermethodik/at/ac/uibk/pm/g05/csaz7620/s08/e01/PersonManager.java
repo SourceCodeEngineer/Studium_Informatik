@@ -1,4 +1,4 @@
-package e01;
+package at.ac.uibk.pm.g05.csaz7620.s08.e01;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,6 +1,5 @@
-package e02;
+package at.ac.uibk.pm.g05.csaz7620.s08.e02;
 
-import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

@@ -1,21 +1,22 @@
-package e01;
+package at.ac.uibk.pm.g05.csaz7620.s07.e01;
 
 import java.util.Objects;
 
 public class Entity<U, T> {
-        private final T value;
-        private final U key;
-        public Entity(T value, U key) {
-            this.value = value;
-            this.key = key;
-        }
+    private final T value;
+    private final U key;
+    public Entity(T value, U key) {
+        this.value = value;
+        this.key = key;
+    }
 
     public T getValue() {
-            return value;
-        }
-        public U getKey() {
-            return key;
-        }
+        return value;
+    }
+
+    public U getKey() {
+        return key;
+    }
 
     @Override
     public String toString() {

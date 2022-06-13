@@ -2,248 +2,127 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target 'all'.  Stop.
 
 # GNU Make 4.3
- 
 # Built for x86_64-pc-linux-gnu
- 
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
- 
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
- 
 # This is free software: you are free to change and redistribute it.
- 
 # There is NO WARRANTY, to the extent permitted by law.
- 
 
- 
-# Make data base, printed on Thu Jun  9 10:03:05 2022
- 
+# Make data base, printed on Mon Jun 13 09:13:34 2022
 
 # Variables
- 
 
- 
 # environment
- 
 GDK_BACKEND = x11
- 
 # environment
- 
 LC_ALL = C
- 
 # environment
- 
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-5690fa98-6833-4193-ae69-ce3cb1c8e65e.sock
- 
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-1accb0b2-6f54-4ba9-a135-2c62c692f7f5.sock
 # environment
- 
-VSCODE_CWD = /home/sourcecodeengineer/StudiumInformatik/Studium_Informatik/Semester_2/Operating_Systems/2022/Assignment12
- 
+VSCODE_CWD = /home/sourcecodeengineer
 # environment
- 
 WINDOWID = 0
- 
 # environment
- 
 LESS_TERMCAP_me = [0m
- 
 # environment
- 
 GDM_LANG = en_GB.utf8
- 
 # default
- 
 MAKE_COMMAND := make
- 
 # environment
- 
 QT_ACCESSIBILITY = 1
- 
 # automatic
- 
 @D = $(patsubst %/,%,$(dir $@))
- 
 # environment
- 
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
- 
 # default
- 
 .VARIABLES := 
- 
 # environment
- 
 PWD = /home/sourcecodeengineer/StudiumInformatik/Studium_Informatik
- 
 # automatic
- 
 %D = $(patsubst %/,%,$(dir $%))
- 
 # environment
- 
 XDG_DATA_DIRS = /usr/share/xfce4:/usr/local/share/:/usr/share/:/usr/share
- 
 # environment
- 
-OLDPWD = /home/sourcecodeengineer/StudiumInformatik/Studium_Informatik
- 
+OLDPWD = /home/sourcecodeengineer
 # automatic
- 
 ^D = $(patsubst %/,%,$(dir $^))
- 
 # environment
- 
 VSCODE_LOG_STACK = false
- 
 # automatic
- 
 %F = $(notdir $%)
- 
 # environment
- 
 VSCODE_CODE_CACHE_PATH = /home/sourcecodeengineer/.config/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
- 
 # environment
- 
 XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session0
- 
 # environment
- 
 LANG = C
- 
 # environment
- 
 POWERSHELL_UPDATECHECK = Off
- 
 # environment
- 
 XAUTHORITY = /home/sourcecodeengineer/.Xauthority
- 
 # default
- 
 .LOADED := 
- 
 # environment
- 
 LESS_TERMCAP_md = [1;36m
- 
 # default
- 
 .INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
- 
 # environment
- 
 COLORFGBG = 15;0
- 
 # makefile
- 
 MAKEFLAGS = pqrR
- 
 # environment
- 
 LESS_TERMCAP_so = [01;33m
- 
 # makefile
- 
 CURDIR := /home/sourcecodeengineer/StudiumInformatik/Studium_Informatik
- 
 # environment
- 
 VSCODE_PIPE_LOGGING = true
- 
 # environment
- 
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
- 
 # automatic
- 
 *D = $(patsubst %/,%,$(dir $*))
- 
 # environment
- 
 LESS_TERMCAP_ue = [0m
- 
 # environment
- 
 MFLAGS = -pqrR
- 
 # environment
- 
-SSH_AUTH_SOCK = /tmp/ssh-XXXXXX9RcM4h/agent.900
- 
+SSH_AUTH_SOCK = /tmp/ssh-XXXXXXY4rGZx/agent.905
 # default
- 
 .SHELLFLAGS := -c
- 
 # environment
- 
 XDG_CONFIG_DIRS = /etc/xdg
- 
 # automatic
- 
 +D = $(patsubst %/,%,$(dir $+))
- 
 # environment
- 
 XDG_SESSION_DESKTOP = lightdm-xsession
- 
 # makefile
- 
 MAKEFILE_LIST := 
- 
 # automatic
- 
 @F = $(notdir $@)
- 
 # environment
- 
 VSCODE_VERBOSE_LOGGING = true
- 
 # environment
- 
-VSCODE_PID = 3417
- 
+VSCODE_PID = 2472
 # environment
- 
 XDG_SESSION_TYPE = x11
- 
 # automatic
- 
 ?D = $(patsubst %/,%,$(dir $?))
- 
 # environment
- 
-SESSION_MANAGER = local/kali:@/tmp/.ICE-unix/900,unix/kali:/tmp/.ICE-unix/900
- 
+SESSION_MANAGER = local/kali:@/tmp/.ICE-unix/905,unix/kali:/tmp/.ICE-unix/905
 # automatic
- 
 *F = $(notdir $*)
- 
 # environment
- 
 QT_QPA_PLATFORMTHEME = qt5ct
- 
 # environment
- 
 CHROME_DESKTOP = code-url-handler.desktop
- 
 # environment
- 
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
- 
 # automatic
- 
 <D = $(patsubst %/,%,$(dir $<))
- 
 # environment
- 
 VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
- 
 # default
- 
 MAKE_HOST := x86_64-pc-linux-gnu
- 
 # makefile
- 
 SHELL = /bin/sh
 # environment
 LESS_TERMCAP_us = [1;32m
@@ -304,7 +183,7 @@ GTK_MODULES = gail:atk-bridge
 # default
 MAKE_VERSION := 4.3
 # environment
-SSH_AGENT_PID = 988
+SSH_AGENT_PID = 992
 # environment
 _ = /usr/bin/code
 # environment
@@ -360,7 +239,7 @@ GDMSESSION = lightdm-xsession
 
 # Directories
 
-# . (device 2049, inode 2229240): 12 files, no impossibilities.
+# . (device 2049, inode 2230858): 12 files, no impossibilities.
 
 # 12 files, no impossibilities in 1 directories.
 
@@ -414,10 +293,11 @@ GNUmakefile:
 
 # strcache buffers: 1 (0) / strings = 20 / storage = 207 B / avg = 10 B
 # current buf: size = 8162 B / used = 207 B / count = 20 / avg = 10 B
+ 
 
 # strcache performance: lookups = 23 / hit rate = 13%
 # hash-table stats:
 # Load=20/8192=0%, Rehash=0, Collisions=0/23=0%
-# Finished Make data base on Thu Jun  9 10:03:05 2022
+# Finished Make data base on Mon Jun 13 09:13:34 2022
 
  
