@@ -1,4 +1,4 @@
-package at.pm.cxxxxxxx.ex2;
+package tests.at.pm.cxxxxxxx.ex2;
 
 public class ItemRemovalException extends Exception {
 

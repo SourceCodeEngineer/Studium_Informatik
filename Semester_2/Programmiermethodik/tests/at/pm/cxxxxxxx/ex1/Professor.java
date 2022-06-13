@@ -1,4 +1,4 @@
-package at.pm.cxxxxxxx.ex1;
+package tests.at.pm.cxxxxxxx.ex1;
 
 public class Professor extends PolymorphicEmployee {
 

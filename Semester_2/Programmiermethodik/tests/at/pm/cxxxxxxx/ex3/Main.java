@@ -1,4 +1,4 @@
-package at.pm.cxxxxxxx.ex3;
+package tests.at.pm.cxxxxxxx.ex3;
 
 public class Main {
 

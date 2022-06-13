@@ -1,4 +1,4 @@
-package at.pm.cxxxxxxx.ex2;
+package tests.at.pm.cxxxxxxx.ex2;
 
 import java.util.HashMap;
 import java.util.Map;

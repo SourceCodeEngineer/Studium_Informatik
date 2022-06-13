@@ -19,6 +19,5 @@ public class Application {
         } catch (IOException e) {
             System.err.printf("Error: Unable to successfully read from file %s!".formatted(path));
         }
-
     }
 }

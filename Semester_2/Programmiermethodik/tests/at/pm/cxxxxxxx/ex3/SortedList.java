@@ -1,11 +1,11 @@
-package at.pm.cxxxxxxx.ex3;
+package tests.at.pm.cxxxxxxx.ex3;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /*
-All operations have a worst case time complexity of O(n).
+All operations have the worst case time complexity of O(n).
  */
 public class SortedList<T extends Comparable<? super T>> {
     private final List<T> internalList = new ArrayList<>();
@@ -40,7 +40,7 @@ public class SortedList<T extends Comparable<? super T>> {
         return new ArrayList<>(internalList);
 
         /*
-        Alternative: Return a unmodifiable list.
+        Alternative: Return an unmodifiable list.
 
         Time complexity: O(1)
         return Collections.unmodifiableList(internalList);

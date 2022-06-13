@@ -1,4 +1,4 @@
-package at.pm.cxxxxxxx.ex2;
+package tests.at.pm.cxxxxxxx.ex2;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
