@@ -1,14 +1,16 @@
-.PHONY : all clean
-CFLAGS = -Wall -Werror -std=c11 -D _DEFAULT_SOURCE #-Wpedantic
 CC = gcc
+CFLAGS = -Wall -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wunreachable-code -Wredundant-decls -Wold-style-declaration -Wold-style-definition -std=c11 -O2
+LDFLAGS = -pthread -lrt
+
 
 all: restaurant
 
-restaurant: restaurant.o
-	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@ -lrt -pthread
+restaurant: restaurant.c
 
-restaurant.o: restaurant.c
-	$(CC) $(CFLAGS) -c -o $@ $^
+memcheck: restaurant.c
+	$(CC) $^ -g -o restaurant $(LDFLAGS)
+	valgrind --tool=memcheck --leak-check=full ./restaurant 1 5 3
 
+.PHONY: clean
 clean:
-	$(RM) restaurant.o
+	find . -maxdepth 1 -type f ! -name "*.c" ! -name "*.h" ! -name "*.txt" ! -name "Makefile" -exec rm {} \;
